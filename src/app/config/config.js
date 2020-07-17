@@ -8,7 +8,12 @@ const serverVars = {
   resetPass: "profilesChangePassword?token=",
   // lostpwdUrl: `"auth/signup",/
   recoverpass:"auth/recovery",
-  // regular savings   
+  // regular savings
+  fetchAllBalances: "total_balances_for_all_savings_packages?token=",
+  fetchAllTarget: "all_targets_in_one?token=",
+  fetchAllTargetAccount:"all_targets_plan_per_user?token=",
+  fetchAllSaveToLoan: "save_to_loan_all_api?token=",
+
   saveRegularSavings: "saving/store?token=",
   getRegularSavings: "saving?token=",
   editRegularSavings: "saving/",
@@ -153,6 +158,14 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getRegularSavings + user.token;
     case "saveRegularSavings":
       return serverVars.baseUrl + serverVars.saveRegularSavings + user.token;
+    case "fetchAllBalances":
+      return serverVars.baseUrl + serverVars.fetchAllBalances + user.token;
+    case "fetchAllTarget":
+      return serverVars.baseUrl + serverVars.fetchAllTarget + user.token;
+    case "fetchAllSaveToLoan":
+      return serverVars.baseUrl + serverVars.fetchAllSaveToLoan + user.token;
+    case "fetchAllTargetAccount":
+      return serverVars.baseUrl + serverVars.fetchAllTargetAccount + user.token;
     case "withdrawRegularSavings":
       return serverVars.baseUrl + serverVars.withdrawRegularSavings + user.token
     case "totalFundRegularSavings":

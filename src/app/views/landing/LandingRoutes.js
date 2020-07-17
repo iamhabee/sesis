@@ -1,0 +1,34 @@
+import React from "react";
+import { authRoles } from "../../auth/authRoles";
+
+const settings = {
+  activeLayout: "layout1",
+  layout1Settings: {
+    topbar: {
+      show: true
+    },
+    leftSidebar: {
+      show: false,
+      mode: "close"
+    }
+  },
+  layout2Settings: {
+    mode: "full",
+    topbar: {
+      show: true
+    },
+    navbar: { show: false }
+  },
+  secondarySidebar: { show: false },
+  footer: { show: true }
+};
+
+const landingRoutes = [
+  {
+    path: "/landing",
+    component: React.lazy(() => import("./Landing")),
+    settings
+  }
+];
+
+export default landingRoutes;

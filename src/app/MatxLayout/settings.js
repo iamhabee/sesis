@@ -29,7 +29,7 @@ export const MatxLayoutSettings = {
   },
   // Footer options
   footer: {
-    show: true,
+    show: false,
     fixed: false,
     theme: "slateDark1" // View all valid theme colors inside MatxTheme/themeColors.js
   }

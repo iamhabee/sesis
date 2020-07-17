@@ -34,7 +34,9 @@ class Layout1Topbar extends Component {
   constructor(props){
     super(props)
     let profile_image =  localStorage.getItem('profile_pic');
+    let user =  localStorage.getItem('user');
     this.state = {
+      user:user,
       profile_image : profile_image,
     };
   }
@@ -73,7 +75,7 @@ class Layout1Topbar extends Component {
 
   render() {
     let { classes, fixed } = this.props;
-    const {profile_image} = this.state
+    const {profile_image, user} = this.state
     return (
       <div className={`topbar ${classes.topbar}`}>
         <div className={classList({ "topbar-hold": true, fixed: fixed })}>
@@ -100,8 +102,8 @@ class Layout1Topbar extends Component {
                 </IconButton>
               </div> */}
             </div>
-            <div className="flex items-center">
-              <MatxSearchBox color="secondary"/>
+            {user ? <div className="flex items-center">
+              {/* <MatxSearchBox color="secondary"/> */}
 
               <NotificationBar />
 
@@ -143,7 +145,12 @@ class Layout1Topbar extends Component {
                   <span className="pl-4"> Logout </span>
                 </MenuItem>
               </MatxMenu>
-            </div>
+            </div>:
+            <div className="flex items-center">
+              <MatxMenu >
+                
+              </MatxMenu>
+            </div>}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import dashboardRoutes from "./views/dashboard/DashboardRoutes";
+import landingRoutes from "./views/landing/LandingRoutes";
 import utilitiesRoutes from "./views/utilities/UtilitiesRoutes";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 
@@ -10,13 +11,13 @@ import dragAndDropRoute from "./views/Drag&Drop/DragAndDropRoute";
 
 import formsRoutes from "./views/forms/FormsRoutes";
 import mapRoutes from "./views/map/MapRoutes";
-// import ApplicationRoutes from "./views/material-kit/Applications/ApplicationRoutes";
+import pageRoutes from "./views/pages/PageRoutes";
 
 const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/dashboard" />
+    component: () => <Redirect to="/landing" />
   }
 ];
 
@@ -29,6 +30,8 @@ const errorRoute = [
 const routes = [
   ...sessionRoutes,
   ...dashboardRoutes,
+  ...pageRoutes,
+  ...landingRoutes,
   ...materialRoutes,
   ...utilitiesRoutes,
   ...dragAndDropRoute,
@@ -36,7 +39,6 @@ const routes = [
   ...mapRoutes,
   ...redirectRoute,
   ...errorRoute,
-  // ...ApplicationRoutes,
 ];
 
 export default routes;

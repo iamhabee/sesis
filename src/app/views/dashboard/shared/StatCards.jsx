@@ -114,9 +114,9 @@ class StatCards extends Component {
               {/* <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>shopping_cart</Icon> */}
               <div className="ml-3">
                 <Button className="uppercase"
-            size="large"
-            variant="contained"
-            color="primary" onClick={this.props.openModal}>Quick Save</Button>
+                  size="large"
+                  variant="contained"
+                  color="secondary" onClick={this.props.openModal} style={{color:"#fff"}}>Quick Save</Button>
               </div>
             </div>
             <Tooltip title="View Details" placement="top">

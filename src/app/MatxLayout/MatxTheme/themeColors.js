@@ -2,15 +2,27 @@ const textLight = {
   primary: "rgba(52, 49, 76, 1)",
   secondary: "rgba(52, 49, 76, 0.54)",
   disabled: "rgba(52, 49, 76, 0.38)",
+  green:"rgba(32, 40, 72, 0.38)",
   hint: "rgba(52, 49, 76, 0.38)"
 };
 const secondaryColor = {
   light: "#f9a352",
   main: "#d8b71e",
   dark: "#ff932e",
+  contrastText: textLight.secondary
+};
+const primaryColor = {
+  light: "#f9a352",
+  main: "#222a45",
+  dark: "#ff932e",
   contrastText: textLight.primary
 };
-
+const greenColor = {
+  light: "#f9a352",
+  main: "#0d60d8",
+  dark: "#ff932e",
+  contrastText: textLight.green
+};
 export const themeColors = {
   white: {
     palette: {
@@ -68,6 +80,8 @@ export const themeColors = {
         contrastText: "#ffffff"
       },
       secondary: secondaryColor,
+      primary:primaryColor,
+      green:greenColor,
       text: textLight
     }
   },

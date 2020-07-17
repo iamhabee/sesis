@@ -26,30 +26,6 @@ const materialRoutes = [
     component: React.lazy(() => import("./Applications/WalletContribution"))
   },
   {
-    path: "/savings/regular",
-    component: React.lazy(() => import("./savings/Regular"))
-  },
-  {
-    path: "/savings/target",
-    component: React.lazy(() => import("./savings/Target"))
-  },
-  {
-    path: "/savings/savetoloan",
-    component: React.lazy(() => import("./savings/SaveToLoan"))
-  },
-  {
-    path: "/investments/halal",
-    component: React.lazy(() => import("./investments/Halal"))
-  },
-  {
-    path: "/investments/market",
-    component: React.lazy(() => import("./investments/Market"))
-  },
-  {
-    path: "/investments/finance",
-    component: React.lazy(() => import("./investments/Finance"))
-  },
-  {
     path: "/wallet",
     component: React.lazy(() => import("./tables/Wallet"))
   },

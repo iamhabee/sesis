@@ -22,6 +22,8 @@ import cube from "../../../../lottiefiles/26519-cube-spinning";
 import swal from 'sweetalert'
 import DateFnsUtils from '@date-io/date-fns';
 import PaystackButton from 'react-paystack';
+import TargetTransactionCard from "./components/TargetTransactionCards";
+import SavingsBalanceCard from "./components/SavingsBalanceCard";
 
 class Target extends Component{
   constructor(props){
@@ -32,31 +34,38 @@ class Target extends Component{
         let date = currentDate.getFullYear() +'-'+month+'-'+ currentDate.getDate();
         this.state={
           data: {
+            target_name: '',
             amount: 0,
+            targeted_amount: '',
             frequency: '',
+            transaction_day: '0',
             transaction_time: '',
-            transaction_day: 'null',
             transaction_month: '0',
+            end_date: '',
             start_date: '',
-            payment_method: 'Wallet',
+            payment_method: 'wallet',
         },
         withdraw_data: {
           amount: 0,
-          payment_method: "Wallet", 
+          payment_method: "wallet", 
           date_time: date
       },
         fund_data:{
-          amount: "",
+          id:"",
+          amount: 0,
+          target_name:"",
           date_time: date,
-          payment_method: "Wallet",
-          paystack_id: ""
+          payment_method: 'Wallet',
+          paystack_id:""
       },
             key: payID(),
             email:email,
             savings: [],
             details: [],
+            accounts: [],
             balance: 0.00,
             tdetails: [],
+            completed: [],
             loading: true, 
             cancreate: true, 
             autoSave: false,
@@ -66,14 +75,21 @@ class Target extends Component{
             show:false,
             showSave:false,
             showWithdraw:false,
-            
+            showEdit:false,
+            showView:false,
+            tab:true
         }
+        this.ongoingTab = this.ongoingTab.bind(this);
+        this.completeTab = this.completeTab.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
         this.handleChangeFund = this.handleChangeFund.bind(this);
         this.handleAutoSave = this.handleAutoSave.bind(this);
         this.handleWithdraw = this.handleWithdraw.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleStopPlan = this.handleStopPlan.bind(this);
+        this.handleView = this.handleView.bind(this);
         this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
         this.handleQuickSave = this.handleQuickSave.bind(this);
         this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
@@ -85,43 +101,15 @@ class Target extends Component{
           headers: { ...authHeader(), 'Content-Type': 'application/json' },
       };
     // call dashboard Api here
-    let user = JSON.parse(localStorage.getItem('user'));
-    fetch(getConfig('getRegularSavings'), requestOptions)
+    fetch(getConfig('fetchAllTarget'), requestOptions)
       .then(async response => {
       const data = await response.json();
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      this.setState({savings: data[0]});
-      fetch(getConfig('totalFundRegularSavings'), requestOptions)
-      .then(async response => {
-      const dat = await response.json();
-      if (!response.ok) {
-          const error = (dat && dat.message) || response.statusText;
-          return Promise.reject(error);
-      }
-      this.setState({balance: dat})
-      fetch(getConfig('getRegularSavingsDetails'), requestOptions)
-        .then(async response => {
-        const data = await response.json();
-        if (!response.ok) {
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-        }
-        this.setState({tdetails: data.data, pagination:data, loading:false} );
-        })
-        .catch(error => {
-        if (error === "Unauthorized") {
-          this.props.logout()
-        }
-        });
-      })
-      .catch(error => {
-        if (error === "Unauthorized") {
-          this.props.logout()
-        }
-      });
+      console.log(data)
+      this.setState({tdetails: data[1], balance: data[0], completed:data[2], accounts:data[3], loading:false })
     })
     .catch(error => {
         if (error === "Unauthorized") {
@@ -160,20 +148,26 @@ handleAutoSave = event => {
 handleQuickSave = event => {
     this.setState({showSave: true});
 }
-handleCloseQuickSave() {
-  this.setState({showSave:false});
-}
-handleWithdraw = event => {
+
+handleWithdraw = () => {
   this.setState({showWithdraw: true});
 }
-handleCloseWithdraw() {
-this.setState({showWithdraw:false});
+handleStopPlan = (id) => {
+  this.props.exitTargetSavings(id);
 }
+handleView = () => {
+  this.setState({showView: true});
+}
+handleEdit = () => {
+  this.setState({showEdit: true});
+}
+
+// submitt form handler
 handleSubmitWithdraw(event) {
   event.preventDefault();
   const { withdraw_data } = this.state;
   if (withdraw_data.amount ) {
-      this.props.withdrawRegularSavings(withdraw_data);
+      this.props.withdrawTargetSavings(withdraw_data);
   }else{
       swal(
           `${"All fields are required"}`
@@ -184,7 +178,7 @@ handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
   if (data.amount && data.frequency && data.start_date && data.payment_method) {
-    this.props.createRegularSavings(data);
+    this.props.createTargetSavings(data);
   }else{
       swal(
           `${"All field are required "}`
@@ -195,13 +189,15 @@ handleSubmitFund(event) {
   event.preventDefault();
   const { fund_data } = this.state;
   if (fund_data.amount) {
-      this.props.addFundRegularSavings(fund_data);
+      this.props.addFundTargetSavings(fund_data);
   }else{
       swal(
           `${"All fields are required"}`
       );
   }
 }
+
+// data change handler
 handleChange = event => {
   const {data} = this.state
   const {name, value} = event.target
@@ -213,12 +209,42 @@ handleChangeWithdraw = event => {
   this.setState({withdraw_data:{...withdraw_data, [name]:value}})
 };
 handleChangeFund = event => {
-  const {fund_data} = this.state
+  const {fund_data, tdetails} = this.state
   const {name, value} = event.target
-  this.setState({fund_data:{...fund_data, [name]:value}})
+  if(name == "target_name"){
+    tdetails.forEach(data => {
+      if(data.target_name == value){
+        this.setState({fund_data:{...fund_data, id:data.id, target_name:data.target_name}})
+      }
+    });
+    
+  }else{
+    this.setState({fund_data:{...fund_data, [name]:value}})
+  }
 };
+
+// modal close handler
 handleClose() {
   this.setState({show:false});
+}
+handleCloseEdit() {
+  this.setState({showEdit:false});
+}
+handleCloseView() {
+  this.setState({showView:false});
+}
+handleCloseQuickSave() {
+  this.setState({showSave:false});
+}
+handleCloseWithdraw() {
+  this.setState({showWithdraw:false});
+  }
+ongoingTab() {
+    this.setState({tab:true});
+
+}
+completeTab(){
+  this.setState({tab:false});
 }
   render(){
     let obj = {
@@ -228,7 +254,7 @@ handleClose() {
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, loading, auto_save, email, bank_details, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, loading, tab, auto_save, showEdit, showView, completed, email, bank_details, fund_data, withdraw_data, autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -255,106 +281,92 @@ handleClose() {
         Loading...
         </div>:
         <>
-        
-        <div className="pb-5 pt-7 px-8 bg-secondary">
-          <Grid container spacing={8}>
-              <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 title={"Regular Balance"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
-              </Grid>
-              <Grid item lg={3} md={3} sm={12} xs={12}>
-                <Button className="uppercase"
-                  size="large"
-                  variant="contained"
-                  style={{backgroundColor:"#222a45", color:"white"}}
-                  onClick={this.handleQuickSave}>
-                   Quick Save
-                </Button>
-              </Grid>
-              
-          </Grid>
-          <Grid container spacing={8}>
-              <Grid item lg={8} md={8} sm={4} xs={4}>
-                <Button className="uppercase"
-                  size="small"
-                  variant="contained"
-                  style={{backgroundColor:"#222a45", color:"white"}}
-                  onClick={this.handleWithdraw}>
-                    Withdraw
-                </Button>
-              </Grid>
-          </Grid>
-        </div>
-        <div className="py-3" />
-        <Grid container spacing={3}>
-              <Grid item lg={6} md={6} sm={12} xs={12}>
-                <h4 className="card-title text-muted mb-4">Latest Transactions</h4>
-                <TableCard transactions={tdetails}/>
-              </Grid>
-              <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <h4 className="card-title text-muted mb-4">My Account Details</h4>
-                <Card elevation={3} className="pt-5 px-5 mb-6">
-                <Grid container spacing={3}>
-                    <Grid item lg={9} md={9} sm={9} xs={9}>
-                      <Typography variant="h6">
-                        {savings.auto_status? "Turn OFF Auto save": "Turn ON Auto save"}
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={3} md={3} sm={3} xs={3}>
-                      <Switch
-                        checked={savings.auto_status? true:false}
-                        onChange={this.handleAutoSave}
-                        value="checked"
-                        color="secondary"
-                      />
-                    </Grid>
-                    {savings.auto_status?
-                    <>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        Amount
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        {savings.amount}
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        Frequency
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        {savings.frequency}
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        Start Date
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        {savings.start_date}
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        Payment Method
-                      </Typography>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={6} xs={6}>
-                      <Typography variant="subtitle1">
-                        {savings.payment_method}
-                      </Typography>
-                    </Grid>
-                    </>:
-                    <div></div>
-                  }
+        <Grid container spacing={2}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
+             borderTopLeftRadius:20}}>
+              <Grid container spacing={4}>
+                  <Grid item lg={9} md={9} sm={12} xs={12}>
+                    <StatCards2 title={"Target Balance"} color={"#e74398"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
                   </Grid>
-                </Card>
+                  <Grid item lg={3} md={3} sm={6} xs={6}>
+                    {tdetails.length != 0 && <Button className="uppercase"
+                      size="large"
+                      variant="contained"
+                      style={{backgroundColor:"#e74398", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10,}}
+                      onClick={this.handleQuickSave}>
+                      Quick Save
+                    </Button>}
+                  </Grid>
               </Grid>
+              <Grid container spacing={4}>
+                  <Grid item lg={4} md={4} sm={6} xs={6}>
+                    <Button className="uppercase"
+                      size="large"
+                      variant="contained"
+                      style={{ backgroundColor:"#e74398", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10}}
+                      onClick={this.handleAutoSave}>
+                        Create Target
+                    </Button>
+                  </Grid>
+              </Grid>
+            </div>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item lg={8} md={8} sm={12} xs={12}>
+            <Button size="small"
+                variant={tab? "contained" : "outlined"}
+                style={{backgroundColor: tab ? "#e74398":""}}
+                onClick={this.ongoingTab}
+                >Ongoing</Button>
+            <Button 
+                size="small"
+                variant={tab? "outlined" : "contained"}
+                style={{backgroundColor: tab ? "":"#e74398"}}
+                onClick={this.completeTab}
+                >Completed</Button>
+          </Grid>
+          <Grid item lg={8} md={8} sm={12} xs={12}>
+            {tab &&
+              <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
+              borderTopLeftRadius:20}}>
+                {tdetails.length != 0?
+                tdetails.map((data, index)=>(
+                  <TargetTransactionCard key={index} status={false} withdrawStatus={data.withdraw_status} amount={numberFormat(data.targeted_amount)} 
+                  value={(100 * data.target_balance)/data.targeted_amount} 
+                  title={data.target_name}  
+                  stop={()=>this.handleStopPlan(data.id)}
+                  withdraw={()=>this.handleWithdraw}
+                  view={()=>this.handleView}
+                  edit={()=>this.handleEdit}
+                  />
+                )):
+                <Typography variant="body1">No Ongoing Target Savings</Typography>
+              }
+              </div>}
+              {!tab &&
+              <div className="pb-5 pt-7 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20,
+              borderTopLeftRadius:20}}>
+                {completed.length != 0?
+                completed.map((data, index)=>(
+                  <TargetTransactionCard 
+                  key={index} 
+                  status={true} withdrawStatus={data.withdrawal_status} 
+                  amount={numberFormat(data.targeted_amount)} 
+                  value={(100 * data.target_balance)/data.targeted_amount} title={data.target_name} 
+                  stop={()=>this.handleStopPlan(data.id)}
+                  withdraw={()=>this.handleWithdraw}
+                  view={()=>this.handleView}
+                  edit={()=>this.handleEdit}
+                  />
+                )):
+                <Typography variant="body1">No Completed Target Savings</Typography>}
+              </div>
+            }
+            
+          </Grid>
+              
         </Grid>
         </>}
         {/* Quick Save Dialog Start */}
@@ -362,7 +374,7 @@ handleClose() {
         open={showSave}
         onClose={this.handleCloseQuickSave}
       >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -372,7 +384,7 @@ handleClose() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
               Fund Your Account
             </Typography>
           </Toolbar>
@@ -399,6 +411,20 @@ handleClose() {
                 <TextField
                   className="mb-4 w-full"
                   select
+                  label="Select Target Plan"
+                  value={fund_data.target_name}
+                  name="target_name"
+                  onChange={this.handleChangeFund}
+                  helperText="Please select Target Plan"
+                >
+                  <MenuItem value={""}></MenuItem>
+                  {tdetails.map((data, index)=>(
+                  <MenuItem key={index} value={data.target_name}>{data.target_name}</MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  className="mb-4 w-full"
+                  select
                   label="Select Frequency"
                   value={fund_data.payment_method}
                   name="payment_method"
@@ -408,7 +434,7 @@ handleClose() {
                   <MenuItem value={""}></MenuItem>
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
                   <MenuItem value={"Bank Account"}> Bank Account </MenuItem>
-              </TextField>
+                </TextField>
               {this.props.savings &&
                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
               }
@@ -417,7 +443,7 @@ handleClose() {
                 type="submit"
                 size="large"
                 variant="contained"
-                style={{backgroundColor:"#222a45", color:"white"}}>
+                style={{backgroundColor:"#e74398", color:"#fff"}}>
                 Add Fund
               </Button>}
               </Grid>
@@ -458,7 +484,7 @@ handleClose() {
         open={show}
         onClose={this.handleClose}
       >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -468,8 +494,8 @@ handleClose() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
-              Create Auto Save Account
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
+              Create Target Plan
             </Typography>
           </Toolbar>
         </AppBar>
@@ -482,13 +508,37 @@ handleClose() {
                 onSubmit={this.handleSubmit}
                 onError={errors => null}
               >
+                <TextValidator
+                className="mb-4 w-full"
+                label="Enter Target Name"
+                onChange={this.handleChange}
+                type="text"
+                name="target_name"
+                value={data.target_name}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
               <TextValidator
                 className="mb-4 w-full"
-                label="Enter Amount"
+                label="Frequent Savings Amount"
                 onChange={this.handleChange}
                 type="number"
                 name="amount"
                 value={data.amount}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="mb-4 w-full"
+                label="Overall Targeted Amount"
+                onChange={this.handleChange}
+                type="number"
+                name="targeted_amount"
+                value={data.targeted_amount}
                 validators={[
                   "required"
                 ]}
@@ -563,6 +613,17 @@ handleClose() {
                 ]}
                 errorMessages={["this field is required"]}
               />
+              <TextValidator
+                className="mb-4 w-full"
+                onChange={this.handleChange}
+                type="date"
+                name="end_date"
+                value={data.end_date}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
               <TextField
                className="mb-4 w-full"
                 id="standard-select-currency"
@@ -584,40 +645,70 @@ handleClose() {
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222a45", color:"white"}}>Create Auto Save</Button>
+                 style={{backgroundColor:"#e74398", color:"white"}}>Create Target Plan</Button>
                  </ValidatorForm>
             </Grid>
 
-            <Grid container item lg={6} md={6} sm={12} xs={12}>
-                <Grid item lg={10} md={10} sm={10} xs={10}>
-                  <Typography variant="subtitle1">
-                    Amount
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    {numberFormat(data.amount)}
-                  </Typography>
+            <Grid container lg={6} md={6} sm={12} xs={12}>
+                <Grid container item lg={12} md={12} sm={12} xs={12} >
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      Target Name
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      {data.target_name}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Typography variant="subtitle1">
-                    Frequency
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    {data.frequency}
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    Payment Method
-                  </Typography>
+                <Grid container item lg={12} md={12} sm={12} xs={12} >
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      Amount
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      {data.amount}
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Typography variant="subtitle1">
-                    {data.payment_method}
-                  </Typography>
+                <Grid container item lg={12} md={12} sm={12} xs={12} >
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      Target Amount
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      {data.targeted_amount}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container item lg={12} md={12} sm={12} xs={12} >
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      Frequency
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      {data.frequency}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container item lg={12} md={12} sm={12} xs={12} >
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      Payment Method
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={6} xs={6}>
+                    <Typography variant="subtitle1">
+                      {data.payment_method}
+                    </Typography>
+                  </Grid>
                 </Grid>
             </Grid>
           </Grid>
@@ -630,7 +721,7 @@ handleClose() {
           open={showWithdraw}
           onClose={this.handleCloseWithdraw}
         >
-                <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+                <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
                   <Toolbar>
                     <IconButton
                       edge="start"
@@ -640,7 +731,7 @@ handleClose() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
                       Withdraw To Wallet
                     </Typography>
                   </Toolbar>
@@ -672,7 +763,7 @@ handleClose() {
                         type="submit"
                         size="large"
                         variant="contained"
-                        style={{backgroundColor:"#222a45", color:"white"}}>
+                        style={{backgroundColor:"#e74398", color:"#fff"}}>
                         Withdraw Fund
                       </Button>
                     </Grid>
@@ -689,6 +780,136 @@ handleClose() {
                 </Card>
               </Dialog>
         {/* withdraw dialog end */}
+
+        {/* Edit Dialog start */}
+        <Dialog
+          open={showEdit}
+          onClose={this.handleCloseEdit}
+        >
+                <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={this.handleCloseEdit}
+                      aria-label="Close"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
+                      Withdraw To Wallet
+                    </Typography>
+                  </Toolbar>
+                </AppBar>
+                <Card className="px-6 pt-2 pb-4">
+                <ValidatorForm
+                  ref="form"
+                  onSubmit={this.handleSubmitWithdraw}
+                  onError={errors => null}
+                >
+                  <Grid container spacing={6}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Enter Amount"
+                        onChange={this.handleChangeWithdraw}
+                        type="number"
+                        name="amount"
+                        value={withdraw_data.amount}
+                        validators={[
+                          "required"
+                        ]}
+                        errorMessages={["this field is required"]}
+                      />
+                      {this.props.savings &&
+                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                      }
+                      <Button className="uppercase"
+                        type="submit"
+                        size="large"
+                        variant="contained"
+                        style={{backgroundColor:"#e74398", color:"#fff"}}>
+                        Withdraw Fund
+                      </Button>
+                    </Grid>
+
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Card className="px-6 pt-2 pb-4">
+                        <Typography variant="h6" gutterBottom>
+                          {numberFormat(withdraw_data.amount)}
+                        </Typography>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                </ValidatorForm>
+                </Card>
+              </Dialog>
+        {/* Edit dialog end */}
+
+        {/* View Dialog start */}
+        <Dialog
+          open={showView}
+          onClose={this.handleCloseView}
+        >
+                <AppBar color="primary" style={{position: "relative"}}>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={this.handleCloseView}
+                      aria-label="Close"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"white"}}>
+                      Withdraw To Wallet
+                    </Typography>
+                  </Toolbar>
+                </AppBar>
+                <Card className="px-6 pt-2 pb-4">
+                <ValidatorForm
+                  ref="form"
+                  onSubmit={this.handleSubmitWithdraw}
+                  onError={errors => null}
+                >
+                  <Grid container spacing={6}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Enter Amount"
+                        onChange={this.handleChangeWithdraw}
+                        type="number"
+                        name="amount"
+                        value={withdraw_data.amount}
+                        validators={[
+                          "required"
+                        ]}
+                        errorMessages={["this field is required"]}
+                      />
+                      {this.props.savings &&
+                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                      }
+                      <Button className="uppercase"
+                        type="submit"
+                        size="large"
+                        variant="contained"
+                        style={{backgroundColor:"#e74398", color:"white"}}>
+                        Withdraw Fund
+                      </Button>
+                    </Grid>
+
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Card className="px-6 pt-2 pb-4">
+                        <Typography variant="h6" gutterBottom>
+                          {numberFormat(withdraw_data.amount)}
+                        </Typography>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                </ValidatorForm>
+                </Card>
+              </Dialog>
+        {/* View dialog end */}
       </div>
     );
   };
@@ -697,10 +918,11 @@ handleClose() {
 // export default Regular;
 const actionCreators = {
   logout: userActions.logout,
-  deactivateAutoSave: userActions.deactivateAutoSave,
-  createRegularSavings: userActions.createRegularSavings,
-  addFundRegularSavings:userActions.addFundRegularSavings,
-  withdrawRegularSavings: userActions.withdrawRegularSavings
+  createTargetSavings: userActions.createTargetSavings,
+  addFundTargetSavings:userActions.addFundTargetSavings,
+  withdrawTargetSavings: userActions.withdrawTargetSavings,
+  editTargetSavings: userActions.editTargetSavings,
+  exitTargetSavings: userActions.exitTargetSavings
 };
 
 function mapState(state) {

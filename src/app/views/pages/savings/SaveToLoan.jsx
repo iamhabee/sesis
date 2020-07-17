@@ -75,62 +75,36 @@ class SaveToLoan extends Component{
         this.handleChangeFund = this.handleChangeFund.bind(this);
         this.handleAutoSave = this.handleAutoSave.bind(this);
         this.handleWithdraw = this.handleWithdraw.bind(this);
+        this.handleStopPlan = this.handleStopPlan.bind(this);
         this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
         this.handleQuickSave = this.handleQuickSave.bind(this);
         this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitFund = this.handleSubmitFund.bind(this);
-        this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
-        const requestOptions = {
-          method: 'GET',
-          headers: { ...authHeader(), 'Content-Type': 'application/json' },
-      };
-    // call dashboard Api here
-    let user = JSON.parse(localStorage.getItem('user'));
-    fetch(getConfig('getSaveToLoanSavings'), requestOptions)
-      .then(async response => {
-      const data = await response.json();
-      if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-      }
-      this.setState({savings: data[0]}, ()=>{
-        fetch(getConfig('getSaveToLoanTransaction') + data.id + `?token=`+ user.token, requestOptions)
-            .then(async response => {
-            const data = await response.json();
-            if (!response.ok) {
-                const error = (data && data.message) || response.statusText;
-                return Promise.reject(error);
-            }
-            this.setState({tdetails: data.data, pagination:data, loading:false} );
-            })
-            .catch(error => {
-            if (error === "Unauthorized") {
-              this.props.logout()
-            }
-          });
-      });
-    })
-    .catch(error => {
-        if (error === "Unauthorized") {
-          this.props.logout()
-          }
-    });
-    fetch(getConfig('totalFundSaveToLoanSavings'), requestOptions)
-      .then(async response => {
-      const dat = await response.json();
-      if (!response.ok) {
-          const error = (dat && dat.message) || response.statusText;
-          return Promise.reject(error);
-      }
-      this.setState({balance: dat[1], other_balance: dat[0]})
-      })
-      .catch(error => {
-        if (error === "Unauthorized") {
-          this.props.logout()
+        // this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
+        
+  }
+componentDidMount(){
+  const requestOptions = {
+    method: 'GET',
+    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+};
+  let user = JSON.parse(localStorage.getItem('user'));
+  fetch(getConfig('fetchAllSaveToLoan'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+    }console.log(data)
+    this.setState({loading:false, tdetails:data[3], savings:data[0], balance:data[2], other_balance:data[1]})
+  })
+  .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.logout()
         }
-        this.setState({loading:false});
-      });
+    this.setState({loading:false})
+  });
 }
 callback = (response) => {
   const {fund_data} = this.state
@@ -165,23 +139,28 @@ handleQuickSave = event => {
 handleCloseQuickSave() {
   this.setState({showSave:false});
 }
-handleWithdraw = event => {
-  this.setState({showWithdraw: true});
+handleWithdraw = (event, id) => {
+  // this.setState({showWithdraw: true});
+  this.props.exitLoanSavings(id)
+}
+handleStopPlan = (event, id) => {
+  // this.setState({showWithdraw: true});
+  this.props.exitLoanSavings(id)
 }
 handleCloseWithdraw() {
 this.setState({showWithdraw:false});
 }
-handleSubmitWithdraw(event) {
-  event.preventDefault();
-  const { withdraw_data } = this.state;
-  if (withdraw_data.amount ) {
-      this.props.withdrawSaveToLoanSavings(withdraw_data);
-  }else{
-      swal(
-          `${"All fields are required"}`
-      );
-  }
-}
+// handleSubmitWithdraw(event) {
+//   event.preventDefault();
+//   const { withdraw_data } = this.state;
+//   if (withdraw_data.amount ) {
+//       this.props.withdrawSaveToLoanSavings(withdraw_data);
+//   }else{
+//       swal(
+//           `${"All fields are required"}`
+//       );
+//   }
+// }
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
@@ -230,13 +209,13 @@ handleClose() {
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, loading, auto_save, email, bank_details, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, loading, auto_save, email, bank_details, other_balance, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
       <div className="mb-sm-30">
         <Breadcrumb
           routeSegments={[
-            { name: "Share Holding" }
+            { name: "Save To Loan" }
           ]}
         />
       </div>
@@ -257,30 +236,29 @@ handleClose() {
         Loading...
         </div>:
         <>
-        <div className="pb-5 pt-7 px-8 bg-secondary">
+        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#2295f2"}}>
           <Grid container spacing={8}>
               <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 title={"Regular Balance"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
+                <StatCards2 title={"Save To Loan Balance"} color={"#2295f2"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
                 <Button className="uppercase"
                   size="large"
                   variant="contained"
-                  style={{backgroundColor:"#222a45", color:"white"}}
+                  style={{backgroundColor:"#2295f2", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10,}}
                   onClick={this.handleQuickSave}>
                    Quick Save
                 </Button>
               </Grid>
-              
           </Grid>
           <Grid container spacing={8}>
               <Grid item lg={8} md={8} sm={4} xs={4}>
                 <Button className="uppercase"
                   size="small"
-                  variant="contained"
-                  style={{backgroundColor:"#222a45", color:"white"}}
-                  onClick={this.handleWithdraw}>
-                    Withdraw
+                  style={{borderBottomRightRadius:10, borderTopLeftRadius:10,}}
+                  variant="outlined"
+                  onClick={()=>this.handleStopPlan(savings.id)}>
+                    {this.props.savings?"Loading...":"Stop Plan"}
                 </Button>
               </Grid>
           </Grid>
@@ -363,7 +341,7 @@ handleClose() {
         open={showSave}
         onClose={this.handleCloseQuickSave}
       >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#2295f2"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -373,7 +351,7 @@ handleClose() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1, color:"fff"}}>
               Fund Your Account
             </Typography>
           </Toolbar>
@@ -418,7 +396,7 @@ handleClose() {
                 type="submit"
                 size="large"
                 variant="contained"
-                style={{backgroundColor:"#222a45", color:"white"}}>
+                style={{backgroundColor:"#2295f2", color:"#fff"}}>
                 Add Fund
               </Button>}
               </Grid>
@@ -459,7 +437,7 @@ handleClose() {
         open={show}
         onClose={this.handleClose}
       >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#2295f2"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -469,7 +447,7 @@ handleClose() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Create Auto Save Account
             </Typography>
           </Toolbar>
@@ -585,7 +563,7 @@ handleClose() {
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222a45", color:"white"}}>Create Auto Save</Button>
+                 style={{backgroundColor:"#2295f2", color:"#fff"}}>Create Auto Save</Button>
                  </ValidatorForm>
             </Grid>
 
@@ -701,7 +679,8 @@ const actionCreators = {
   deactivateAutoSaveLoan: userActions.deactivateAutoSaveLoan,
   createSaveToLoanSavings: userActions.createSaveToLoanSavings,
   addFundSaveToLoanSavings:userActions.addFundSaveToLoanSavings,
-  withdrawSaveToLoanSavings: userActions.withdrawSaveToLoanSavings
+  // withdrawSaveToLoanSavings: userActions.withdrawSaveToLoanSavings
+  exitLoanSavings: userActions.exitLoanSavings
 };
 
 function mapState(state) {

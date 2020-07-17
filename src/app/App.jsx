@@ -3,7 +3,7 @@ import "../styles/_app.scss";
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import MatxTheme from "./MatxLayout/MatxTheme/MatxTheme";
 import AppContext from "./appContext";
 import history from "history.js";
@@ -13,6 +13,7 @@ import { Store } from "./redux/Store";
 import Auth from "./auth/Auth";
 import MatxLayout from "./MatxLayout/MatxLayoutSFC";
 import AuthGuard from "./auth/AuthGuard";
+import { MatxSuspense } from "matx";
 
 const App = () => {
   return (

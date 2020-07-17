@@ -43,11 +43,13 @@ class Dashboard1 extends Component {
     let entry_date = currentDate.getFullYear() + "-" + month + "-" + day;
     this.state = { 
                 data: {
-                    acct_type:"",
-                    amount: "",
-                    entry_date: entry_date,
-                    payment_method: "",
-                    paystack_id: payID()
+                  id:"",
+                  acct_type:"",
+                  amount: "",
+                  date_time: entry_date,
+                  payment_method: "Wallet",
+                  target_name:"",
+                  paystack_id: payID()
                 },
                 key: payID(),
                 opened :false, 
@@ -63,19 +65,32 @@ class Dashboard1 extends Component {
                 error: "",
                 show:false,
                 continued: false,
-                email: email
+                email: email,
+                accounts:[]
                 } ;
             this.handleClose = this.handleClose.bind(this);
             this.handleClickOpen = this.handleClickOpen.bind(this);
             this.handleChange = this.handleChange.bind(this);
+            this.handleSubmit = this.handleSubmit.bind(this);
 }
 
 callback = (response) => {
   this.setState({ submitted: true });
   const { data, key } = this.state;
   
-  if (data.entry_date && data.amount) {
-     this.props.saveWallet(data); 
+  if (data.acct_type && data.amount) {
+    this.setState({data:{...data, paystack_id: response.reference }}, () => {
+    if(data.acct_type == "Wallet"){
+      this.props.saveWallet(data)
+    }else if(data.acct_type == "Regular Savings"){
+        this.props.addFundRegularSavings(data);
+    }else if(data.acct_type == "Save To Loan savings"){
+        this.props.addFundSaveToLoanSavings(data)
+    }else{
+        this.props.addFundTargetSavings(data);
+    }
+  })
+     
   }
 console.log(response);  
 }
@@ -90,15 +105,40 @@ close = () => {
 console.log("Payment closed");
 }
 
+handleSubmit(acct_type) {
+  const { data } = this.state;
+  if (data.amount && data.acct_type) {
+    if(acct_type == "Wallet"){
+        this.props.saveWallet(data)
+    }else if(acct_type == "Regular Savings"){
+        this.props.addFundRegularSavings(data);
+    }else if(acct_type == "Save To Loan savings"){
+        this.props.addFundSaveToLoanSavings(data)
+    }else{
+        this.props.addFundTargetSavings(data);
+    }
+  }else{
+      swal(
+          `${"All fields are required"}`
+      );
+  }
+}
+
 handleChange(event) {
 const { name, value } = event.target;
-const { data } = this.state;
-this.setState({
-    data: {
-        ...data,
-        [name]: value
-    }
-});
+const { data, accounts } = this.state;
+if(name == "target_name"){
+    accounts.forEach(dat => {
+      if(dat.target_name == value){
+        this.setState({data:{...data, id:dat.id, [name]:dat.target_name}})
+      }
+    });
+}else if(name == "acct_type" && value == "Wallet"){
+  this.setState({ data: { ...data, [name]: value, "payment_method": "Bank Account" }});
+}else{
+  this.setState({ data: { ...data, [name]: value }});
+  }
+  console.log(data)
 }
 handleClickOpen() {
   this.setState({show:true});
@@ -127,6 +167,20 @@ fetch(getConfig("showWalletBalance"), requestOptions)
       this.props.logout()
     }
 });
+fetch(getConfig('fetchAllTarget'), requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      this.setState({accounts:data[1]})
+    })
+    .catch(error => {
+        if (error === "Unauthorized") {
+          this.props.logout()
+          }
+    });
 fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
 .then(async response => {
     const loan_data = await response.json();
@@ -233,7 +287,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
 
   render() {
     let { theme } = this.props;
-    const {error, show, wallet_balance, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, loan_balance, halal_balance} = this.state
+    const {error, accounts, show, wallet_balance, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, loan_balance, halal_balance} = this.state
     return (
       <div >
         {loading ?
@@ -297,21 +351,20 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
           </Grid>
         </div>
         <Dialog
-        fullScreen
         open={show}
         onClose={this.handleClose}
       >
-        <AppBar style={{position: "relative"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
           <Toolbar>
             <IconButton
               edge="start"
-              color="inherit"
+              color="white"
               onClick={this.handleClose}
               aria-label="Close"
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography className="text-white" variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Fund Your Account
             </Typography>
           </Toolbar>
@@ -319,7 +372,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
         <Card className="px-6 pt-2 pb-4">
         <ValidatorForm
           ref="form"
-          onSubmit={this.handleSubmit}
+          onSubmit={()=>this.handleSubmit(data.acct_type)}
           onError={errors => null}
         >
           <Grid container spacing={6}>
@@ -346,10 +399,28 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 onChange={this.handleChange}
                 helperText="Please select a Package"
               >
-                  <MenuItem value={"Regular Savings"}> Regular Savings</MenuItem>
-                  <MenuItem value={"Save To Loan Savings"}> Save To Loan Savings</MenuItem>
-                  <MenuItem value={"Wallet"}> Wallet </MenuItem>
+                <MenuItem value={"Regular Savings"}> Regular Savings</MenuItem>
+                <MenuItem value={"Save To Loan Savings"}> Save To Loan Savings</MenuItem>
+                <MenuItem value={"Target Savings"}> Target Savings</MenuItem>
+                <MenuItem value={"Wallet"}> Wallet </MenuItem>
               </TextField>
+              {data.acct_type == "Target Savings" &&
+              <TextField
+               className="mb-4 w-full"
+                id="standard-select-currency"
+                select
+                label="Select Target Account"
+                value={data.target_name}
+                name="target_name"
+                onChange={this.handleChange}
+                helperText="Please select a Target Account"
+              >
+                <MenuItem value={""}> </MenuItem>
+                {accounts.map((data, index)=>(
+                  <MenuItem key={index} value={data.target_name}> {data.target_name} </MenuItem>
+                ))}
+              </TextField>}
+              {data.acct_type != "Wallet" &&
               <TextField
                className="mb-4 w-full"
                 id="standard-select-currency"
@@ -362,7 +433,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
               >
                   <MenuItem value={"Wallet"}> Wallet</MenuItem>
                   <MenuItem value={"Bank Account"}> Bank Account</MenuItem>
-              </TextField>
+              </TextField>}
             </Grid>
 
             <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -372,9 +443,6 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 </Typography>
                 <Typography variant="h6" gutterBottom>
                   {data.acct_type}
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  {data.payment_method}
                 </Typography>
               </Card>
               {data.payment_method == "Bank Account" && 
@@ -393,10 +461,14 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
               />}
             </Grid>
           </Grid>
-          <Button color="primary" variant="contained" type="submit">
-            <Icon>send</Icon>
-            <span className="pl-2 capitalize">Submit</span>
-          </Button>
+          {this.props.savings &&
+            <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+          }
+          {data.payment_method == "Wallet" &&
+          <Button color="secondary" className="text-white" variant="contained" type="submit">
+            <Icon>Send</Icon>
+            <span className="pl-2 capitalize">Save</span>
+          </Button>}
         </ValidatorForm>
 
         </Card>
@@ -417,6 +489,9 @@ function mapState(state) {
 // export default withStyles({}, { withTheme: true })(Dashboard1);
 const actionCreators = {
   saveWallet: userActions.saveWallet,
+  addFundRegularSavings: userActions.addFundRegularSavings,
+  addFundTargetSavings: userActions.addFundTargetSavings,
+  addFundSaveToLoanSavings: userActions.addFundSaveToLoanSavings,
   logout: userActions.logout,
 };
 

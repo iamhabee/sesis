@@ -3,10 +3,12 @@ import Scrollbar from "react-perfect-scrollbar";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { userActions } from "../../redux/actions/user.actions";
 
 import { navigations } from "../../navigations";
 import { MatxVerticalNav } from "matx";
 import { setLayoutSettings } from "app/redux/actions/LayoutActions";
+import { Button } from "@material-ui/core";
 
 const Sidenav = props => {
   const updateSidebarMode = sidebarSettings => {
@@ -41,6 +43,10 @@ const Sidenav = props => {
       >
         {props.children}
         <MatxVerticalNav navigation={navigations} />
+        <div className="py-8" />
+        <div className="px-4" >
+        <Button variant="outlined" size="small" color="secondary" onClick={()=>props.logout()}>Logout</Button>
+        </div>
       </Scrollbar>
       {renderOverlay()}
     </Fragment>
@@ -52,13 +58,15 @@ Sidenav.propTypes = {
   settings: PropTypes.object.isRequired
 };
 
+const actionCreators = {
+  logout: userActions.logout,
+  setLayoutSettings
+};
 const mapStateToProps = state => ({
   setLayoutSettings: PropTypes.func.isRequired,
   settings: state.layout.settings
 });
 
 export default withRouter(
-  connect(mapStateToProps, {
-    setLayoutSettings
-  })(Sidenav)
+  connect(mapStateToProps, actionCreators)(Sidenav)
 );

@@ -9,14 +9,15 @@ const StatCards2 = (props) => {
           <div className="flex items-center">
             <Fab
               size="medium"
-              className="bg-light-green circle-44 box-shadow-none"
+              className="circle-44 box-shadow-none"
+              style={{backgroundColor: props.color}}
             >
-              <Icon className="text-green">{props.icon}</Icon>
+              <Icon >{props.icon}</Icon>
             </Fab>
-            <h5 className="font-medium text-green m-0 ml-3">{props.title}</h5>
+            <h5 className="font-medium m-0 ml-3">{props.title}</h5>
           </div>
           <div className="pt-4 flex items-center">
-            <h2 className="m-0 text-muted flex-grow">{props.amount}</h2>
+            <h2 className={"m-0 flex-grow text-primary"}>{props.amount}</h2>
             {/* <div className="ml-3 small-circle bg-green text-white">
               <Icon className="small-icon">expand_less</Icon>
             </div> */}

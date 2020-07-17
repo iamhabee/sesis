@@ -22,6 +22,7 @@ import cube from "../../../../lottiefiles/26519-cube-spinning";
 import swal from 'sweetalert'
 import DateFnsUtils from '@date-io/date-fns';
 import PaystackButton from 'react-paystack';
+import color from "@material-ui/core/colors/amber";
 
 class Regular extends Component{
   constructor(props){
@@ -255,28 +256,28 @@ handleClose() {
         Loading...
         </div>:
         <>
-        <div className="pb-5 pt-7 px-8 bg-secondary">
+        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#0d60d8", borderBottomRightRadius:20,
+             borderTopLeftRadius:20,}} >
           <Grid container spacing={8}>
               <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 title={"Regular Balance"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
+                <StatCards2 title={"Regular Balance"} color={"#0d60d8"} icon={"account_balance_wallet"} amount={numberFormat(balance)} />
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
                 <Button className="uppercase"
                   size="large"
                   variant="contained"
-                  style={{backgroundColor:"#222a45", color:"white"}}
+                  style={{backgroundColor:"#0d60d8", color:"white", borderBottomRightRadius:10, borderTopLeftRadius:10}}
                   onClick={this.handleQuickSave}>
                    Quick Save
                 </Button>
               </Grid>
-              
           </Grid>
           <Grid container spacing={8}>
               <Grid item lg={8} md={8} sm={4} xs={4}>
                 <Button className="uppercase"
                   size="small"
-                  variant="contained"
-                  style={{backgroundColor:"#222a45", color:"white"}}
+                  variant="outlined"
+                  style={{borderBottomRightRadius:10, borderTopLeftRadius:10,borderColor:"#0d60d8"}}
                   onClick={this.handleWithdraw}>
                     Withdraw
                 </Button>
@@ -361,7 +362,7 @@ handleClose() {
         open={showSave}
         onClose={this.handleCloseQuickSave}
       >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -371,7 +372,7 @@ handleClose() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Fund Your Account
             </Typography>
           </Toolbar>
@@ -416,7 +417,7 @@ handleClose() {
                 type="submit"
                 size="large"
                 variant="contained"
-                style={{backgroundColor:"#222a45", color:"white"}}>
+                style={{backgroundColor:"#0d60d8", color:"#fff"}}>
                 Add Fund
               </Button>}
               </Grid>
@@ -457,7 +458,7 @@ handleClose() {
         open={show}
         onClose={this.handleClose}
       >
-        <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+        <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -467,7 +468,7 @@ handleClose() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Create Auto Save Account
             </Typography>
           </Toolbar>
@@ -583,7 +584,7 @@ handleClose() {
                   type="submit"
                   size="large"
                   variant="contained"
-                 style={{backgroundColor:"#222a45", color:"white"}}>Create Auto Save</Button>
+                 style={{backgroundColor:"#0d60d8", color:"#fff"}}>Create Auto Save</Button>
                  </ValidatorForm>
             </Grid>
 
@@ -629,7 +630,7 @@ handleClose() {
           open={showWithdraw}
           onClose={this.handleCloseWithdraw}
         >
-                <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
+                <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
                   <Toolbar>
                     <IconButton
                       edge="start"
@@ -639,7 +640,7 @@ handleClose() {
                     >
                       <CloseIcon />
                     </IconButton>
-                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+                    <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
                       Withdraw To Wallet
                     </Typography>
                   </Toolbar>
@@ -671,7 +672,7 @@ handleClose() {
                         type="submit"
                         size="large"
                         variant="contained"
-                        style={{backgroundColor:"#222a45", color:"white"}}>
+                        style={{backgroundColor:"#0d60d8", color:"#fff"}}>
                         Withdraw Fund
                       </Button>
                     </Grid>

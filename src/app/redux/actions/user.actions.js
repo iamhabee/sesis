@@ -72,22 +72,9 @@ function login(username, password) {
       (user) => {
         if(user.status == true){
           dispatch(success(user));
-          let lasturl = localStorage.getItem('lasturl')
-          if(lasturl != "" || lasturl != null){
-            if(email =="" || email == null){
-              history.push({
-                pathname: "/"
-              });
-            }else{
-              history.push({
-                pathname: "/"
-              });
-            }
-          }else{  
-            history.push({
-              pathname: "/"
-            });
-          }
+          history.push({
+            pathname: "/dashboard"
+          });
         }else{
           dispatch(alertActions.error(user.message));
           dispatch(failure(user.message))
@@ -164,8 +151,8 @@ function createRegularSavings(user) {
     userService.createRegularSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/regular");
-        dispatch(alertActions.success("Create Regular savings successful"));
+        history.push("/savings-tab/regular");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -192,8 +179,8 @@ function withdrawRegularSavings(user) {
     userService.withdrawRegularSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/regular");
-        dispatch(alertActions.success("Withdraw savings successful"));
+        history.push("/savings-tab/regular");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -220,9 +207,9 @@ function addFundRegularSavings(user) {
     userService.addFundRegularSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/regular");
+        history.push("/savings-tab/regular");
         dispatch(
-          alertActions.success("Add fund to regular savings successful")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -250,8 +237,8 @@ function editRegularSavings(user) {
     userService.editRegularSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/regular");
-        dispatch(alertActions.success("Regular Savings Successfully Updated"));
+        history.push("/savings-tab/regular");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -279,7 +266,7 @@ function deactivateAutoSaveLoan(user) {
       (user) => {
         dispatch(success());
         dispatch(
-          alertActions.success("Auto save Deactivated")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -307,7 +294,7 @@ function deactivateAutoSave(user) {
       (user) => {
         dispatch(success());
         dispatch(
-          alertActions.success("Auto save Deactivated")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -336,9 +323,9 @@ function createSaveToLoanSavings(user) {
     userService.createSaveToLoanSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/savetoloan");
+        history.push("/savings-tab/savetoloan");
         dispatch(
-          alertActions.success("Save to Loan Savings Created Successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -366,8 +353,8 @@ function withdrawSaveToLoanSavings(user) {
     userService.withdrawSaveToLoanSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/savetoloan");
-        dispatch(alertActions.success("Withdrawal made successfully"));
+        history.push("/savings-tab/savetoloan");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -394,11 +381,9 @@ function addFundSaveToLoanSavings(user) {
     userService.addFundSaveToLoanSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/savetoloan");
+        history.push("/savings-tab/savetoloan");
         dispatch(
-          alertActions.success(
-            "Funds added to Save to Loan savings Successfully"
-          )
+          alertActions.success( user.message)
         );
       },
       (error) => {
@@ -426,9 +411,9 @@ function editSaveToLoanSavings(user) {
     userService.editSaveToLoanSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/savetoloan");
+        history.push("/savings-tab/savetoloan");
         dispatch(
-          alertActions.success("Save to Loan savings Updated Successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -456,11 +441,11 @@ function exitLoanSavings(loan_id) {
     userService.exitLoanSavings(loan_id).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/savetoloan");
+        history.push("/savings-tab/savetoloan");
         dispatch(
-          alertActions.success("You have successfully exit your Loan Savings")
+          alertActions.success(user.message)
         );
-        window.location.reload();
+        // window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -491,7 +476,7 @@ function createLoanGroup(user) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success(" Loan Group Created Successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -522,7 +507,7 @@ function createLoan(user) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("You Loan Application is Successfull")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -553,7 +538,7 @@ function acceptLoan(group_id, loan_id) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("Loan Accepted Successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -586,7 +571,7 @@ function declineLoan(group_id, loan_id) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("Loan declined successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -619,7 +604,7 @@ function joinGroup(email, code) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("You joined loan group Successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -652,7 +637,7 @@ function rejectGroup(user) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("You reject loan group Successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -685,7 +670,7 @@ function exitGroup() {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("You exit loan group Successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -718,7 +703,7 @@ function addLoanRepayment(user) {
         dispatch(success());
         history.push("/loan");
         dispatch(
-          alertActions.success("Loan paid successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -748,7 +733,7 @@ function resendGroupNotification(user) {
       (user) => {
         dispatch(success());
         dispatch(
-          alertActions.success("Group Notification sent successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -777,7 +762,7 @@ function resendLoanNotification(loan_group, user_id) {
       (user) => {
         dispatch(success());
         dispatch(
-          alertActions.success("Loan Notification sent successfully")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -807,7 +792,7 @@ function replaceMember(user) {
       (user) => {
         dispatch(success());
         dispatch(
-          alertActions.success("Group Member has been replaced")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -837,7 +822,7 @@ function removeMember(user) {
       (user) => {
         dispatch(success());
         dispatch(
-          alertActions.success("Group Member has been replaced")
+          alertActions.success(user.message)
         );
         window.location.reload();
       },
@@ -868,8 +853,8 @@ function createTargetSavings(user) {
     userService.createTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/target");
-        dispatch(alertActions.success("Target savings successful"));
+        history.push("/savings-tab/target");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -896,8 +881,8 @@ function withdrawTargetSavings(user) {
     userService.withdrawTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/target");
-        dispatch(alertActions.success("Withdraw savings successful"));
+        history.push("/savings-tab/target");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -924,8 +909,8 @@ function addFundTargetSavings(user) {
     userService.addFundTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/target");
-        dispatch(alertActions.success("Fund successful add to savings"));
+        history.push("/savings-tab");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -952,8 +937,8 @@ function editTargetSavings(user) {
     userService.editTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/target");
-        dispatch(alertActions.success("Target savings updated successfully"));
+        history.push("/savings-tab/target");
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -980,9 +965,9 @@ function exitTargetSavings(user) {
     userService.exitTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings/target");
-        dispatch(alertActions.success("Target savings updated successfully"));
-        window.location.reload();
+        history.push("/savings-tab");
+        dispatch(alertActions.success(user.message));
+        // window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1011,7 +996,7 @@ function saveInvestment(user) {
       (user) => {
         dispatch(success());
         history.push("/investment/halalfinancing");
-        dispatch(alertActions.success("Investment saved successfully"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1039,7 +1024,7 @@ function getInvestments() {
       (user) => {
         dispatch(success());
         // history.push('/');
-        dispatch(alertActions.success("all investment news fetched"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1067,7 +1052,7 @@ function getSingleInvestment(id) {
       (user) => {
         dispatch(success());
         history.push("/");
-        dispatch(alertActions.success("details of single investment"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1096,7 +1081,7 @@ function addMarketPlace(user) {
         dispatch(success());
         history.push("/investments/marketview");
         dispatch(
-          alertActions.success("investment added to the market successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -1127,7 +1112,7 @@ function saveHalaiInvestment(user) {
       (user) => {
         dispatch(success());
         history.push("/");
-        dispatch(alertActions.success("Investment saved successfully"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1155,7 +1140,7 @@ function getHalaiNews() {
       (user) => {
         dispatch(success());
         // history.push('/');
-        dispatch(alertActions.success("all investment news fetched"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1183,7 +1168,7 @@ function getSingleHalai(id) {
       (user) => {
         dispatch(success());
         history.push("/");
-        dispatch(alertActions.success("details of single investment"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1212,7 +1197,7 @@ function addHalaiInvestors(user) {
         dispatch(success());
         history.push("/investments/halalfinancing");
         dispatch(
-          alertActions.success("investment added to the market successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -1242,16 +1227,13 @@ function saveWallet(user) {
     userService.saveWallet(user).then(
       (user) => {
         dispatch(success());
-        history.push("/wallet");
         dispatch(
-          alertActions.success("Money saved to wallet successfully")
+          alertActions.success(user.message)
         );
-        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
-        window.location.reload();
       }
     );
   };
@@ -1276,7 +1258,7 @@ function saveBank(user) {
         dispatch(success());
         history.push("/settings");
         dispatch(
-          alertActions.success("Bank details saved successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -1306,7 +1288,7 @@ function updateBank(user) {
         dispatch(success());
         history.push("/settings");
         dispatch(
-          alertActions.success("Bank details updated successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -1336,7 +1318,7 @@ function saveWithdrawal(user) {
         dispatch(success());
         history.push("/wallet");
         dispatch(
-          alertActions.success("save withdrawal successfully")
+          alertActions.success(user.message)
         );
       },
       (error) => {
@@ -1365,7 +1347,7 @@ function addProfile(user) {
       (user) => {
         dispatch(success());
         history.push("/profile");
-        dispatch(alertActions.success("Profile updated successfully"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1393,7 +1375,7 @@ function updateProfile(user) {
       (user) => {
         dispatch(success());
         history.push("/profile");
-        dispatch(alertActions.success("Profile updated successfully"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1422,7 +1404,7 @@ function updatePicture(user) {
         console.log("result:"+user)
         dispatch(success());
         history.push("/profile");
-        dispatch(alertActions.success("Profile picture updated successfully"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1450,7 +1432,7 @@ function lostpassword(user) {
       (user) => {
         dispatch(success());
         history.push("/recoverysuccess");
-        dispatch(alertActions.success("Password recovered successful"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1478,7 +1460,7 @@ function resetpassword(user) {
       (user) => {
         dispatch(success());
         history.push("/dashboard");
-        dispatch(alertActions.success("Password reset successful"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
