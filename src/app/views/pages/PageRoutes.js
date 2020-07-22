@@ -26,6 +26,26 @@ const pageRoutes = [
     component: React.lazy(() => import("./investments/Finance"))
   },
   {
+    path: "/investments",
+    component: React.lazy(() => import("./investments/Investments"))
+  },
+  {
+    path: "/investment/market",
+    component: React.lazy(() => import("./investments/MarketTab"))
+  },
+  {
+    path: "/investment/halal",
+    component: React.lazy(() => import("./investments/HalalTab"))
+  },
+  {
+    path: "/investment/finance",
+    component: React.lazy(() => import("./investments/FinanceTab"))
+  },
+  {
+    path: "/loan",
+    component: React.lazy(() => import("./Loan/Loan"))
+  },
+  {
     path: "/savings",
     component: React.lazy(() => import("./savings/Savings"))
   },

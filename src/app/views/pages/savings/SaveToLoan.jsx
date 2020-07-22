@@ -212,13 +212,6 @@ handleClose() {
     const {balance, tdetails, loading, auto_save, email, bank_details, other_balance, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
-      <div className="mb-sm-30">
-        <Breadcrumb
-          routeSegments={[
-            { name: "Save To Loan" }
-          ]}
-        />
-      </div>
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
         <Lottie
@@ -236,7 +229,8 @@ handleClose() {
         Loading...
         </div>:
         <>
-        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#2295f2"}}>
+        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#2295f2", borderBottomRightRadius:20,
+             borderTopLeftRadius:20}}>
           <Grid container spacing={8}>
               <Grid item lg={9} md={9} sm={12} xs={12}>
                 <StatCards2 title={"Save To Loan Balance"} color={"#2295f2"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>

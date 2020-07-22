@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Breadcrumb, SimpleCard } from "matx";
 import {Grid, Card, Icon, Typography } from "@material-ui/core"
-import CustomTab from "./components/CustomTab";
+import CustomMarketTab from "./components/CustomMarketTab";
 import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -15,12 +15,12 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SavingsTab(props) {
+export default function MarketTab(props) {
   const classes = useStyles();
 
   return (
-    <div className="m-sm-30">
-        <CustomTab />
-    </div>
+    <div className="m-sm-10">
+        <CustomMarketTab />
+      </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import DoughnutChart from "../charts/echarts/Doughnut";
 import { authHeader } from "../../redux/logic";
+import ScrollCards from "./shared/ScrollCards";
 import StatCards from "./shared/StatCards";
 import TableCard from "./shared/TableCard";
 import RowCards from "./shared/RowCards";
@@ -31,6 +32,7 @@ import {
 } from "@material-ui/pickers";
 import "date-fns";
 import PaystackButton from 'react-paystack';
+import ScrollBar from "react-perfect-scrollbar";
 
 class Dashboard1 extends Component {
   constructor(props){
@@ -307,12 +309,12 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
         Loading...
         </div>:
         <Fragment>
-        <div className="pb-24 pt-7 px-8 bg-secondary">
+        <div className="pb-24 pt-7 px-8 bg-default">
         </div>
-        <div className="analytics m-sm-30 mt--18">
+        <div className="analytics pt-7 m-sm-30 mt--18">
           <Grid container spacing={3}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
-              <StatCards 
+              <StatCards
                   wallet_balance={numberFormat(wallet_balance)} 
                   halal_balance={numberFormat(halal_balance)}
                   market_balance={numberFormat(market_balance)}
@@ -320,6 +322,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   target_balance={numberFormat(target_balance)}
                   loan_balance={numberFormat(loan_balance)}
                   openModal={this.handleClickOpen}/>
+                  {/* <ScrollCards /> */}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <h4 className="card-title text-muted mb-4">Todo List</h4>
@@ -341,11 +344,9 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
               </Card>
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
+              <UpgradeCard />
               <h4 className="card-title text-muted mb-4">Latest Transactions</h4>
               <TableCard transactions={transactions}/>
-
-              <UpgradeCard />
-
               {/* <Campaigns /> */}
             </Grid>
           </Grid>

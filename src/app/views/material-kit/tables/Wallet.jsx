@@ -35,7 +35,7 @@ class Wallet extends Component{
     this.state = {
       data: {
         amount: "",
-        entry_date: entry_date,
+        date_time: entry_date,
         payment_method: "Bank Account",
         paystack_id: payID()
     },
@@ -117,7 +117,7 @@ class Wallet extends Component{
     this.setState({ submitted: true });
     const { data, key } = this.state;
     
-    if (data.entry_date && data.amount) {
+    if (data.amount) {
        this.props.saveWallet(data); 
     }
   console.log(response);  

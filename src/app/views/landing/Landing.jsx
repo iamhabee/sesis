@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import AppAppBar from './shared/AppBar'
+import AppAppBar from './shared/AppBar'
 import AppFooter from './shared/Footer'
 import ProductHero from './shared/ProductHero'
 import ProductCategories from './shared/ProductCategory'
@@ -12,7 +12,7 @@ import ProductValues from './shared/ProductValues'
 const Landing = () => {
   return (
     <React.Fragment>
-      {/* <AppAppBar /> */}
+      <AppAppBar />
       <ProductHero />
       <ProductValues />
       <ProductCategories />

@@ -4,8 +4,7 @@ const Brand = ({ children }) => {
   return (
     <div className="flex items-center justify-between brand-area">
       <div className="flex items-center brand">
-        <img src="/assets/images/Group 24.png" alt="company-logo" />
-        {/* <span className="brand__text">SESIS</span> */}
+        <img src="/assets/images/cubevest.png" alt="company-logo" />
       </div>
       {children}
     </div>

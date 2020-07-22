@@ -3,14 +3,7 @@ import { Breadcrumb, SimpleCard } from "matx";
 
 const Finance = () => {
   return (
-    <div className="m-sm-30">
-      <div className="mb-sm-30">
-        <Breadcrumb
-          routeSegments={[
-            { name: "Finance" }
-          ]}
-        />
-      </div>
+    <div className="m-sm-10">
     </div>
   );
 };

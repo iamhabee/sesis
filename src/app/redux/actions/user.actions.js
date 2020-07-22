@@ -1227,6 +1227,7 @@ function saveWallet(user) {
     userService.saveWallet(user).then(
       (user) => {
         dispatch(success());
+        console.log(user)
         dispatch(
           alertActions.success(user.message)
         );

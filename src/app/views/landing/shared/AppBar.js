@@ -5,13 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { styles as toolbarStyles } from '@material-ui/core/styles'
+// import { styles as toolbarStyles } from '@material-ui/core/styles'
 
 const styles = (theme) => ({
   title: {
     fontSize: 24,
   },
-  placeholder: toolbarStyles(theme).root,
+  // placeholder: toolbarStyles(theme).root,
   toolbar: {
     justifyContent: 'space-between',
   },

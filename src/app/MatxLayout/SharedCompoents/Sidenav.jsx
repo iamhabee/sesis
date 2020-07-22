@@ -4,11 +4,12 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { userActions } from "../../redux/actions/user.actions";
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 import { navigations } from "../../navigations";
 import { MatxVerticalNav } from "matx";
 import { setLayoutSettings } from "app/redux/actions/LayoutActions";
-import { Button } from "@material-ui/core";
+import { Button, IconButton, Icon } from "@material-ui/core";
 
 const Sidenav = props => {
   const updateSidebarMode = sidebarSettings => {
@@ -45,7 +46,17 @@ const Sidenav = props => {
         <MatxVerticalNav navigation={navigations} />
         <div className="py-8" />
         <div className="px-4" >
-        <Button variant="outlined" size="small" color="secondary" onClick={()=>props.logout()}>Logout</Button>
+        <IconButton
+                aria-label="Delete"
+                className=""
+                size="small"
+                // onClick={this.handleSignOut}
+              >
+                {/* <Icon>exit_to_app</Icon> */}
+              </IconButton>
+        <Button  startIcon={<PowerSettingsNewIcon />} variant="outlined" size="small" color="secondary" onClick={()=>props.logout()}>
+          
+          Logout</Button>
         </div>
       </Scrollbar>
       {renderOverlay()}

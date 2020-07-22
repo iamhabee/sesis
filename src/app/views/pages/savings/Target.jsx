@@ -257,13 +257,6 @@ completeTab(){
     const {balance, tdetails, loading, tab, auto_save, showEdit, showView, completed, email, bank_details, fund_data, withdraw_data, autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
-        <div className="mb-sm-30">
-          <Breadcrumb
-            routeSegments={[
-              { name: "Target" }
-            ]}
-          />
-        </div>
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
         <Lottie
@@ -500,7 +493,6 @@ completeTab(){
           </Toolbar>
         </AppBar>
         <Card className="px-6 pt-2 pb-4">
-        
           <Grid container spacing={2}>
             <Grid item lg={6} md={6} sm={12} xs={12}>
             <ValidatorForm

@@ -12,10 +12,9 @@ import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
 import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
-import CustomCarousel from "../investments/components/CustomCarousel";
+import CustomCarousel from "./components/CustomCarousel";
 
-
-class Savings extends Component {
+class Investments extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -60,39 +59,38 @@ render(){
         <div className="mb-sm-30">
           <Breadcrumb
             routeSegments={[
-              { name: "Savings" }
+              { name: "Investments" }
             ]}
           />
         </div>
     <div style={{width:"100%"}}>
       <Grid container spacing={2} >
-        <Grid item lg={8} md={8} xs={12} sm={12}>
-          <Card elevation={8}>
-            <SavingsBalanceCard title={"Total Balance"} amount={numberFormat(total)}/>
+        <Grid item lg={8} md={8} sm={12} xs={12}>
+          <Card>
+            <SavingsBalanceCard title={"Investments"} amount={numberFormat(total)}/>
           </Card>
         </Grid>
-        <Grid item lg={4} md={4} xs={12} sm={12}>
+        <Grid item lg={4} md={4} sm={12} xs={12}>
           {/* <Card> */}
-            <Link to="/savings-tab/regular"><CustomCarousel /></Link>
-            {/* <Link to="/savings-tab/regular"><img src="/assets/images/savings-banner.jpeg" alt="upgrade" /></Link> */}
+            <Link to="/investment/market"><CustomCarousel /></Link>
           {/* </Card> */}
         </Grid>
       </Grid>
       <div className="py-5" />
       <Grid container spacing={3} >
         <Grid item lg={4} md={4} >
-          <Link to="/savings-tab/regular">
-            <CustomCard icon={"payments"} colors={"#ccf0fe"} borderColor={"#0a1f67"} textcolor={"#0d60d8"} amount={numberFormat(regular)} title={"Regular Saving"} subtitle={"Save regularly on Daily, Weekly or Monthly timeframe."} />
+          <Link to="/investment/market">
+            <CustomCard icon={"money"} colors={"#e686d6"} textcolor={"#000"} amount={numberFormat(regular)} title={"Market Investments"} subtitle={"Save regularly on Daily, Weekly or Monthly timeframe."} />
           </Link>
         </Grid>
         <Grid item lg={4} md={4} >
-          <Link to="/savings-tab/target">
-          <CustomCard icon={"track_changes"} colors={"#ffeaf5"} borderColor={"#d41be0"} textcolor={"#e74398"} amount={numberFormat(target)} title={"Target Saving"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
+          <Link to="/investment/halal">
+          <CustomCard icon={"track_changes"} colors={"#b7c75e"} textcolor={"#000"} amount={numberFormat(target)} title={"Halal Investments"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
           </Link>
         </Grid>
         <Grid item lg={4} md={4} >
-          <Link to="/savings-tab/savetoloan">
-            <CustomCard icon={"money"} colors={"#e7f6ff"} borderColor={"#2b80e8"} textcolor={"#2295f2"} amount={numberFormat(loan)} title={"Save To Loan Saving"} subtitle={"Flexible savings to get our free interest loan"}/>
+          <Link to="/investment/finance">
+            <CustomCard icon={"business_center"} colors={"#5ec7ad"} textcolor={"#000"} amount={numberFormat(loan)} title={"Sme Financing Investments"} subtitle={"Flexible savings to get our free interest loan"}/>
           </Link>
         </Grid>
       </Grid>
@@ -111,5 +109,5 @@ function mapState(state) {
   return { savings };
 }
 export default withStyles({}, { withTheme: true })(
-  withRouter(connect(mapState,  actionCreators)(Savings))
+  withRouter(connect(mapState,  actionCreators)(Investments))
 );

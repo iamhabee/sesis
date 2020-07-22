@@ -15,11 +15,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SavingsTab(props) {
+export default function FinanceTab(props) {
   const classes = useStyles();
 
   return (
-    <div className="m-sm-30">
+    <div className="m-sm-10">
         <CustomTab />
     </div>
   );

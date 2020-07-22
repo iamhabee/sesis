@@ -34,7 +34,7 @@ const materialRoutes = [
     component: React.lazy(() => import("./tables/Transaction"))
   },
   {
-    path: "/loan",
+    path: "/interst/loan",
     component: React.lazy(() => import("./tables/Loan"))
   },
   {

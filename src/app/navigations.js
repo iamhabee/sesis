@@ -2,7 +2,7 @@ export const navigations = [
   {
     name: "Dashboard",
     path: "/dashboard",
-    icon: "dashboard"
+    icon: "home"
   },
   // {
   //   name: "Wallet",
@@ -32,9 +32,14 @@ export const navigations = [
     // ]
   },
   {
-    name: "Investments",
-    icon: "list_alt",
-    path: "/investments/halal"
+    name: "Free Loan Interest",
+    icon: "money",
+    path: "/loan"
+  },
+  {
+    name: "Invest",
+    icon: "shopping_cart",
+    path: "/investments"
     // children: [
     //   {
     //     name: "Target Contributions",
@@ -68,18 +73,13 @@ export const navigations = [
     //   }
     // ]
   },
-  {
-    name: "Interest Free Loan",
-    icon: "money",
-    path: "/loan"
-  },
   // {
   //   name: "Transactions",
   //   icon: "receipt",
   //   path: "/transactions"
   // },
   {
-    name: "Accounts",
+    name: "Account",
     icon: "settings",
     path: "/settings"
   },

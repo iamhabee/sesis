@@ -1,86 +1,174 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
 import { Breadcrumb, SimpleCard } from "matx";
-import { Grid, Card } from '@material-ui/core';
+import { Grid, Card, Button } from '@material-ui/core';
+import MarketCard from './components/MarketCard';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { userActions } from "../../../redux/actions/user.actions";
+import { withStyles } from "@material-ui/styles";
+import { Component } from 'react';
+import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {authHeader} from '../../../redux/logic'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    height: 250,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
-  },
-}));
 
-  const tileData = [
-    {
-      img: "/assets/images/products/headphone-3.jpg",
-      title: 'Image',
-      author: 'author',
-    },
-    {
-      img: "/assets/images/products/headphone-3.jpg",
-      title: 'Image',
-      author: 'author',
-    },
-    {
-      img: "/assets/images/products/headphone-3.jpg",
-      title: 'Image',
-      author: 'author',
-    },
-    {
-      img: "/assets/images/products/headphone-3.jpg",
-      title: 'Image',
-      author: 'author',
-    },
-  ];
-export default function Halal() {
-  const classes = useStyles();
+ class Halal extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      categories:[],
+      tab:true,
+      news:[],
+      category:[],
+      pagination:[],
+      Investment:[],
+      current_index:0
+    }
+    this.ongoingTab = this.ongoingTab.bind(this);
+    this.completeTab = this.completeTab.bind(this);
+  }
 
-  return (
-    <div className={classes.root}>
-    <div className="m-sm-30">
-      <div className="mb-sm-30">
-        <Breadcrumb
-          routeSegments={[
-            { name: "Halal" }
-          ]}
-        />
-      </div>
-      <Grid container>
-          {tileData.map((tile) => (
-          <Grid item lg={3} md={3} cellHeight={50} className={classes.gridList}>
-          <Card elevation={5} >
-            <GridListTile key={tile.img} >
-              <img src={tile.img} alt={tile.title} />
-              <GridListTileBar
-                title={tile.title}
-                subtitle={<span>by: {tile.author}</span>}
-                actionIcon={
-                  <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                    <InfoIcon />
-                  </IconButton>
-                }
-              />
-            </GridListTile>
-          </Card>
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+  let user = JSON.parse(localStorage.getItem('user'));
+  fetch(getConfig('getInvestments'), requestOptions)
+    .then(async response => {
+    const data = await response.json();
+    if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        this.setState({loading: false });
+        return Promise.reject(error);
+    }
+    this.setState({news: data, loading: false, category: data})
+})
+.catch(error => {
+   if (error === "Unauthorized") {
+    this.props.logout()
+   }
+   this.setState({loading:false});
+    console.error('There was an error!', error );
+});
+fetch(getConfig("getInvestmentCat"), requestOptions)
+  .then(async (response) => {
+    const data = await response.json();
+    if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+    }
+    this.setState({ categories: data});
+  })
+  .catch((error) => {
+    if (error === "Unauthorized") {
+      this.props.logout()
+    }
+  });
+  fetch(getConfig("showMyMarketInvestment"), requestOptions)
+  .then(async (response) => {
+    const data = await response.json();
+    if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+    }
+    this.setState({ investment: data.data, pagination:data});
+  })
+  .catch((error) => {
+    if (error === "Unauthorized") {
+      this.props.logout()
+    }
+    this.setState({err:"internet error"});
+    console.error("There was an error!", error);
+  });
+}
+  // tab handler
+ongoingTab() {
+  this.setState({tab:true});
+}
+completeTab(){
+  this.setState({tab:false});
+}
+tabbed = (id) => {
+  this.setState({
+    category: id == 0? this.state.news : this.state.news.filter((ne) =>ne.market_investments_id == id),
+    current_index: id
+  })
+};
+  render(){
+    const {tab, categories, category, current_index} = this.state
+    return (
+      <div className="m-sm-10">
+        <Grid container>
+          <Grid item lg={8} md={8} sm={12} xs={12}>
+            <Button size="large"
+                variant={tab? "contained" : "outlined"}
+                color="secondary"
+                onClick={this.ongoingTab}
+                >Explore</Button>
+            <Button 
+                size="large"
+                variant={tab? "outlined" : "contained"}
+                color="secondary"
+                onClick={this.completeTab}
+                >My Investment</Button>
+          </Grid>
+        </Grid>
+        <div className="py-3" />
+        {tab? 
+        <Grid container spacing={3} alignItems="center" justify="center">
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <Button size="small"
+                variant={current_index == 0 ?"contained":"outlined"}
+                color="secondary"
+                onClick={() => this.tabbed(0)}>
+                  All
+                </Button>
+            
+                {categories.map((cat) => (
+                  <Button size="small"
+                  variant={current_index == cat.id ?"contained":"outlined"}
+                  color="secondary"
+                  onClick={() => this.tabbed(cat.id)}>
+                    {cat.category_name}
+                </Button>
+              ))}
+          </Grid>
+          {category.map((ne) => (
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <MarketCard />
           </Grid>
           ))}
-      </Grid>
-    </div>
-  </div>
-  );
+        </Grid>:
+        <Grid container spacing={3} justify="center" alignItems="center">
+          <Grid item lg={3} md={3} sm={12} xs={12}>
+            <MarketCard />
+          </Grid>
+          <Grid item lg={3} md={3} sm={12} xs={12}>
+            <MarketCard />
+          </Grid>
+          <Grid item lg={3} md={3} sm={12} xs={12}>
+            <MarketCard />
+          </Grid>
+        </Grid>}
+      </div>
+    );
+  }
+  }
+
+const actionCreators = {
+  logout: userActions.logout,
+  deactivateAutoSaveLoan: userActions.deactivateAutoSaveLoan,
+  createSaveToLoanSavings: userActions.createSaveToLoanSavings,
+  addFundSaveToLoanSavings:userActions.addFundSaveToLoanSavings,
+  // withdrawSaveToLoanSavings: userActions.withdrawSaveToLoanSavings
+  exitLoanSavings: userActions.exitLoanSavings
+};
+
+function mapState(state) {
+  const { savings } = state.savings;
+  return { savings };
 }
+export default withStyles({}, { withTheme: true })(
+  withRouter(connect(mapState,  actionCreators)(Halal))
+);

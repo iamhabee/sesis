@@ -5,7 +5,7 @@ const settings = {
   activeLayout: "layout1",
   layout1Settings: {
     topbar: {
-      show: true
+      show: false
     },
     leftSidebar: {
       show: false,

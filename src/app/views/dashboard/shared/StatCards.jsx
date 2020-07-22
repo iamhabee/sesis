@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Card, Icon, IconButton, Tooltip, Button } from "@material-ui/core";
+import { Grid, Card, Icon, IconButton, Tooltip, Button, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
 
@@ -13,117 +13,83 @@ class StatCards extends Component {
     return (
       <Grid container spacing={3} className="mb-3">
         <Grid item xs={12} md={3}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#4fa647"}} elevation={6}>
             <div className="flex items-center">
-              <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>group</Icon>
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>account_balance_wallet</Icon>
               <div className="ml-3">
-                <small className="text-muted"> Wallet Balance</small>
-                <h6 className="m-0 mt-1 text-primary font-medium">{this.props.wallet_balance}</h6>
+                <Typography className="text-white" variant="text-16"> Wallet Balance</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.wallet_balance}</h6>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton>
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#59153f"}} elevation={6}>
             <div className="flex items-center">
-              <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>attach_money</Icon>
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>payments</Icon>
               <div className="ml-3">
-                <small className="text-muted">Regular Savings</small>
-                <h6 className="m-0 mt-1 text-primary font-medium">{this.props.regular_balance}</h6>
+                <Typography className="text-white" variant="text-16">Regular Savings</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.regular_balance}</h6>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton>
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#22591d"}} elevation={6}>
             <div className="flex items-center">
-              <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>attach_money</Icon>
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>money</Icon>
               <div className="ml-3">
-                <small className="text-muted">Save To Loan</small>
-                <h6 className="m-0 mt-1 text-primary font-medium">{this.props.loan_balance}</h6>
+                <Typography className="text-white" variant="text-16">Save To Loan</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.loan_balance}</h6>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton>
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#a64782"}} elevation={6}>
             <div className="flex items-center">
-              <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>store</Icon>
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>track_changes</Icon>
               <div className="ml-3">
-                <small className="text-muted">Target Savings</small>
-                <h6 className="m-0 mt-1 text-primary font-medium"> {this.props.target_balance} </h6>
+                <Typography className="text-white" variant="text-16">Target Savings</Typography>
+                <h6 className="m-0 mt-1 text-white text-22"> {this.props.target_balance} </h6>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton>
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#8af280"}} elevation={6}>
             <div className="flex items-center">
-              <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>attach_money</Icon>
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>trending_up</Icon>
               <div className="ml-3">
-                <small className="text-muted">Halal Investments</small>
-                <h6 className="m-0 mt-1 text-primary font-medium">{this.props.halal_balance}</h6>
+                <Typography className="text-white" variant="text-16">Halal Finance</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.halal_balance}</h6>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton>
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#7446f2"}} elevation={6}>
             <div className="flex items-center">
-              <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>attach_money</Icon>
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>store</Icon>
               <div className="ml-3">
-                <small className="text-muted">Halal Investments</small>
-                <h6 className="m-0 mt-1 text-primary font-medium">{this.props.halal_balance}</h6>
+                <Typography className="text-white" variant="text-16">Market Place</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.market_balance}</h6>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton >
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Card className="play-card p-sm-24 bg-paper" elevation={6}>
+          <Card className="play-card p-sm-24" elevation={6}>
             <div className="flex items-center">
-              {/* <Icon style={{fontSize: "44px", opacity: 0.6, color: theme.palette.primary.main}}>shopping_cart</Icon> */}
+              {/* <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>shopping_cart</Icon> */}
               <div className="ml-3">
-                <Button className="uppercase"
+                <Button className="uppercase font-bold"
                   size="large"
                   variant="contained"
-                  color="secondary" onClick={this.props.openModal} style={{color:"#fff"}}>Quick Save</Button>
+                  color="secondary"
+                  onClick={this.props.openModal} style={{color:"#fff"}}>Quick Save</Button>
               </div>
             </div>
-            <Tooltip title="View Details" placement="top">
-              <IconButton>
-                <Icon>arrow_right_alt</Icon>
-              </IconButton>
-            </Tooltip>
           </Card>
         </Grid>
       </Grid>

@@ -17,12 +17,12 @@ const SavingsBalanceCard = (props) => {
         if (element) element.style.setProperty('height', '150px', 'important'); 
       }} >
       <Grid container >
-        <Grid item lg={12} md={12} xs={12} sm={12}>
-          <h4 style={{color:"#000"}}>{props.title}</h4>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <h4 style={{color:"blue"}}>{props.title}</h4>
         </Grid>
         <div className="py-8" />
-        <Grid item lg={12} md={12} xs={12} sm={12}>
-          <Typography variant="h6">{props.amount}</Typography>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Typography variant="h6">{props.amount}</Typography>
         </Grid>
       </Grid>
     </div>
