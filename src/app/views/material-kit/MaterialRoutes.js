@@ -38,10 +38,6 @@ const materialRoutes = [
     component: React.lazy(() => import("./tables/Loan"))
   },
   {
-    path: "/settings",
-    component: React.lazy(() => import("./settings/Settings"))
-  },
-  {
     path: "/material/form",
     component: React.lazy(() => import("./forms/AppForm"))
   },

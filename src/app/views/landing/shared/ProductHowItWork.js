@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 const styles = (theme) => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: "inherit",
     overflow: 'hidden',
   },
   container: {

@@ -20,7 +20,7 @@ const settings = {
     navbar: { show: false }
   },
   secondarySidebar: { show: false },
-  footer: { show: true }
+  footer: { show: false }
 };
 
 const landingRoutes = [

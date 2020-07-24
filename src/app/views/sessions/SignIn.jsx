@@ -5,7 +5,8 @@ import {
   FormControlLabel,
   Grid,
   Button,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
@@ -60,92 +61,101 @@ class SignIn extends Component {
     let { email, password } = this.state;
     let { classes } = this.props;
     return (
-      <div className="signup flex justify-center w-full h-full-screen">
-        <div className="p-8">
-          <Card className="signup-card position-relative y-center">
-            <Grid container>
-              <Grid item lg={5} md={5} sm={5} xs={12}>
-                <div className="p-8 flex justify-center items-center h-full">
-                  <img src="/assets/images/illustrations/business-man.svg" alt="" />
-                </div>
+      <div className="signup flex justify-center w-full h-full-screen" style={{
+        backgroundImage: `url(${"/assets/images/bg.png"})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        }}>
+        <div className="block mt-10">
+          <div className="p-8">
+            <Grid container className="p-2 " justify="center" alignItems="center">
+              <Grid lg={6} md={6} sm={6} xs={6}>
+                <img src="/assets/images/Group 24.png"/>
               </Grid>
-              <Grid item lg={7} md={7} sm={7} xs={12}>
-                <div className="p-9 h-full bg-light-gray position-relative">
-                  <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
-                    <TextValidator
-                      className="mb-6 w-full"
-                      variant="outlined"
-                      label="Email"
-                      onChange={this.handleChange}
-                      type="email"
-                      name="email"
-                      value={email}
-                      validators={["required", "isEmail"]}
-                      errorMessages={[
-                        "this field is required",
-                        "email is not valid"
-                      ]}
-                    />
-                    <TextValidator
-                      className="mb-3 w-full"
-                      label="Password"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      name="password"
-                      type="password"
-                      value={password}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <FormControlLabel
-                      className="mb-3"
-                      name="agreement"
-                      onChange={this.handleChange}
-                      control={<Checkbox checked />}
-                      label="I have read and agree to the terms of service."
-                    />
-                    <div className="flex flex-wrap items-center mb-4">
-                      <div className={classes.wrapper}>
-                        <Button
-                          variant="contained"
-                          color="warning"
-                          disabled={this.props.loggingIn}
-                          type="submit"
-                          style={{background:'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'}}
-                        >
-                          Login
-                        </Button>
-                        {this.props.loggingIn && (
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
-                        )}
-                      </div>
-                      <span className="mr-2 ml-5">or</span>
+            </Grid>
+          </div>
+        <div className="p-4">
+          <Card className="signup-card ">
+            <Grid container className="p-2 bg-light-gray" justify="center" alignItems="center">
+              <Grid lg={12} md={12} sm={12} xs={12}>
+                <Typography variant="h4" className="text-center text-gray">Login</Typography>
+              </Grid>
+            </Grid>
+            <Grid container className=" bg-light-gray" >
+              <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="p-9 h-full position-relative">
+                      <TextValidator
+                        className="mb-6 w-full"
+                        variant="outlined"
+                        label="Email"
+                        onChange={this.handleChange}
+                        type="email"
+                        name="email"
+                        value={email}
+                        validators={["required", "isEmail"]}
+                        errorMessages={[
+                          "this field is required",
+                          "email is not valid"
+                        ]}
+                      />
+                      <TextValidator
+                        className="w-full"
+                        label="Password"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        name="password"
+                        type="password"
+                        value={password}
+                        validators={["required"]}
+                        errorMessages={["this field is required"]}
+                      />
+                  </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12} className="mb-4">
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      disabled={this.props.loggingIn}
+                      type="submit"
+                      className="capitalize font-medium"
+                      style={{background:'#04956b', color:"#fff", width:"84%", padding:10, marginLeft:36, marginRight:36}}
+                    >
+                      Login
+                    </Button>
+                    {this.props.loggingIn && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />)}
+                  </Grid>
+                  
+                  <Grid item lg={12} md={12} sm={12} xs={12} className="mb-1" style={{textAlign:"center"}}>
+                      <span className="mr-2 ml-5">New Member?</span>
                       <Button
-                        className="capitalize"
+                        className="capitalize font-medium"
                         onClick={() =>
-                          this.props.history.push("/signup")
-                        }
-                      >
+                        this.props.history.push("/signup")
+                        }>
                         Sign up
                       </Button>
-                    </div>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12} className=" mb-4" style={{textAlign:"center"}}>
                     <Button
-                      className="text-primary"
+                      className="text-primary text-center"
                       onClick={() =>
-                        this.props.history.push("/forgot-password")
-                      }
-                    >
+                      this.props.history.push("/forgot-password")
+                      }>
                       Forgot password?
                     </Button>
-                  </ValidatorForm>
-                </div>
-              </Grid>
+                  </Grid>
+                </Grid>
+              </ValidatorForm>
             </Grid>
           </Card>
         </div>
+      </div>
       </div>
     );
   }

@@ -61,6 +61,10 @@ const pageRoutes = [
     path: "/savings-tab/savetoloan",
     component: React.lazy(() => import("./savings/SavingsLoanTab"))
   },
+  {
+    path: "/settings",
+    component: React.lazy(() => import("./settings/Settings"))
+  },
 ];
 
 export default pageRoutes;

@@ -5,7 +5,8 @@ import {
   FormControlLabel,
   Grid,
   Button,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -84,130 +85,142 @@ class SignUp extends Component {
     let { classes } = this.props;
     const { username, email, password, data, confirm_password } = this.state;
     return (
-      <div className="signup flex justify-center w-full h-full-screen">
-        <div className="p-8">
-          <Card className="signup-card position-relative y-center">
-            <Grid container>
-              <Grid item lg={5} md={5} sm={5} xs={12}>
-                <div className="p-8 flex justify-center bg-light-gray items-center h-full">
-                  <img
-                    src="/assets/images/illustrations/posting_photo.svg"
-                    alt=""
-                  />
-                </div>
-              </Grid>
-              <Grid item lg={7} md={7} sm={7} xs={12}>
-                <div className="p-9 h-full">
-                  <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
-                    <TextValidator
-                      className="mb-6 w-full"
-                      variant="outlined"
-                      label="First Name"
-                      onChange={this.handleChange}
-                      type="text"
-                      name="first_name"
-                      value={data.first_name}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <TextValidator
-                      className="mb-6 w-full"
-                      variant="outlined"
-                      label="Last Name"
-                      onChange={this.handleChange}
-                      type="text"
-                      name="last_name"
-                      value={data.last_name}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <TextValidator
-                      className="mb-4 w-full"
-                      label="Phone Number"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      name="phone_no"
-                      type="text"
-                      value={data.phone_no}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <TextValidator
-                      className="mb-6 w-full"
-                      variant="outlined"
-                      label="Email"
-                      onChange={this.handleChange}
-                      type="email"
-                      name="email"
-                      value={data.email}
-                      validators={["required", "isEmail"]}
-                      errorMessages={[
-                        "this field is required",
-                        "Email is not valid"
-                      ]}
-                    />
-                    <TextValidator
-                      className="mb-4 w-full"
-                      label="Password"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      name="password"
-                      type="password"
-                      value={data.password}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <TextValidator
-                      className="mb-4 w-full"
-                      label="Confirm Password"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      name="confirm_password"
-                      type="password"
-                      value={confirm_password}
-                      validators={["required"]}
-                      errorMessages={["this field is required"]}
-                    />
-                    <FormControlLabel
-                      className="mb-4"
-                      name="agreement"
-                      onChange={this.handleChange}
-                      control={<Checkbox />}
-                      label="I have read and agree to the terms of service."
-                    />
-                    <div className="flex items-center">
-                      <div className={classes.wrapper}>
-                        <Button
-                          variant="contained"
-                          color="warning"
-                          disabled={this.props.registering}
-                          type="submit"
-                          style={{background:'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'}}
-                        >
-                          Sign up
-                        </Button>
-                        {this.props.registering && (
-                          <CircularProgress
-                            size={24}
-                            className={classes.buttonProgress}
-                          />
-                        )}
-                      </div>
-                      <span className="mx-2 ml-5">or</span>
-                      <Button
-                        className="capitalize"
-                        onClick={() =>
-                          this.props.history.push("/signin")
-                        }
-                      >
-                        Sign in
-                      </Button>
-                    </div>
-                  </ValidatorForm>
-                </div>
+      <div className="signup flex justify-center w-full h-full-screen" style={{
+        backgroundImage: `url(${"/assets/images/bg.png"})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        }}>
+        <div className=" block mt-10">
+          <div className="p-8">
+            <Grid container className="p-2 " justify="center" alignItems="center">
+              <Grid lg={6} md={6} sm={6} xs={6}>
+                <img src="/assets/images/Group 24.png"/>
               </Grid>
             </Grid>
-          </Card>
+          </div>
+          <div className="p-4">
+            <Card className="signup-card ">
+              <Grid container className="p-2 mb-5" justify="center" alignItems="center">
+                <Grid lg={12} md={12} sm={12} xs={12}>
+                  <Typography variant="h4" className="text-center text-gray">Sign Up</Typography>
+                </Grid>
+              </Grid>
+              <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
+                <Grid container className="px-5" spacing={2}>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    {/* <div className="p-9 h-full"> */}
+                      <TextValidator
+                        className="mb-6 w-full"
+                        variant="outlined"
+                        label="First Name"
+                        onChange={this.handleChange}
+                        type="text"
+                        name="first_name"
+                        value={data.first_name}
+                        validators={["required"]}
+                        errorMessages={["this field is required"]}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-6 w-full"
+                        variant="outlined"
+                        label="Last Name"
+                        onChange={this.handleChange}
+                        type="text"
+                        name="last_name"
+                        value={data.last_name}
+                        validators={["required"]}
+                        errorMessages={["this field is required"]}
+                      />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Phone Number"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        name="phone_no"
+                        type="text"
+                        value={data.phone_no}
+                        validators={["required"]}
+                        errorMessages={["this field is required"]}
+                      />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-6 w-full"
+                        variant="outlined"
+                        label="Email"
+                        onChange={this.handleChange}
+                        type="email"
+                        name="email"
+                        value={data.email}
+                        validators={["required", "isEmail"]}
+                        errorMessages={[
+                          "this field is required",
+                          "Email is not valid"
+                        ]}/>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Password"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        name="password"
+                        type="password"
+                        value={data.password}
+                        validators={["required"]}
+                        errorMessages={["this field is required"]}
+                      />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextValidator
+                        className="mb-4 w-full"
+                        label="Confirm Password"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        name="confirm_password"
+                        type="password"
+                        value={confirm_password}
+                        validators={["required"]}
+                        errorMessages={["this field is required"]}
+                      />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12} className="mb-4">
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      disabled={this.props.loggingIn}
+                      type="submit"
+                      className="capitalize font-medium"
+                      style={{background:'#04956b', color:"#fff", width:"84%", padding:10, marginLeft:36, marginRight:36}}
+                    >
+                      Sign up
+                      </Button>
+                      {this.props.registering && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />)}
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12} className="mb-1" style={{textAlign:"center"}}>
+                      <span className="mr-2 ml-5">Already a member?</span>
+                      <Button
+                        className="capitalize font-medium"
+                        onClick={() =>
+                          this.props.history.push("/signin")
+                        }>
+                        Sign in
+                      </Button>
+                    </Grid>
+                </Grid>
+              </ValidatorForm>
+            </Card>
+          </div>
         </div>
       </div>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 
 import AppAppBar from './shared/AppBar'
 import AppFooter from './shared/Footer'
@@ -8,20 +8,48 @@ import ProductHowItWorks from './shared/ProductHowItWork'
 import ProductCTA from './shared/Product'
 import ProductSmokingHero from './shared/ProductSmoingHero'
 import ProductValues from './shared/ProductValues'
+import {Grid} from "@material-ui/core"
+import CustomSlider from './shared/CustomSlider';
+import SignUp from './shared/SignUp';
 
-const Landing = () => {
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <ProductHero />
-      <ProductValues />
-      <ProductCategories />
-      <ProductHowItWorks />
-      <ProductCTA />
-      <ProductSmokingHero />
-      <AppFooter />
-    </React.Fragment>
-  );
-}  
+class Landing extends Component {
+  constructor(props){
+    super(props)
+    this.state ={
+      showLogin:false,
+    }
+
+  }
+
+  render(){
+    return (
+      <div style={{
+        backgroundImage: `url(${"/assets/images/monbg.png"})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        height: "100%"
+        }}>
+          <AppAppBar login={this.handleShowLogin} />
+          <Grid container spacing={2}>
+            <Grid item l={9} md={9} sm={12} xs={12}>
+              <SignUp />
+            </Grid>
+            <Grid item l={3} md={3} sm={12} xs={12}>
+              <CustomSlider />
+            </Grid>
+          </Grid>
+        {/* <ProductValues /> */}
+        {/* <ProductCategories />
+        <ProductHowItWorks />
+        <ProductCTA />
+        <ProductSmokingHero /> */}
+        {/* <AppFooter /> */}
+      </div>
+    );
+  }  
+  }
+  
 
 export default Landing;

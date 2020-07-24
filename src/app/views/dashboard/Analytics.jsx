@@ -401,7 +401,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 helperText="Please select a Package"
               >
                 <MenuItem value={"Regular Savings"}> Regular Savings</MenuItem>
-                <MenuItem value={"Save To Loan Savings"}> Save To Loan Savings</MenuItem>
+                <MenuItem value={"Save To Loan Savings"}> Save To Loan</MenuItem>
                 <MenuItem value={"Target Savings"}> Target Savings</MenuItem>
                 <MenuItem value={"Wallet"}> Wallet </MenuItem>
               </TextField>
@@ -410,11 +410,11 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                className="mb-4 w-full"
                 id="standard-select-currency"
                 select
-                label="Select Target Account"
+                label="Select Target Plan"
                 value={data.target_name}
                 name="target_name"
                 onChange={this.handleChange}
-                helperText="Please select a Target Account"
+                helperText="Please select a Target Plan"
               >
                 <MenuItem value={""}> </MenuItem>
                 {accounts.map((data, index)=>(
@@ -467,7 +467,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
           }
           {data.payment_method == "Wallet" &&
           <Button color="secondary" className="text-white" variant="contained" type="submit">
-            <Icon>Send</Icon>
+            <Icon>send</Icon>
             <span className="pl-2 capitalize">Save</span>
           </Button>}
         </ValidatorForm>

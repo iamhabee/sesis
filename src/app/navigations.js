@@ -32,7 +32,7 @@ export const navigations = [
     // ]
   },
   {
-    name: "Free Loan Interest",
+    name: "Free Interest Loan",
     icon: "money",
     path: "/loan"
   },
