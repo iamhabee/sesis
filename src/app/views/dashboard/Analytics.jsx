@@ -176,7 +176,11 @@ fetch(getConfig('fetchAllTarget'), requestOptions)
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      this.setState({accounts:data[1]})
+      if(data.success == false){
+        this.setState({accounts:[]})  
+      }else{
+        this.setState({accounts:data[1]}) 
+      }
     })
     .catch(error => {
         if (error === "Unauthorized") {
@@ -191,7 +195,11 @@ fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
         this.setState({loading:false})
         return Promise.reject(error);
     }
-    this.setState({loan_balance: loan_data[1]}) 
+    if(loan_data.success == false){
+      this.setState({loan_balance: 0})  
+    }else{
+      this.setState({loan_balance: loan_data[1]})  
+    }
 })
 .catch((error) => {
     if (error === "Unauthorized") {
@@ -206,8 +214,11 @@ fetch(getConfig("totalTargetFund"), requestOptions)
         this.setState({loading:false})
         return Promise.reject(error);
     }
-    console.log(target_balance)
-    this.setState({target_balance: target_balance}) 
+    if(target_balance.success == false){
+      this.setState({target_balance: 0}) 
+    }else{
+      this.setState({target_balance: target_balance}) 
+    }
 })
 .catch((error) => {
     if (error === "Unauthorized") {
@@ -222,7 +233,12 @@ fetch(getConfig("getTotalMarketFund"), requestOptions)
     this.setState({loading: false });
     return Promise.reject(error);
     }
-    this.setState({ market_balance: market_data});
+    if(market_data.success == false){
+      this.setState({ market_balance: 0});
+    }else{
+      this.setState({ market_balance: market_data});
+    }
+    
 })
 .catch((error) => {
     if (error === "Unauthorized") {
@@ -237,7 +253,11 @@ fetch(getConfig("getTotalHalalFund"), requestOptions)
         this.setState({loading: false });
         return Promise.reject(error);
         }
-        this.setState({ halal_balance: halal_data});
+        if(halal_data.success == false){
+          this.setState({ halal_balance: 0});
+        }else{
+          this.setState({ halal_balance: halal_data});
+        }
 })
 .catch((error) => {
     if (error === "Unauthorized") {
@@ -252,7 +272,11 @@ fetch(getConfig("showTransaction"), requestOptions)
             this.setState({loading: false });
             return Promise.reject(error);
             }
-            this.setState({ transactions: data.data});
+            if(data.success == false){
+              this.setState({ transactions: []});
+            }else{
+              this.setState({ transactions: data.data});
+            }
 })
 .catch((error) => {
         if (error === "Unauthorized") {
@@ -267,7 +291,11 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
         this.setState({loading:false})
         return Promise.reject(error);
     }
-    this.setState({regular_balance: reg_data, loading:false})
+    if(reg_data.success == false){
+      this.setState({regular_balance: 0, loading:false})
+    }else{
+      this.setState({regular_balance: reg_data, loading:false})
+    }
 })
 .catch(error => {
     if (error === "Unauthorized") {
@@ -471,14 +499,11 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
             <span className="pl-2 capitalize">Save</span>
           </Button>}
         </ValidatorForm>
-
         </Card>
       </Dialog>
-
-        </Fragment>
-        
-        }
-      </div>
+    </Fragment>
+    }
+  </div>
     );
   }
 }
