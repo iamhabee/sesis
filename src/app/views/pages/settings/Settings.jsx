@@ -4,7 +4,13 @@ import { Grid, Card, Button, ButtonGroup, Hidden, Icon, Fab } from '@material-ui
 import { Breadcrumb } from "matx";
 import AccountProfile from './components/AccountProfile';
 import AccountDetails from './components/AccountDetails';
-
+import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {authHeader} from '../../../redux/logic'
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { userActions } from "../../../redux/actions/user.actions";
+import { withStyles } from "@material-ui/styles";
+import swal from 'sweetalert'
 class Settings extends Component{
 constructor(props){
   super(props)
@@ -12,13 +18,53 @@ constructor(props){
     editPassword:false,
     editBankDetails:false,
     withdrawFund:false,
+    profile:[]
   }
+  this.handleSubmit = this.handleSubmit.bind(this);
   this.showEditPassword = this.showEditPassword.bind(this);
   this.showEditBankDetails = this.showEditBankDetails.bind(this);
   this.showWithdraw = this.showWithdraw.bind(this);
   this.closeEditPassword = this.closeEditPassword.bind(this);
   this.closeEditBankDetails = this.closeEditBankDetails.bind(this);
   this.closeWithdraw = this.closeWithdraw.bind(this);
+}
+componentDidMount(){
+  const requestOptions = {
+      method: 'GET',
+      headers: { ...authHeader(), 'Content-Type': 'application/json' },
+  };
+      fetch(getConfig('showProfile'), requestOptions)
+        .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            this.setState({loading:false, profile:data});
+            return Promise.reject(error);
+          }
+          console.log(data)
+        if(data.success == false){
+          this.setState({profile: []})
+        }else{
+          this.setState({profile: data[0]})
+        }
+        
+    })
+    .catch(error => {
+       if (error === "Unauthorized") {
+        this.props.logout()
+       }
+    });
+}
+handleSubmit=()=> {
+  const {profile} = this.state
+  console.log(profile)
+  // if(profile.length != 0){
+  //     this.props.updateProfile(profile); 
+  // }else{
+  //     swal(
+  //         `${"All fields are required"}`
+  //     );
+  // }   
 }
 showEditPassword=()=>{
   this.setState({editPassword:true})
@@ -41,6 +87,7 @@ closeWithdraw=()=>{
 
 render(){
     const {theme} = this.props
+    const {profile} = this.state
     return (
       <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -71,7 +118,7 @@ render(){
               xl={8}
               xs={12}
             >
-              <AccountDetails />
+              <AccountDetails profile={profile} handleSubmit={this.handleSubmit}/>
             </Grid>
           </Grid>
           <Grid
@@ -161,4 +208,17 @@ render(){
   
   }
   
-export default Settings;
+// export default Settings;
+const actionCreators = {
+  logout: userActions.logout,
+  updatePicture: userActions.updatePicture,
+  updateProfile: userActions.updateProfile
+};
+
+function mapState(state) {
+  const { savings } = state.savings;
+  return { savings };
+}
+export default withStyles({}, { withTheme: true })(
+  withRouter(connect(mapState,  actionCreators)(Settings))
+);

@@ -10,9 +10,7 @@ export const alertActions = {
 function success(message) {
     swal(
         `${message}`
-      ).then((value) => {
-        window.location.reload();
-      });
+      )
     return { type: alertConstants.SUCCESS, message };
 }
 

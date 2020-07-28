@@ -108,8 +108,12 @@ class Target extends Component{
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(data)
-      this.setState({tdetails: data[1], balance: data[0], completed:data[2], accounts:data[3], loading:false })
+      if(data.success == false){
+        this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
+      }else{
+        this.setState({tdetails: data[1], balance: data[0], completed:data[2], accounts:data[3], loading:false })
+      }
+      
     })
     .catch(error => {
         if (error === "Unauthorized") {
@@ -154,9 +158,11 @@ handleWithdraw = () => {
 }
 handleStopPlan = (id) => {
   this.props.exitTargetSavings(id);
+  // alert("hello")
 }
 handleView = () => {
-  this.setState({showView: true});
+  // this.setState({showView: true});
+  alert("hello")
 }
 handleEdit = () => {
   this.setState({showEdit: true});
@@ -330,9 +336,9 @@ completeTab(){
                   value={(100 * data.target_balance)/data.targeted_amount} 
                   title={data.target_name}  
                   stop={()=>this.handleStopPlan(data.id)}
-                  withdraw={()=>this.handleWithdraw}
-                  view={()=>this.handleView}
-                  edit={()=>this.handleEdit}
+                  withdraw={()=>this.handleStopPlan(data.id)}
+                  view={()=>this.handleStopPlan(data.id)}
+                  edit={()=>this.handleStopPlan(data.id)}
                   />
                 )):
                 <Typography variant="body1">No Ongoing Target Savings</Typography>
@@ -474,6 +480,7 @@ completeTab(){
 
         {/* Create Dialog start */}
         <Dialog
+        scroll="body"
         open={show}
         onClose={this.handleClose}
       >
@@ -494,7 +501,7 @@ completeTab(){
         </AppBar>
         <Card className="px-6 pt-2 pb-4">
           <Grid container spacing={2}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
             <ValidatorForm
                 ref="form"
                 onSubmit={this.handleSubmit}
@@ -639,69 +646,6 @@ completeTab(){
                   variant="contained"
                  style={{backgroundColor:"#e74398", color:"white"}}>Create Target Plan</Button>
                  </ValidatorForm>
-            </Grid>
-
-            <Grid container lg={6} md={6} sm={12} xs={12}>
-                <Grid container item lg={12} md={12} sm={12} xs={12} >
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      Target Name
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      {data.target_name}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item lg={12} md={12} sm={12} xs={12} >
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      Amount
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      {data.amount}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item lg={12} md={12} sm={12} xs={12} >
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      Target Amount
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      {data.targeted_amount}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item lg={12} md={12} sm={12} xs={12} >
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      Frequency
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      {data.frequency}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Grid container item lg={12} md={12} sm={12} xs={12} >
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      Payment Method
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={6} xs={6}>
-                    <Typography variant="subtitle1">
-                      {data.payment_method}
-                    </Typography>
-                  </Grid>
-                </Grid>
             </Grid>
           </Grid>
         </Card>

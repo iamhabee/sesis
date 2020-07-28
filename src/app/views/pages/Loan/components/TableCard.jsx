@@ -10,7 +10,7 @@ import {
   TableBody
 } from "@material-ui/core";
 import { Component } from "react";
-import { numberFormat } from '../../../config/config'
+import { numberFormat } from '../../../../config/config'
 
 class TableCard extends Component{
   constructor(props){
@@ -20,40 +20,34 @@ class TableCard extends Component{
 
   render(){
     return (
-        <Card elevation={4} className="pt-5 mb-6">
+        <Card elevation={3} className="pt-5 mb-6">
           {/* <div className="card-title px-6 mb-3">Latest Transactions</div> */}
           <div className="overflow-auto">
             <Table className="product-table">
               <TableHead>
                 <TableRow>
-                  <TableCell className="px-" colSpan={3}>
-                  ID
+                  <TableCell className="px-0" colSpan={4}>
+                  TRANSACTION ID
                   </TableCell>
                   <TableCell className="px-0" colSpan={4}>
-                  AMOUNT
+                  AMOUNT REPAID
                   </TableCell>
-                  <TableCell className="px-0" colSpan={3}>
-                  TYPE
-                  </TableCell>
-                  <TableCell className="px-0" colSpan={3}>
+                  <TableCell className="px-0" colSpan={2}>
                   DATE
                   </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.props.transactions.map((product, index) => (
+                {this.props.details.map((det, index) => (
                   <TableRow key={index}>
-                    <TableCell className="px-0 capitalize" colSpan={3}>
-                      {product.id}
+                    <TableCell className="px-0" colSpan={4} >
+                    cub{det.id}
                     </TableCell>
-                    <TableCell className="px-0 capitalize" colSpan={4}>
-                      {numberFormat(product.amount)}
+                    <TableCell className="px-0 capitalize" align="left" colSpan={4}>
+                      {numberFormat(det.repayment_amount)}
                     </TableCell>
-                    <TableCell className="px-0" colSpan={3} >
-                      {product.transaction_type}
-                    </TableCell>
-                    <TableCell className="px-0" colSpan={3}>
-                      {product.date_time}
+                    <TableCell className="px-0" colSpan={2}>
+                      {det.trans_date}
                     </TableCell>
                   </TableRow>
                 ))}

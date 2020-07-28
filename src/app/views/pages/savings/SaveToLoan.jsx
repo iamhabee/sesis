@@ -96,8 +96,17 @@ componentDidMount(){
     if (!response.ok) {
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
-    }console.log(data)
-    this.setState({loading:false, tdetails:data[3], savings:data[0], balance:data[2], other_balance:data[1]})
+    }
+    console.log(data)
+    if(data.success == false){
+      this.setState({loading:false, tdetails:[], savings:[], balance:0, other_balance:0})
+    }else{
+      if(data[0].length == 0){
+        this.setState({loading:false, savings:[], tdetails:data[3], balance:data[2], other_balance:data[1]})
+      }else{
+        this.setState({loading:false, savings:data[0][0], tdetails:data[3], balance:data[2], other_balance:data[1]})
+      }
+    }
   })
   .catch(error => {
       if (error === "Unauthorized") {
@@ -141,7 +150,7 @@ handleCloseQuickSave() {
 }
 handleWithdraw = (event, id) => {
   // this.setState({showWithdraw: true});
-  this.props.exitLoanSavings(id)
+  // this.props.exitLoanSavings(id)
 }
 handleStopPlan = (event, id) => {
   // this.setState({showWithdraw: true});
@@ -247,13 +256,13 @@ handleClose() {
           </Grid>
           <Grid container spacing={8}>
               <Grid item lg={8} md={8} sm={4} xs={4}>
-                <Button className="uppercase"
+                {balance != 0 &&<Button className="uppercase"
                   size="small"
                   style={{borderBottomRightRadius:10, borderTopLeftRadius:10,}}
                   variant="outlined"
                   onClick={()=>this.handleStopPlan(savings.id)}>
-                    {this.props.savings?"Loading...":"Stop Plan"}
-                </Button>
+                    {this.props.savings?"Loading...":savings.id}
+                </Button>}
               </Grid>
           </Grid>
         </div>
@@ -449,7 +458,7 @@ handleClose() {
         <Card className="px-6 pt-2 pb-4">
         
           <Grid container spacing={2}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
             <ValidatorForm
                 ref="form"
                 onSubmit={this.handleSubmit}
@@ -560,40 +569,7 @@ handleClose() {
                  style={{backgroundColor:"#2295f2", color:"#fff"}}>Create Auto Save</Button>
                  </ValidatorForm>
             </Grid>
-
-            <Grid container item lg={6} md={6} sm={12} xs={12}>
-                <Grid item lg={10} md={10} sm={10} xs={10}>
-                  <Typography variant="subtitle1">
-                    Amount
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    {numberFormat(data.amount)}
-                  </Typography>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Typography variant="subtitle1">
-                    Frequency
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    {data.frequency}
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    Payment Method
-                  </Typography>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Typography variant="subtitle1">
-                    {data.payment_method}
-                  </Typography>
-                </Grid>
-            </Grid>
-          </Grid>
+        </Grid>
         </Card>
       </Dialog>
         {/* Create dialog end */}

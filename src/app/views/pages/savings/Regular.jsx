@@ -94,7 +94,11 @@ class Regular extends Component{
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      this.setState({savings: data[0]});
+      if(data.success == false){
+        this.setState({savings: []});
+      }else{
+        this.setState({savings: data[0]});  
+      }
       fetch(getConfig('totalFundRegularSavings'), requestOptions)
       .then(async response => {
       const dat = await response.json();
@@ -102,7 +106,11 @@ class Regular extends Component{
           const error = (dat && dat.message) || response.statusText;
           return Promise.reject(error);
       }
-      this.setState({balance: dat})
+      if(data.success == false){
+        this.setState({balance: 0})
+      }else{
+        this.setState({balance: dat})  
+      }
       fetch(getConfig('getRegularSavingsDetails'), requestOptions)
         .then(async response => {
         const data = await response.json();
@@ -110,7 +118,11 @@ class Regular extends Component{
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-        this.setState({tdetails: data.data, pagination:data, loading:false} );
+        if(data.success == false){
+          this.setState({tdetails: [], pagination:[], loading:false} );
+        }else{
+          this.setState({tdetails: data.data, pagination:data, loading:false} );  
+        }
         })
         .catch(error => {
         if (error === "Unauthorized") {

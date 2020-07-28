@@ -258,13 +258,13 @@ function rejectGroup(id) {
 }
 
 // Exit group loan
-function exitGroup() {
+function exitGroup(id) {
+  let user = JSON.parse(localStorage.getItem("user"));
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
-    // body: JSON.stringify(data),
   };
-  return fetch(getConfig("exitGroup"), requestOptions ).then(handleResponse);
+  return fetch(getConfig("exitGroup")+id+"?token="+user.token, requestOptions ).then(handleResponse);
 }
 
 // Repay Loan group loan

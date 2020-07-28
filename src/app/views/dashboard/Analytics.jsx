@@ -86,7 +86,7 @@ callback = (response) => {
       this.props.saveWallet(data)
     }else if(data.acct_type == "Regular Savings"){
         this.props.addFundRegularSavings(data);
-    }else if(data.acct_type == "Save To Loan savings"){
+    }else if(data.acct_type == "Save To Loan"){
         this.props.addFundSaveToLoanSavings(data)
     }else{
         this.props.addFundTargetSavings(data);
@@ -114,7 +114,7 @@ handleSubmit(acct_type) {
         this.props.saveWallet(data)
     }else if(acct_type == "Regular Savings"){
         this.props.addFundRegularSavings(data);
-    }else if(acct_type == "Save To Loan savings"){
+    }else if(acct_type == "Save To Loan"){
         this.props.addFundSaveToLoanSavings(data)
     }else{
         this.props.addFundTargetSavings(data);
@@ -140,7 +140,6 @@ if(name == "target_name"){
 }else{
   this.setState({ data: { ...data, [name]: value }});
   }
-  console.log(data)
 }
 handleClickOpen() {
   this.setState({show:true});
@@ -429,7 +428,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 helperText="Please select a Package"
               >
                 <MenuItem value={"Regular Savings"}> Regular Savings</MenuItem>
-                <MenuItem value={"Save To Loan Savings"}> Save To Loan</MenuItem>
+                <MenuItem value={"Save To Loan"}> Save To Loan</MenuItem>
                 <MenuItem value={"Target Savings"}> Target Savings</MenuItem>
                 <MenuItem value={"Wallet"}> Wallet </MenuItem>
               </TextField>

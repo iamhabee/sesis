@@ -661,23 +661,21 @@ function rejectGroup(user) {
 }
 
 // exit loan group
-function exitGroup() {
+function exitGroup(id) {
   return (dispatch) => {
     dispatch(request());
 
-    userService.exitGroup().then(
+    userService.exitGroup(id).then(
       (user) => {
         dispatch(success());
         history.push("/loan");
         dispatch(
           alertActions.success(user.message)
         );
-        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
         dispatch(alertActions.error(error.toString()));
-        window.location.reload();
       }
     );
   };
@@ -735,7 +733,6 @@ function resendGroupNotification(user) {
         dispatch(
           alertActions.success(user.message)
         );
-        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -764,7 +761,6 @@ function resendLoanNotification(loan_group, user_id) {
         dispatch(
           alertActions.success(user.message)
         );
-        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -794,7 +790,6 @@ function replaceMember(user) {
         dispatch(
           alertActions.success(user.message)
         );
-        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -824,7 +819,6 @@ function removeMember(user) {
         dispatch(
           alertActions.success(user.message)
         );
-        window.location.reload();
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -909,7 +903,7 @@ function addFundTargetSavings(user) {
     userService.addFundTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings-tab");
+        history.push("/savings-tab/target");
         dispatch(alertActions.success(user.message));
       },
       (error) => {
@@ -965,7 +959,7 @@ function exitTargetSavings(user) {
     userService.exitTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings-tab");
+        history.push("/savings-tab/target");
         dispatch(alertActions.success(user.message));
         // window.location.reload();
       },

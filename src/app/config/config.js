@@ -66,7 +66,7 @@ const serverVars = {
   createLoan:"loanAdd?token=",
   joinGroup:"loan/join_group?token=",
   rejectGroup:"loan/reject_group/",
-  exitGroup:"loan/exit_group?token=",
+  exitGroup:"loan/exit_group/",
   getLoanGroup:"loan/loan_group?token=",
   getLoan:"loan/view_loan?token=",
   getLoanDetails:"loanDetails/",
@@ -112,6 +112,14 @@ export const numberFormat = (value) =>
 export const payID = () => {
   return "pk_test_d96f199a0651f1162b81c56256d5842372b845f2";
 };
+
+export const getReference = () => {
+  let text = "";
+  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
+  for( let i=0; i < 15; i++ )
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+}
 
 export const checkToken = ()=>{
   var lasturl = window.location.href;
@@ -247,7 +255,7 @@ export function getConfig(apiName) {
     case "rejectGroup":
       return serverVars.baseUrl + serverVars.rejectGroup;
     case "exitGroup":
-      return serverVars.baseUrl + serverVars.exitGroup + user.token;
+      return serverVars.baseUrl + serverVars.exitGroup;
     case "getLoanGroup":
       return serverVars.baseUrl + serverVars.getLoanGroup + user.token;
     case "getLoanGroupName":
