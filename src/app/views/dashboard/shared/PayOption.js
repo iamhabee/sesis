@@ -17,7 +17,7 @@ close = () => {
     console.log("Payment closed");
 }
     render() {
-        const {email} = this.state
+        const {email, key} = this.state
         return (
             <div>
                 <PaystackButton
@@ -29,8 +29,8 @@ close = () => {
                     embed={true}  
                     reference={getReference()}
                     email={email}
-                    amount={this.props.repayment_amount * 100}
-                    paystackkey={this.state.key}
+                    amount={this.props.amount * 100}
+                    paystackkey={key}
                     tag="button" 
                 />
             </div>

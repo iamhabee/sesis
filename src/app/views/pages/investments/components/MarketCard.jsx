@@ -7,37 +7,40 @@ class MarketCard extends Component {
   constructor(props){
     super(props)
   }
-
   render(){
-    let { theme } = this.props;
+    let { theme, category, data, invest, view} = this.props;
     return (
-      
-        <Card style={{maxWidth:250}}>
-          <CardActionArea>
-            <CardMedia style={{height:140}}
-              image="/assets/images/products/iphone-1.jpg"
-              title="Contemplative Reptile"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                Lizard
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                across all continents except Antarctica
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Share
-            </Button>
-            <Button size="small" color="primary">
-              Learn More
-            </Button>
-          </CardActions>
-        </Card>
-        
+          <Card style={{maxWidth:250}}>
+            <CardActionArea>
+              <CardMedia style={{height:140}}
+                image={data.investment_pic}
+                title={data.investment_type}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {data.investment_type}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {data.news}
+                </Typography>
+                {data.unit_remaining == 0 ?
+                <Typography variant="body2" className="text-error" component="p">
+                  Sold Out
+                </Typography>:
+                <Typography variant="body2" color="textSecondary" component="p">
+                 {data.unit_remaining} Slot Remaining  
+              </Typography>}
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              {data.unit_remaining != 0 && <Button onClick={invest}  variant="contained" color="secondary">
+                Invest Now
+              </Button>}
+              <Button onClick={view} variant="outlined" color="secondary">
+                See Details
+              </Button>
+            </CardActions>
+          </Card>
     );
   };
   

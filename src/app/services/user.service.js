@@ -172,14 +172,11 @@ function createSaveToLoanSavings(data) {
 function editSaveToLoanSavings(data) {
   let user = JSON.parse(localStorage.getItem("user"));
   const requestOptions = {
-    method: "PUT",
+    method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };
-  return fetch(
-    getConfig("editSaveToLoanSavings"),
-    requestOptions
-  ).then(handleResponse);
+  return fetch( getConfig("editSaveToLoanSavings")+ data.id + "?token=" + user.token, requestOptions ).then(handleResponse);
 }
 
 function exitLoanSavings(id) {
@@ -360,7 +357,7 @@ function createTargetSavings(data) {
 function editTargetSavings(data) {
   let user = JSON.parse(localStorage.getItem("user"));
   const requestOptions = {
-    method: "PUT",
+    method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };

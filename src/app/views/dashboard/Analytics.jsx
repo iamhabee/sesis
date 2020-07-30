@@ -24,7 +24,7 @@ import {
   Toolbar,
   AppBar,
   Dialog,
-  Grid, Card, Button, TextField, MenuItem
+  Grid, Card, Button, TextField, MenuItem, CircularProgress
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -33,6 +33,8 @@ import {
 import "date-fns";
 import PaystackButton from 'react-paystack';
 import ScrollBar from "react-perfect-scrollbar";
+import PayOption from "./shared/PayOption";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 
 class Dashboard1 extends Component {
   constructor(props){
@@ -321,19 +323,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
       <div >
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-        <Lottie
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: cube,
-            rendererSettings: {
-              preserveAspectRatio: 'xMidYMid slice'
-            }
-          }}
-          height={80}
-          width={80}
-        />
-        Loading...
+          <Loading />
         </div>:
         <Fragment>
         <div className="pb-24 pt-7 px-8 bg-default">
@@ -353,7 +343,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <h4 className="card-title text-muted mb-4">Todo List</h4>
-              <RowCards />
+              <RowCards wallet={wallet_balance}/>
               <Card className="px-6 py-4 mb-6">
                 <div className="card-title">My Acounts</div>
                 {/* <div className="card-subtitle">Last 30 days</div> */}
@@ -474,19 +464,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 </Typography>
               </Card>
               {data.payment_method == "Bank Account" && 
-              <PaystackButton
-                  text="Make Payment"
-                  className="payButton"
-                  callback={this.callback}
-                  close={this.close}
-                  disabled={true}  
-                  embed={true}  
-                  reference={this.getReference()}
-                  email={email}
-                  amount={data.amount * 100}
-                  paystackkey={this.state.key}
-                  tag="button" 
-              />}
+              <PayOption callback={()=>this.callback} amount={data.amount}/>}
             </Grid>
           </Grid>
           {this.props.savings &&

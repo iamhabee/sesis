@@ -13,6 +13,7 @@ import { Component } from "react";
 import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import CustomCarousel from "../investments/components/CustomCarousel";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 
 
 class Savings extends Component {
@@ -22,7 +23,8 @@ class Savings extends Component {
       total: 0.00,
       target:0.00,
       regular:0.00,
-      loan:0.00
+      loan:0.00,
+      loading:true
     }
     this.fetchBalances = this.fetchBalances.bind(this);
   }
@@ -42,9 +44,12 @@ class Savings extends Component {
           const error = (dat && dat.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(dat)
-      this.setState({total: dat[0], regular: dat[1], target: dat[2], loan: dat[3]})
-      })
+      if(dat.success == false){
+        this.setState({total: 0, regular: 0, target: 0, loan: 0, loading:false})
+      }else{
+        this.setState({total: dat[0], regular: dat[1], target: dat[2], loan: dat[3], loading:false})
+      }
+     })
       .catch(error => {
         if (error === "Unauthorized") {
           this.props.logout()
@@ -54,7 +59,7 @@ class Savings extends Component {
   }
 
 render(){
- const {total, target, regular, loan} = this.state
+ const {total, target, regular, loan, loading} = this.state
   return (
     <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -64,40 +69,44 @@ render(){
             ]}
           />
         </div>
-    <div style={{width:"100%"}}>
-      <Grid container spacing={2} >
-        <Grid item lg={8} md={8} xs={12} sm={12}>
-          <Card elevation={8}>
-            <SavingsBalanceCard title={"Total Balance"} amount={numberFormat(total)}/>
-          </Card>
-        </Grid>
-        <Grid item lg={4} md={4} xs={12} sm={12}>
-          {/* <Card> */}
-            <Link to="/savings-tab/regular"><CustomCarousel /></Link>
-            {/* <Link to="/savings-tab/regular"><img src="/assets/images/savings-banner.jpeg" alt="upgrade" /></Link> */}
-          {/* </Card> */}
-        </Grid>
-      </Grid>
-      <div className="py-5" />
-      <Grid container spacing={3} >
-        <Grid item lg={4} md={4} >
-          <Link to="/savings-tab/regular">
-            <CustomCard icon={"payments"} colors={"#ccf0fe"} borderColor={"#0a1f67"} textcolor={"#0d60d8"} amount={numberFormat(regular)} title={"Regular Saving"} subtitle={"Save regularly on Daily, Weekly or Monthly timeframe."} />
-          </Link>
-        </Grid>
-        <Grid item lg={4} md={4} >
-          <Link to="/savings-tab/target">
-          <CustomCard icon={"track_changes"} colors={"#ffeaf5"} borderColor={"#d41be0"} textcolor={"#e74398"} amount={numberFormat(target)} title={"Target Saving"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
-          </Link>
-        </Grid>
-        <Grid item lg={4} md={4} >
-          <Link to="/savings-tab/savetoloan">
-            <CustomCard icon={"money"} colors={"#e7f6ff"} borderColor={"#2b80e8"} textcolor={"#2295f2"} amount={numberFormat(loan)} title={"Save To Loan Saving"} subtitle={"Flexible savings to get our free interest loan"}/>
-          </Link>
-        </Grid>
-      </Grid>
-    </div>
-  </div>
+        {loading ?
+        <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+          <Loading />
+        </div>:
+        <div style={{width:"100%"}}>
+          <Grid container spacing={2} >
+            <Grid item lg={8} md={8} xs={12} sm={12}>
+              <Card elevation={8}>
+                <SavingsBalanceCard title={"Total Balance"} amount={numberFormat(total)}/>
+              </Card>
+            </Grid>
+            <Grid item lg={4} md={4} xs={12} sm={12}>
+              {/* <Card> */}
+                <Link to="/savings-tab/regular"><CustomCarousel /></Link>
+                {/* <Link to="/savings-tab/regular"><img src="/assets/images/savings-banner.jpeg" alt="upgrade" /></Link> */}
+              {/* </Card> */}
+            </Grid>
+          </Grid>
+          <div className="py-5" />
+          <Grid container spacing={3} >
+            <Grid item lg={4} md={4} >
+              <Link to="/savings-tab/regular">
+                <CustomCard icon={"payments"} colors={"#ccf0fe"} borderColor={"#0a1f67"} textcolor={"#0d60d8"} amount={numberFormat(regular)} title={"Regular Saving"} subtitle={"Save regularly on Daily, Weekly or Monthly timeframe."} />
+              </Link>
+            </Grid>
+            <Grid item lg={4} md={4} >
+              <Link to="/savings-tab/target">
+              <CustomCard icon={"track_changes"} colors={"#ffeaf5"} borderColor={"#d41be0"} textcolor={"#e74398"} amount={numberFormat(target)} title={"Target Saving"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
+              </Link>
+            </Grid>
+            <Grid item lg={4} md={4} >
+              <Link to="/savings-tab/savetoloan">
+                <CustomCard icon={"money"} colors={"#e7f6ff"} borderColor={"#2b80e8"} textcolor={"#2295f2"} amount={numberFormat(loan)} title={"Save To Loan Saving"} subtitle={"Flexible savings to get our free interest loan"}/>
+              </Link>
+            </Grid>
+          </Grid>
+        </div>}
+      </div>
   );
 }
 }

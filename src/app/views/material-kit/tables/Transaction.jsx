@@ -11,6 +11,7 @@ import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import Lottie from 'react-lottie';
 import cube from "../../../../lottiefiles/26519-cube-spinning";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 
 class Transaction extends Component {
   constructor(props) {
@@ -56,23 +57,6 @@ class Transaction extends Component {
     const {pagination, transactions, loading} = this.state
     return (
       <div className="m-sm-30">
-        {loading ?
-        <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-        <Lottie
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: cube,
-            rendererSettings: {
-              preserveAspectRatio: 'xMidYMid slice'
-            }
-          }}
-          height={80}
-          width={80}
-        />
-        Loading...
-        </div>:
-        <>
         <div className="mb-sm-30">
           <Breadcrumb
             routeSegments={[
@@ -80,6 +64,11 @@ class Transaction extends Component {
             ]}
           />
         </div>
+        {loading ?
+        <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+          <Loading />
+        </div>:
+        <>
         <div className="py-3" />
         <SimpleCard title="Transactions Table">
           <PaginationTable transactions={transactions} pagination={pagination}/>

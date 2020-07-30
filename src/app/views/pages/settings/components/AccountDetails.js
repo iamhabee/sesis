@@ -25,12 +25,7 @@ const AccountDetails = props => {
 
   const [values, setValues] = useState(props.profile);
 
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
+  
 
 
   return (
@@ -41,10 +36,7 @@ const AccountDetails = props => {
       <ValidatorForm
         onSubmit={props.handleSubmit}
         onError={errors => null}>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+        <CardHeader subheader="The information can be edited" title="Profile"/>
         <Divider />
         <CardContent>
           <Grid
@@ -60,7 +52,7 @@ const AccountDetails = props => {
                 fullWidth
                 margin="dense"
                 name="first_name"
-                onChange={handleChange}
+                onChange={props.handleChange}
                 required
                 value={props.profile.first_name}
                 variant="outlined"
@@ -75,7 +67,7 @@ const AccountDetails = props => {
                 fullWidth
                 margin="dense"
                 name="last_name"
-                onChange={handleChange}
+                onChange={props.handleChange}
                 required
                 value={props.profile.last_name}
                 variant="outlined"
@@ -90,7 +82,7 @@ const AccountDetails = props => {
                 fullWidth
                 margin="dense"
                 name="email"
-                onChange={handleChange}
+                onChange={props.handleChange}
                 required
                 value={props.profile.email}
                 variant="outlined"
@@ -105,16 +97,124 @@ const AccountDetails = props => {
                 fullWidth
                 margin="dense"
                 name="phone_no"
-                onChange={handleChange}
+                onChange={props.handleChange}
                 type="number"
                 value={props.profile.phone_no}
                 variant="outlined"
               />
             </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="occupation"
+                onChange={props.handleChange}
+                type="text"
+                value={props.profile.occupation}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="address"
+                onChange={props.handleChange}
+                type="text"
+                value={props.profile.address}
+                variant="outlined"
+              />
+            </Grid>
           </Grid>
         </CardContent>
+        
         <Divider />
+        <CardHeader subheader="The information can be edited" title="Next Of Kin"/>
+        <CardContent>
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="kin_last_name"
+                onChange={props.handleChange}
+                required
+                value={props.profile.kin_last_name}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="kin_first_name"
+                onChange={props.handleChange}
+                type="text"
+                required
+                value={props.profile.kin_first_name}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="kin_phone_no"
+                onChange={props.handleChange}
+                type="number"
+                required
+                value={props.profile.kin_phone_no}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="kin_email"
+                onChange={props.handleChange}
+                type="email"
+                value={props.profile.kin_email}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item md={6} xs={12} >
+              <TextValidator
+                fullWidth
+                margin="dense"
+                name="relationship"
+                onChange={props.handleChange}
+                type="text"
+                value={props.profile.relationship}
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
+        </CardContent>
+
         <CardActions>
+        {props.savings &&
+          <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        }
           <Button
             color="secondary"
             variant="contained"
@@ -126,6 +226,7 @@ const AccountDetails = props => {
         </CardActions>
       </ValidatorForm>
     </Card>
+  
   );
 };
 

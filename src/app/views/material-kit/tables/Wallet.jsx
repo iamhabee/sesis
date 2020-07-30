@@ -12,6 +12,7 @@ import Lottie from 'react-lottie';
 import cube from "../../../../lottiefiles/26519-cube-spinning";
 import CloseIcon from "@material-ui/icons/Close";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 import {
   Icon,
   Select,
@@ -23,7 +24,7 @@ import {
   Grid, Card, Button, TextField, MenuItem
 } from "@material-ui/core";
 import "date-fns";
-import PaystackButton from 'react-paystack';
+import PayOption from "app/views/dashboard/shared/PayOption";
 class Wallet extends Component{
   constructor(props){
     super(props)
@@ -169,19 +170,7 @@ handleCloseWithdraw() {
         </div>
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-        <Lottie
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: cube,
-            rendererSettings: {
-              preserveAspectRatio: 'xMidYMid slice'
-            }
-          }}
-          height={80}
-          width={80}
-        />
-        Loading...
+          <Loading />
         </div>:
         <>
         <div className="pb-7 pt-7 px-8 bg-secondary">
@@ -258,19 +247,7 @@ handleCloseWithdraw() {
                     {numberFormat(data.amount)}
                   </Typography>
                 </Card>
-                <PaystackButton
-                    text="Make Payment"
-                    className="payButton"
-                    callback={this.callback}
-                    close={this.close}
-                    disabled={true}  
-                    embed={true}  
-                    reference={this.getReference()}
-                    email={email}
-                    amount={data.amount * 100}
-                    paystackkey={this.state.key}
-                    tag="button" 
-                />
+                <PayOption callback={()=>this.callback} amount={data.amount}/>
               </Grid>
             </Grid>
           </ValidatorForm>

@@ -5,7 +5,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { Typography, Divider, Grid, Box, ButtonGroup, Button} from '@material-ui/core';
 import {numberFormat} from '../../../../config/config'
 import TableCard from './TableCard';
-// import moment from 'moment';
 export default function LoanDetailsCard(props) {
 
   return (

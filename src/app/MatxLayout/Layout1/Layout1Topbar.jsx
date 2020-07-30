@@ -133,10 +133,10 @@ class Layout1Topbar extends Component {
                   <span className="pl-4"> Profile </span>
                   {/* </Link> */}
                 </MenuItem>
-                <MenuItem className={classes.menuItem}>
+                {/* <MenuItem className={classes.menuItem}>
                   <Icon> settings </Icon>
                   <span className="pl-4"> Settings </span>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                   onClick={this.handleSignOut}
                   className={classes.menuItem}

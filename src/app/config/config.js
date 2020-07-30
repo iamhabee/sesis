@@ -36,7 +36,7 @@ const serverVars = {
   // save to loan savings   
   saveSaveToLoanSavings: "save_loan/store?token=",
   getSaveToLoanSavings: "save_loan?token=",
-  editSaveToLoanSavings: "save_loan/modify?token=",
+  editSaveToLoanSavings: "save_loan/modify/",
   addFundSaveToLoanSavings: "save_loan/add_funds?token=",
   withdrawSaveToLoanSavings: "save_loan/add_withdrawal?token=",
   totalFundSaveToLoanSavings: "all_funds?token=",
@@ -205,7 +205,7 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.targetDetails;
     // save to loan savings api
     case "editSaveToLoanSavings":
-      return serverVars.baseUrl + serverVars.editSaveToLoanSavings + user.token;
+      return serverVars.baseUrl + serverVars.editSaveToLoanSavings;
     case "addFundSaveToLoanSavings":
       return serverVars.baseUrl + serverVars.addFundSaveToLoanSavings + user.token
     case "totalFundSaveToLoanSavings":

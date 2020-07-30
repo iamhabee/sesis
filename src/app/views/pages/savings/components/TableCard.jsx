@@ -10,7 +10,7 @@ import {
   TableBody
 } from "@material-ui/core";
 import { Component } from "react";
-import { numberFormat } from '../../../config/config'
+import { numberFormat } from '../../../../config/config'
 
 class TableCard extends Component{
   constructor(props){
@@ -64,6 +64,5 @@ class TableCard extends Component{
       );
     };
   }
-
 
 export default TableCard;

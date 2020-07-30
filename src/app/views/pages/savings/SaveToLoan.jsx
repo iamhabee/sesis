@@ -15,13 +15,15 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
-import TableCard from "./TableCard";
+import TableCard from "./components/TableCard";
 import CloseIcon from "@material-ui/icons/Close";
 import Lottie from 'react-lottie';
 import cube from "../../../../lottiefiles/26519-cube-spinning";
 import swal from 'sweetalert'
 import DateFnsUtils from '@date-io/date-fns';
 import PaystackButton from 'react-paystack';
+import PayOption from "app/views/dashboard/shared/PayOption";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 
 class SaveToLoan extends Component{
   constructor(props){
@@ -30,20 +32,25 @@ class SaveToLoan extends Component{
         var currentDate = new Date();
         let month = currentDate.getMonth() + 1
         let date = currentDate.getFullYear() +'-'+month+'-'+ currentDate.getDate();
-        this.state={
-          data: {
-            amount: 0,
-            frequency: '',
-            transaction_time: '',
-            transaction_day: 'null',
-            transaction_month: '0',
-            start_date: '',
-            payment_method: 'Wallet',
-        },
-        withdraw_data: {
+      this.state={
+        data: {
           amount: 0,
-          payment_method: "Wallet", 
-          date_time: date
+          frequency: '',
+          transaction_time: '',
+          transaction_day: 'null',
+          transaction_month: '0',
+          start_date: '',
+          payment_method: 'Wallet',
+        },
+        edit_data: {
+          id:"",
+          amount: 0,
+          frequency: '',
+          transaction_time: '',
+          transaction_day: 'null',
+          transaction_month: '0',
+          start_date: '',
+          payment_method: 'Wallet',
       },
         fund_data:{
           amount: "",
@@ -51,37 +58,36 @@ class SaveToLoan extends Component{
           payment_method: "Wallet",
           paystack_id: ""
       },
-            key: payID(),
-            email:email,
-            savings: [],
-            details: [],
-            balance: 0.00,
-            other_balance: 0.00,
-            tdetails: [],
-            loading: true, 
-            cancreate: true, 
-            autoSave: false,
-            pagination:[],
-            err:"",
-            auto_save: "",
-            show:false,
-            showSave:false,
-            showWithdraw:false,
-            
+          key: payID(),
+          email:email,
+          savings: [],
+          details: [],
+          balance: 0.00,
+          other_balance: 0.00,
+          tdetails: [],
+          loading: true, 
+          cancreate: true, 
+          autoSave: false,
+          pagination:[],
+          err:"",
+          auto_save: "",
+          show:false,
+          showSave:false,
+          showEdit:false,
         }
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
+        this.handleChangeEdit = this.handleChangeEdit.bind(this);
         this.handleChangeFund = this.handleChangeFund.bind(this);
         this.handleAutoSave = this.handleAutoSave.bind(this);
-        this.handleWithdraw = this.handleWithdraw.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleStopPlan = this.handleStopPlan.bind(this);
-        this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
+        this.handleCloseEdit = this.handleCloseEdit.bind(this);
         this.handleQuickSave = this.handleQuickSave.bind(this);
         this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitFund = this.handleSubmitFund.bind(this);
-        // this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
+        this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
         
   }
 componentDidMount(){
@@ -104,7 +110,7 @@ componentDidMount(){
       if(data[0].length == 0){
         this.setState({loading:false, savings:[], tdetails:data[3], balance:data[2], other_balance:data[1]})
       }else{
-        this.setState({loading:false, savings:data[0][0], tdetails:data[3], balance:data[2], other_balance:data[1]})
+        this.setState({loading:false, edit_data:data[0][0],  savings:data[0][0], tdetails:data[3], balance:data[2], other_balance:data[1]})
       }
     }
   })
@@ -148,28 +154,17 @@ handleQuickSave = event => {
 handleCloseQuickSave() {
   this.setState({showSave:false});
 }
-handleWithdraw = (event, id) => {
-  // this.setState({showWithdraw: true});
-  // this.props.exitLoanSavings(id)
+handleEdit = (id) => {
+  const {edit_data} = this.state
+  this.setState({showEdit: true, edit_data:{...edit_data, id:id}});
 }
 handleStopPlan = (event, id) => {
-  // this.setState({showWithdraw: true});
   this.props.exitLoanSavings(id)
 }
-handleCloseWithdraw() {
-this.setState({showWithdraw:false});
+handleCloseEdit() {
+this.setState({showEdit:false});
 }
-// handleSubmitWithdraw(event) {
-//   event.preventDefault();
-//   const { withdraw_data } = this.state;
-//   if (withdraw_data.amount ) {
-//       this.props.withdrawSaveToLoanSavings(withdraw_data);
-//   }else{
-//       swal(
-//           `${"All fields are required"}`
-//       );
-//   }
-// }
+
 handleSubmit(event) {
   event.preventDefault();
   const { data } = this.state;
@@ -192,15 +187,26 @@ handleSubmitFund(event) {
       );
   }
 }
+handleSubmitEdit(event) {
+  event.preventDefault();
+  const { edit_data } = this.state;
+  if (edit_data.amount && edit_data.frequency && edit_data.start_date && edit_data.payment_method) {
+      this.props.editSaveToLoanSavings(edit_data);
+  }else{
+      swal(
+          `${"All fields are required"}`
+      );
+  }
+}
 handleChange = event => {
   const {data} = this.state
   const {name, value} = event.target
   this.setState({data:{...data, [name]:value}})
 };
-handleChangeWithdraw = event => {
-  const {withdraw_data} = this.state
+handleChangeEdit = event => {
+  const {edit_data} = this.state
   const {name, value} = event.target
-  this.setState({withdraw_data:{...withdraw_data, [name]:value}})
+  this.setState({edit_data:{...edit_data, [name]:value}})
 };
 handleChangeFund = event => {
   const {fund_data} = this.state
@@ -218,24 +224,12 @@ handleClose() {
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, loading, auto_save, email, bank_details, other_balance, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, loading, auto_save, email, bank_details, other_balance, fund_data, edit_data, autoSave, showSave, showEdit, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-        <Lottie
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: cube,
-            rendererSettings: {
-              preserveAspectRatio: 'xMidYMid slice'
-            }
-          }}
-          height={80}
-          width={80}
-        />
-        Loading...
+          <Loading />
         </div>:
         <>
         <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#2295f2", borderBottomRightRadius:20,
@@ -261,7 +255,7 @@ handleClose() {
                   style={{borderBottomRightRadius:10, borderTopLeftRadius:10,}}
                   variant="outlined"
                   onClick={()=>this.handleStopPlan(savings.id)}>
-                    {this.props.savings?"Loading...":savings.id}
+                    {this.props.savings?"Loading...":"Stop Plan"}
                 </Button>}
               </Grid>
           </Grid>
@@ -330,6 +324,9 @@ handleClose() {
                       <Typography variant="subtitle1">
                         {savings.payment_method}
                       </Typography>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={6} xs={6}>
+                      <Button onClick={()=>this.handleEdit(savings.id)} contained style={{color:"#fff", backgroundColor:"#0d60d8"}}>Edit Auto save </Button>
                     </Grid>
                     </>:
                     <div></div>
@@ -415,19 +412,8 @@ handleClose() {
                     {fund_data.payment_method}
                   </Typography>
                 </Card>
-                {fund_data.payment_method == "Bank Account" && <PaystackButton
-                    text="Make Payment"
-                    className="payButton"
-                    callback={this.callback}
-                    close={this.close}
-                    disabled={true}  
-                    embed={true}  
-                    reference={this.getReference()}
-                    email={email}
-                    amount={fund_data.amount * 100}
-                    paystackkey={this.state.key}
-                    tag="button" 
-                />}
+                {fund_data.payment_method == "Bank Account" && 
+                <PayOption callback={()=>this.callback} amount={fund_data.amount}/>}
               </Grid>
             </Grid>
           </ValidatorForm>
@@ -574,70 +560,144 @@ handleClose() {
       </Dialog>
         {/* Create dialog end */}
         
-        {/* withdraw Dialog start */}
+        {/* Edit Dialog start */}
         <Dialog
-          open={showWithdraw}
-          onClose={this.handleCloseWithdraw}
-        >
-                <AppBar style={{position: "relative", backgroundColor:"#d8b71e"}}>
-                  <Toolbar>
-                    <IconButton
-                      edge="start"
-                      color="inherit"
-                      onClick={this.handleCloseWithdraw}
-                      aria-label="Close"
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
-                      Withdraw To Wallet
-                    </Typography>
-                  </Toolbar>
-                </AppBar>
-                <Card className="px-6 pt-2 pb-4">
-                <ValidatorForm
-                  ref="form"
-                  onSubmit={this.handleSubmitWithdraw}
-                  onError={errors => null}
-                >
-                  <Grid container spacing={6}>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextValidator
-                        className="mb-4 w-full"
-                        label="Enter Amount"
-                        onChange={this.handleChangeWithdraw}
-                        type="number"
-                        name="amount"
-                        value={withdraw_data.amount}
-                        validators={[
-                          "required"
-                        ]}
-                        errorMessages={["this field is required"]}
-                      />
-                      {this.props.savings &&
-                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                      }
-                      <Button className="uppercase"
-                        type="submit"
-                        size="large"
-                        variant="contained"
-                        style={{backgroundColor:"#222a45", color:"white"}}>
-                        Withdraw Fund
-                      </Button>
-                    </Grid>
-
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <Card className="px-6 pt-2 pb-4">
-                        <Typography variant="h6" gutterBottom>
-                          {numberFormat(withdraw_data.amount)}
-                        </Typography>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                </ValidatorForm>
-                </Card>
-              </Dialog>
-        {/* withdraw dialog end */}
+        open={showEdit}
+        onClose={this.handleCloseEdit}
+      >
+        <AppBar style={{position: "relative", backgroundColor:"#2295f2"}}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="primary"
+              onClick={this.handleCloseEdit}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+              Edit Auto Save Account
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Card className="px-6 pt-2 pb-4">
+        
+          <Grid container spacing={2}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+            <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmitEdit}
+                onError={errors => null}
+              >
+              <TextValidator
+                className="mb-4 w-full"
+                label="Enter Amount"
+                onChange={this.handleChangeEdit}
+                type="number"
+                name="amount"
+                value={edit_data.amount}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
+              <TextField
+               className="mb-4 w-full"
+                select
+                label="Select Frequency"
+                value={edit_data.frequency}
+                name="frequency"
+                onChange={this.handleChangeEdit}
+                helperText="Please select frequency"
+              >
+                  <MenuItem value={"Daily"}>Daily</MenuItem>
+                  <MenuItem value={"Weekly"}> Weekly</MenuItem>
+                  <MenuItem value={"Monthly"}> Monthly </MenuItem>
+              </TextField>
+              {edit_data.frequency === 'Monthly' && 
+              <TextField
+                className="mb-4 w-full"
+                select
+                label="Select Transaction Month"
+                value={edit_data.transaction_month}
+                name="transaction_month"
+                onChange={this.handleChangeEdit}
+                helperText="Please select Month"
+              >
+                {obj.array.map((item) =>
+                  <MenuItem value={item}key={item}>{item}</MenuItem>
+                )}
+              </TextField>
+              }
+              {edit_data.frequency === 'Weekly' && 
+              <TextField
+                className="mb-4 w-full"
+                select
+                label=" Day of the Week"
+                value={edit_data.transaction_day}
+                name="transaction_day"
+                onChange={this.handleChangeEdit}
+                helperText="Please select Day"
+              >
+                  <MenuItem value={"1"}>Monday</MenuItem>
+                  <MenuItem value={"2"}>Tuesday</MenuItem>
+                  <MenuItem value={"3"}>Wednesday</MenuItem>
+                  <MenuItem value={"4"}>Thursday</MenuItem>
+                  <MenuItem value={"5"}>Friday</MenuItem>
+                  <MenuItem value={"6"}>Saturday</MenuItem>
+                  <MenuItem value={"7"}>Sunday</MenuItem>
+              </TextField>
+              }
+              <TextValidator
+                className="mb-4 w-full"
+                onChange={this.handleChangeEdit}
+                type="time"
+                name="transaction_time"
+                value={edit_data.transaction_time}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
+              <TextValidator
+                className="mb-4 w-full"
+                onChange={this.handleChangeEdit}
+                type="date"
+                name="start_date"
+                value={edit_data.start_date}
+                validators={[
+                  "required"
+                ]}
+                errorMessages={["this field is required"]}
+              />
+              <TextField
+               className="mb-4 w-full"
+                id="standard-select-currency"
+                select
+                label="Select Payment Method"
+                value={edit_data.payment_method}
+                name="payment_method"
+                onChange={this.handleChangeEdit}
+                helperText="Please select Payment Method"
+              >
+                  <MenuItem value={""}></MenuItem>
+                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                  <MenuItem value={"Bank Account"}> Bank Account </MenuItem>
+              </TextField>
+              {this.props.savings &&
+               <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              }
+              <Button className="uppercase"
+                  type="submit"
+                  size="large"
+                  variant="contained"
+                 style={{backgroundColor:"#2295f2", color:"#fff"}}>Edit Auto Save</Button>
+                 </ValidatorForm>
+            </Grid>
+        </Grid>
+        </Card>
+      </Dialog>
+        {/* Edit dialog end */}
       </div>
     );
   };
@@ -649,8 +709,8 @@ const actionCreators = {
   deactivateAutoSaveLoan: userActions.deactivateAutoSaveLoan,
   createSaveToLoanSavings: userActions.createSaveToLoanSavings,
   addFundSaveToLoanSavings:userActions.addFundSaveToLoanSavings,
-  // withdrawSaveToLoanSavings: userActions.withdrawSaveToLoanSavings
-  exitLoanSavings: userActions.exitLoanSavings
+  exitLoanSavings: userActions.exitLoanSavings,
+  editSaveToLoanSavings: userActions.editSaveToLoanSavings
 };
 
 function mapState(state) {

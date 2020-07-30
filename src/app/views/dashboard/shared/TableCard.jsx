@@ -2,7 +2,7 @@ import React from "react";
 import {
   Card,
   Icon,
-  IconButton,
+  Button,
   Table,
   TableHead,
   TableRow,
@@ -93,27 +93,11 @@ class TableCard extends Component{
                     <TableCell className="px-0" colSpan={2}>
                       {product.entry_date}
                     </TableCell>
-                    {/* <TableCell className="px-0" align="left" colSpan={2}>
-                      {product.available ? (
-                        product.available < 20 ? (
-                          <small className="border-radius-4 bg-secondary text-white px-2 py-2px ">
-                            {product.available} available
-                          </small>
-                        ) : (
-                          <small className="border-radius-4 bg-primary text-white px-2 py-2px ">
-                            in stock
-                          </small>
-                        )
-                      ) : (
-                        <small className="border-radius-4 bg-error text-white px-2 py-2px ">
-                          out of stock
-                        </small>
-                      )}
-                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+            <Button href="/transactions" color="primary">See All </Button>
           </div>
         </Card>
       );

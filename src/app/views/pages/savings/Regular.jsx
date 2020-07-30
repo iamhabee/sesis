@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
-import TableCard from "./TableCard";
+import TableCard from "./components/TableCard";
 import CloseIcon from "@material-ui/icons/Close";
 import Lottie from 'react-lottie';
 import cube from "../../../../lottiefiles/26519-cube-spinning";
@@ -23,6 +23,8 @@ import swal from 'sweetalert'
 import DateFnsUtils from '@date-io/date-fns';
 import PaystackButton from 'react-paystack';
 import color from "@material-ui/core/colors/amber";
+import PayOption from "app/views/dashboard/shared/PayOption";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 
 class Regular extends Component{
   constructor(props){
@@ -52,6 +54,16 @@ class Regular extends Component{
           payment_method: "Wallet",
           paystack_id: ""
       },
+      edit_data: {
+        id: "",
+        amount: 0,
+        frequency: '',
+        transaction_time: '',
+        transaction_day: 'null',
+        transaction_month: '0',
+        start_date: '',
+        payment_method: 'Wallet',
+    },
             key: payID(),
             email:email,
             savings: [],
@@ -67,20 +79,25 @@ class Regular extends Component{
             show:false,
             showSave:false,
             showWithdraw:false,
+            showEdit:false,
             
         }
         this.handleClose = this.handleClose.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeEdit = this.handleChangeEdit.bind(this);
         this.handleChangeWithdraw = this.handleChangeWithdraw.bind(this);
         this.handleChangeFund = this.handleChangeFund.bind(this);
         this.handleAutoSave = this.handleAutoSave.bind(this);
         this.handleWithdraw = this.handleWithdraw.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
+        this.handleCloseEdit = this.handleCloseEdit.bind(this);
         this.handleQuickSave = this.handleQuickSave.bind(this);
         this.handleCloseQuickSave = this.handleCloseQuickSave.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubmitFund = this.handleSubmitFund.bind(this);
         this.handleSubmitWithdraw = this.handleSubmitWithdraw.bind(this);
+        this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
         const requestOptions = {
           method: 'GET',
           headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -97,50 +114,50 @@ class Regular extends Component{
       if(data.success == false){
         this.setState({savings: []});
       }else{
-        this.setState({savings: data[0]});  
+        this.setState({savings: data[0], edit_data:data[0]});  
       }
-      fetch(getConfig('totalFundRegularSavings'), requestOptions)
+    })
+    .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.logout()
+        }
+    });
+    fetch(getConfig('totalFundRegularSavings'), requestOptions)
       .then(async response => {
       const dat = await response.json();
       if (!response.ok) {
           const error = (dat && dat.message) || response.statusText;
           return Promise.reject(error);
       }
-      if(data.success == false){
+      if(dat.success == false){
         this.setState({balance: 0})
       }else{
         this.setState({balance: dat})  
       }
-      fetch(getConfig('getRegularSavingsDetails'), requestOptions)
-        .then(async response => {
-        const data = await response.json();
-        if (!response.ok) {
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-        }
-        if(data.success == false){
-          this.setState({tdetails: [], pagination:[], loading:false} );
-        }else{
-          this.setState({tdetails: data.data, pagination:data, loading:false} );  
-        }
-        })
-        .catch(error => {
-        if (error === "Unauthorized") {
-          this.props.logout()
-        }
-        });
-      })
+     })
       .catch(error => {
         if (error === "Unauthorized") {
           this.props.logout()
         }
       });
-    })
-    .catch(error => {
-        if (error === "Unauthorized") {
-          this.props.logout()
-          }
-        this.setState({loading:false});
+    fetch(getConfig('getRegularSavingsDetails'), requestOptions)
+      .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+      }
+      if(data.success == false){
+        this.setState({tdetails: [], pagination:[], loading:false} );
+      }else{
+        this.setState({tdetails: data.data, pagination:data, loading:false} );  
+      }
+      })
+      .catch(error => {
+      if (error === "Unauthorized") {
+        this.props.logout()
+      }
+      this.setState({loading:false});
     });
 }
 callback = (response) => {
@@ -179,6 +196,13 @@ handleCloseQuickSave() {
 handleWithdraw = event => {
   this.setState({showWithdraw: true});
 }
+handleEdit = (id) => {
+  const {edit_data} = this.state
+  this.setState({showEdit: true, edit_data:{...edit_data, id:id}});
+}
+handleCloseEdit() {
+  this.setState({showEdit:false});
+  }
 handleCloseWithdraw() {
 this.setState({showWithdraw:false});
 }
@@ -204,6 +228,17 @@ handleSubmit(event) {
       );
   }
 }
+handleSubmitEdit(event) {
+  event.preventDefault();
+  const { edit_data } = this.state;
+  if (edit_data.amount && edit_data.frequency && edit_data.start_date && edit_data.payment_method) {
+    this.props.editRegularSavings(edit_data);
+  }else{
+      swal(
+          `${"All field are required "}`
+      );
+  }
+}
 handleSubmitFund(event) {
   event.preventDefault();
   const { fund_data } = this.state;
@@ -215,6 +250,11 @@ handleSubmitFund(event) {
       );
   }
 }
+handleChangeEdit = event => {
+  const {edit_data} = this.state
+  const {name, value} = event.target
+  this.setState({edit_data:{...edit_data, [name]:value}})
+};
 handleChange = event => {
   const {data} = this.state
   const {name, value} = event.target
@@ -241,24 +281,12 @@ handleClose() {
           obj.array[l] = l+1;
       }
     let {theme} = this.props
-    const {balance, tdetails, loading, auto_save, email, bank_details, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
+    const {balance, tdetails, loading, auto_save, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
-        {loading ?
+       {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
-        <Lottie
-          options={{
-            loop: true,
-            autoplay: true,
-            animationData: cube,
-            rendererSettings: {
-              preserveAspectRatio: 'xMidYMid slice'
-            }
-          }}
-          height={80}
-          width={80}
-        />
-        Loading...
+          <Loading />
         </div>:
         <>
         <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#0d60d8", borderBottomRightRadius:20,
@@ -309,7 +337,6 @@ handleClose() {
                         checked={savings.auto_status? true:false}
                         onChange={this.handleAutoSave}
                         value="checked"
-                        color="secondary"
                       />
                     </Grid>
                     {savings.auto_status?
@@ -353,6 +380,9 @@ handleClose() {
                       <Typography variant="subtitle1">
                         {savings.payment_method}
                       </Typography>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={6} xs={6}>
+                      <Button onClick={()=>this.handleEdit(savings.id)} contained style={{color:"#fff", backgroundColor:"#0d60d8"}}>Edit Auto save </Button>
                     </Grid>
                     </>:
                     <div></div>
@@ -438,25 +468,152 @@ handleClose() {
                     {fund_data.payment_method}
                   </Typography>
                 </Card>
-                {fund_data.payment_method == "Bank Account" && <PaystackButton
-                    text="Make Payment"
-                    className="payButton"
-                    callback={this.callback}
-                    close={this.close}
-                    disabled={true}  
-                    embed={true}  
-                    reference={this.getReference()}
-                    email={email}
-                    amount={fund_data.amount * 100}
-                    paystackkey={this.state.key}
-                    tag="button" 
-                />}
+                {fund_data.payment_method == "Bank Account" && 
+                <PayOption callback={()=>this.callback} amount={fund_data.amount}/>}
               </Grid>
             </Grid>
           </ValidatorForm>
         </Card>
       </Dialog>
         {/* Quick Save Dialog End */}
+
+        {/* Edit Dialog start */}
+        <Dialog
+        open={showEdit}
+        onClose={this.handleCloseEdit}>
+          <AppBar style={{position: "relative", backgroundColor:"#0d60d8"}}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="primary"
+                onClick={this.handleCloseEdit}
+                aria-label="Close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+                Edit Auto Save Account
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4">
+          
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+              <ValidatorForm
+                  ref="form"
+                  onSubmit={this.handleSubmitEdit}
+                  onError={errors => null}
+                >
+                <TextValidator
+                  className="mb-4 w-full"
+                  label="Enter Amount"
+                  onChange={this.handleChangeEdit}
+                  type="number"
+                  name="amount"
+                  value={edit_data.amount}
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+                <TextField
+                className="mb-4 w-full"
+                  select
+                  label="Select Frequency"
+                  value={edit_data.frequency}
+                  name="frequency"
+                  onChange={this.handleChangeEdit}
+                  helperText="Please select frequency"
+                >
+                    <MenuItem value={"Daily"}>Daily</MenuItem>
+                    <MenuItem value={"Weekly"}> Weekly</MenuItem>
+                    <MenuItem value={"Monthly"}> Monthly </MenuItem>
+                </TextField>
+                {edit_data.frequency === 'Monthly' && 
+                <TextField
+                  className="mb-4 w-full"
+                  select
+                  label="Select Transaction Month"
+                  value={edit_data.transaction_month}
+                  name="transaction_month"
+                  onChange={this.handleChangeEdit}
+                  helperText="Please select Month"
+                >
+                  {obj.array.map((item) =>
+                    <MenuItem value={item}key={item}>{item}</MenuItem>
+                  )}
+                </TextField>
+                }
+                {edit_data.frequency === 'Weekly' && 
+                <TextField
+                  className="mb-4 w-full"
+                  select
+                  label=" Day of the Week"
+                  value={edit_data.transaction_day}
+                  name="transaction_day"
+                  onChange={this.handleChangeEdit}
+                  helperText="Please select Day"
+                >
+                    <MenuItem value={"1"}>Monday</MenuItem>
+                    <MenuItem value={"2"}>Tuesday</MenuItem>
+                    <MenuItem value={"3"}>Wednesday</MenuItem>
+                    <MenuItem value={"4"}>Thursday</MenuItem>
+                    <MenuItem value={"5"}>Friday</MenuItem>
+                    <MenuItem value={"6"}>Saturday</MenuItem>
+                    <MenuItem value={"7"}>Sunday</MenuItem>
+                </TextField>
+                }
+                <TextValidator
+                  className="mb-4 w-full"
+                  onChange={this.handleChangeEdit}
+                  type="time"
+                  name="transaction_time"
+                  value={edit_data.transaction_time}
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+                <TextValidator
+                  className="mb-4 w-full"
+                  onChange={this.handleChangeEdit}
+                  type="date"
+                  name="start_date"
+                  value={edit_data.start_date}
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+                <TextField
+                className="mb-4 w-full"
+                  id="standard-select-currency"
+                  select
+                  label="Select Payment Method"
+                  value={edit_data.payment_method}
+                  name="payment_method"
+                  onChange={this.handleChangeEdit}
+                  helperText="Please select Payment Method"
+                >
+                    <MenuItem value={""}></MenuItem>
+                    <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                    <MenuItem value={"Bank Account"}> Bank Account </MenuItem>
+                </TextField>
+                {this.props.savings &&
+                <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                }
+                <Button className="uppercase"
+                    type="submit"
+                    size="large"
+                    variant="contained"
+                  style={{backgroundColor:"#0d60d8", color:"#fff"}}>Edit Auto Save</Button>
+                  </ValidatorForm>
+              </Grid>
+            </Grid>
+          </Card>
+        </Dialog>
+        {/* Edit dialog end */}
 
         {/* Create Dialog start */}
         <Dialog
@@ -481,7 +638,7 @@ handleClose() {
         <Card className="px-6 pt-2 pb-4">
         
           <Grid container spacing={2}>
-            <Grid item lg={6} md={6} sm={12} xs={12}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
             <ValidatorForm
                 ref="form"
                 onSubmit={this.handleSubmit}
@@ -592,39 +749,6 @@ handleClose() {
                  style={{backgroundColor:"#0d60d8", color:"#fff"}}>Create Auto Save</Button>
                  </ValidatorForm>
             </Grid>
-
-            <Grid container item lg={6} md={6} sm={12} xs={12}>
-                <Grid item lg={10} md={10} sm={10} xs={10}>
-                  <Typography variant="subtitle1">
-                    Amount
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    {numberFormat(data.amount)}
-                  </Typography>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Typography variant="subtitle1">
-                    Frequency
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    {data.frequency}
-                  </Typography>
-                {/* </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={6}> */}
-                  <Typography variant="subtitle1">
-                    Payment Method
-                  </Typography>
-                </Grid>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <Typography variant="subtitle1">
-                    {data.payment_method}
-                  </Typography>
-                </Grid>
-            </Grid>
           </Grid>
         </Card>
       </Dialog>
@@ -705,7 +829,8 @@ const actionCreators = {
   deactivateAutoSave: userActions.deactivateAutoSave,
   createRegularSavings: userActions.createRegularSavings,
   addFundRegularSavings:userActions.addFundRegularSavings,
-  withdrawRegularSavings: userActions.withdrawRegularSavings
+  withdrawRegularSavings: userActions.withdrawRegularSavings,
+  editRegularSavings:userActions.editRegularSavings
 };
 
 function mapState(state) {

@@ -23,6 +23,7 @@ import ManageLoanCard from "./components/ManageLoanCard";
 import { blue } from '@material-ui/core/colors';
 import LoanDetailsCard from "./components/LoanDetailsCard";
 import CustomCarousel from "../investments/components/CustomCarousel";
+import Loading from "matx/components/MatxLoading/MatxLoading";
 
 class Loan extends Component {
   constructor(props){
@@ -715,7 +716,12 @@ render(){
            ]}
          />
        </div>
-       <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
+       {isFetching ?
+        <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
+          <Loading />
+        </div>:
+        <>
+        <div className="pb-5 pt-7 px-8 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20,
              borderTopLeftRadius:20}} >
           <Grid container spacing={5} direction="row" justify="space-between">
               <Grid item lg={9} md={9} sm={12} xs={12}>
@@ -746,7 +752,7 @@ render(){
               </Grid>
           </Grid>
       </div>
-      <div className="py-3" />
+        <div className="py-3" />
         <Grid container >
             <Grid item lg={12} md={12} sm={12} xs={12}>
               <Typography variant="h6">My Groups</Typography>
@@ -806,6 +812,7 @@ render(){
             </div>
           </Grid>
         </Grid>
+        </>}
     {/* Quick Loan Dialog Start */}
     <Dialog
       open={showLoan}
@@ -1256,7 +1263,7 @@ render(){
                    Repay Loan
               </Button>}
                 {repay_data.payment_method === "Bank Account" && 
-                  <PayOption callback={()=>this.callback} repayment_amount={repay_data.repayment_amount}/>
+                  <PayOption callback={()=>this.callback} amount={repay_data.repayment_amount}/>
                 }
             </Grid>
           </Grid>
