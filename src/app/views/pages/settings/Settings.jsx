@@ -91,7 +91,7 @@ componentDidMount(){
           this.setState({profile: []})
         }else{
           this.setState({profile: data[0]})
-          if(data.relationship != ""){
+          if(data[0].relationship != ""){
             this.setState({completeness: 50}, 
             ()=>fetch(getConfig('getBank'), requestOptions).then(async res=>{
               const dat = await res.json();
@@ -99,8 +99,8 @@ componentDidMount(){
                 const error = (dat && dat.message) || res.statusText;
                 return Promise.reject(error);
               }
-              if(dat.success == false){
-                this.setState({bank_data: []})
+              if(dat.success == false || dat.length == 0){
+                this.setState({isFetching:false, bank_data: []})
               }else{
                 this.setState({isFetching:false, bank_data: dat[0], completeness: this.state.completeness+50})
               }
@@ -110,8 +110,25 @@ componentDidMount(){
                 }
             })
           )
+      }else{
+        fetch(getConfig('getBank'), requestOptions).then(async res=>{
+            const dat = await res.json();
+            if (!res.ok) {
+              const error = (dat && dat.message) || res.statusText;
+              return Promise.reject(error);
+            }
+            if(dat.success == false || dat.length == 0){
+              this.setState({isFetching:false, bank_data: []})
+            }else{
+              this.setState({isFetching:false, bank_data: dat[0], completeness: this.state.completeness+50})
+            }
+          }).catch(err=>{
+              if (err === "Unauthorized") {
+                this.props.logout()
+              }
+          })
+        }
       }
-    }
     })
     .catch(error => {
        if (error === "Unauthorized") {
