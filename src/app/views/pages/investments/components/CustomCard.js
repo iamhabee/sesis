@@ -4,9 +4,11 @@ import {Grid, Card, Icon, Typography } from "@material-ui/core"
 import  Notifications from '@material-ui/icons/Notifications';
 
 const CustomCard = (props) => {
-    const {colors, children} = props
+    const {colors, children, borderColor} = props
     const style = {
         card:{
+            borderColor:borderColor,
+            borderStyle:"solid",
             backgroundColor:colors,
             borderBottomRightRadius:20,
             borderTopLeftRadius:20,

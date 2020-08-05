@@ -1,7 +1,7 @@
 import React from 'react';
 import { Breadcrumb, SimpleCard } from "matx";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Grid, Card, Button, Typography, IconButton, Toolbar, AppBar, Dialog, MenuItem, TextField} from '@material-ui/core';
+import { Grid, Card, Button, Divider, Typography, IconButton, Toolbar, AppBar, Dialog, MenuItem, TextField} from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import MarketCard from './components/MarketCard';
 import { withRouter } from "react-router-dom";
@@ -14,6 +14,7 @@ import {authHeader} from '../../../redux/logic'
 import SingleInvestmentcard from './components/SingleInvestmentCard';
 import PayOption from 'app/views/dashboard/shared/PayOption';
 import Loading from "matx/components/MatxLoading/MatxLoading";
+import MarketCard2 from './components/MarketCard2';
 
 
  class Market extends Component {
@@ -35,6 +36,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
       current_value:"",
       categories:[],
       tab:true,
+      mTab:true,
       showView:false,
       showInvest:false,
       isLoading:true,
@@ -44,11 +46,13 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
       singleInvestment:[],
       category:[],
       pagination:[],
-      Investment:[],
+      investment:[],
       current_index:0
     }
     this.ongoingTab = this.ongoingTab.bind(this);
     this.completeTab = this.completeTab.bind(this);
+    this.newsTab = this.newsTab.bind(this);
+    this.investTab = this.investTab.bind(this);
     this.handleShowView = this.handleShowView.bind(this);
     this.handleShowInvest = this.handleShowInvest.bind(this);
     this.handleCloseView = this.handleCloseView.bind(this);
@@ -69,8 +73,8 @@ callback = (response) => {
   }
 handleSubmit(event) {
   event.preventDefault();
-  this.setState({ submitted: true });
   const { invest_data } = this.state;
+  console.log(invest_data)
   if (invest_data.total && invest_data.payment_method) {
     this.props.addMarketPlace(invest_data);
   }
@@ -87,7 +91,7 @@ fetchSingleMarket(id){
         if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
-        }console.lo(data)
+        }console.log(data)
         if(data.success == false){
           this.setState({singleNews: []});
         }else{
@@ -132,7 +136,6 @@ handleChange(event) {
   }
 }
 componentDidMount() {
-    const id = this.props.match.params.id;
     const requestOptions = {
         method: 'GET',
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
@@ -184,11 +187,11 @@ fetch(getConfig("getInvestmentCat"), requestOptions)
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
-    }
+    }console.log(data)
     if(data.success == false){
       this.setState({ loading: false, investment: [], pagination:[]});
     }else{
-      this.setState({ loading: false, investment: data.data, pagination:data});
+      this.setState({ loading: false, investment: data, pagination:data});
     }
   })
   .catch((error) => {
@@ -200,17 +203,19 @@ fetch(getConfig("getInvestmentCat"), requestOptions)
 handleCloseView() {
   this.setState({showView:false});
 }
-handleShowView = (id) => {
+handleShowView = (id, current_value) => {
+  const {invest_data} = this.state
   this.setState({isLoading:true})
   this.fetchSingleMarket(id)
-  this.setState({showView: true});
+  this.setState({showView: true, invest_data:{...invest_data, investments_id:id, slots: 0, total:0}, current_value:current_value});
 }
 handleCloseInvest() {
   this.setState({showInvest:false});
 }
-handleShowInvest = (id, current_value) => {
-  const {invest_data} = this.state
-  this.setState({showInvest: true, invest_data:{...invest_data, id:id}, current_value:current_value});
+handleShowInvest = (id) => {
+  this.setState({isLoading:true})
+  this.fetchSingleMarket(id)
+  this.setState({showInvest: true});
 }
   // tab handler
 ongoingTab() {
@@ -219,15 +224,21 @@ ongoingTab() {
 completeTab(){
   this.setState({tab:false});
 }
+newsTab() {
+  this.setState({mTab:true});
+}
+investTab(){
+  this.setState({mTab:false});
+}
 tabbed = (id) => {
   this.setState({
-    category: id == 0? this.state.news : this.state.news.filter((ne) =>ne.market_investments_id == id),
+    category: id == 0? this.state.news : this.state.news.filter((ne) =>ne.market_categories_id == id),
     current_index: id
   })
 };
   render(){
     const {theme} =this.props
-    const {isLoading, tab, categories, category, loading, current_index, investment, singleInvestment, singleNews, showView, showInvest, invest_data} = this.state
+    const {isLoading, tab, mTab, categories, category, loading, current_index, investment, singleInvestment, singleNews, showView, showInvest, invest_data} = this.state
     return (
       <div className="m-sm-10">
         <Grid container>
@@ -272,17 +283,17 @@ tabbed = (id) => {
             <Grid item lg={3} md={3} sm={12} xs={12}>
                 <MarketCard 
                 data={ne}
-                invest={()=>this.handleShowInvest(ne.id, ne.current_values)} 
-                view={()=>this.handleShowView(ne.id)}/>
+                status={true}
+                invest={()=>this.handleShowInvest(ne.id)} 
+                view={()=>this.handleShowView(ne.id, ne.current_values)}/>
             </Grid>
           ))}
         </Grid>:
         <Grid container spacing={3}>
           {investment.map((ne) => (
-            <Grid item lg={3} md={3} sm={12} xs={12}>
-              <MarketCard 
-              data={ne}  
-              view={()=>this.handleShowView(ne.id)}/>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
+              <MarketCard2
+              data={ne}/>
             </Grid>
           ))} 
         </Grid>
@@ -290,6 +301,7 @@ tabbed = (id) => {
         {/* View Dialog start */}
         <Dialog
           open={showView}
+          scroll="body"
           onClose={this.handleCloseView}>
             <AppBar color="secondary" style={{position: "relative"}}>
               <Toolbar>
@@ -307,16 +319,94 @@ tabbed = (id) => {
               </Toolbar>
             </AppBar>
             <Card className="px-6 pt-2 pb-4">
-            <Grid container spacing={2}>
-              <Grid item lg={12} md={12} sm={12} xs={12}>
-                {isLoading ?
-                <Typography>Loading...</Typography>:
-                <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-                  <SingleInvestmentcard news={singleNews} investment={singleInvestment} />
-                </div>
-                }
+              {isLoading ?
+              <Typography>Loading...</Typography>:
+              <>
+              <Grid container>
+                <Grid item lg={8} md={8} sm={12} xs={12}>
+                  <Button size="small"
+                      variant={mTab? "contained" : "outlined"}
+                      color="secondary"
+                      onClick={this.newsTab}
+                      >News</Button>
+                  <Button 
+                    size="small"
+                    variant={mTab? "outlined" : "contained"}
+                    color="secondary"
+                    onClick={this.investTab}
+                    >Invest</Button>
+                </Grid>
               </Grid>
-            </Grid>
+              <div className="py-3" />
+              {mTab?
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                    <SingleInvestmentcard news={singleNews} investment={singleInvestment} />
+                  </div>
+                </Grid>
+              </Grid>:
+              <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmit}
+                onError={errors => null}>
+                <Card className="px-6 pt-2 pb-4">
+                    <Grid container spacing={2}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextValidator
+                          className="mb-4 w-full"
+                          label="Slots"
+                          onChange={this.handleChange}
+                          type="number"
+                          name="slots"
+                          value={invest_data.slots}
+                          validators={[
+                            "required"
+                          ]}
+                          errorMessages={["this field is required"]}
+                        />
+                        <TextValidator
+                          className="mb-4 w-full"
+                          label=" Total Amount"
+                          type="number"
+                          name="total"
+                          value={invest_data.total}
+                          validators={[
+                            "required"
+                          ]}
+                          errorMessages={["this field is required"]}
+                        />
+                        <TextField
+                        className="mb-4 w-full"
+                          select
+                          label="Select Payment Method"
+                          name="payment_method"
+                          value={invest_data.payment_method}
+                          onChange={this.handleChange}
+                          helperText="Please select Payment Method"
+                        >
+                            <MenuItem value={""}>Select payment Method</MenuItem>
+                            <MenuItem value={"Bank Account"}> Bank Account</MenuItem>
+                            <MenuItem value={"Wallet"}> Wallet </MenuItem>
+                        </TextField>
+                        {this.props.savings &&
+                        <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                        }
+                        {invest_data.payment_method == "Wallet" && 
+                        <Button className="uppercase"
+                          color="secondary"
+                          type="submit"
+                          size="large"
+                          variant="contained"
+                          style={{ color:"#fff"}}>
+                            Buy Slot
+                        </Button>}
+                        {invest_data.payment_method == "Bank Account" && <PayOption amount={invest_data.total} callback={this.callback}/>}
+                      </Grid>
+                    </Grid>
+                  </Card>
+              </ValidatorForm>}
+              </>}
             </Card>
         </Dialog>
         {/* View dialog end */}
@@ -336,73 +426,23 @@ tabbed = (id) => {
                   <CloseIcon />
                 </IconButton>
                 <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
-                  Buy Investment
+                  Investment Details
                 </Typography>
               </Toolbar>
             </AppBar>
-            <ValidatorForm
-              ref="form"
-              onSubmit={this.handleSubmit}
-              onError={errors => null}>
-              <Card className="px-6 pt-2 pb-4">
-                  <Grid container spacing={2}>
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <TextValidator
-                        className="mb-4 w-full"
-                        label="Slots"
-                        onChange={this.handleChange}
-                        type="number"
-                        name="slots"
-                        value={invest_data.slots}
-                        validators={[
-                          "required"
-                        ]}
-                        errorMessages={["this field is required"]}
-                      />
-                      <TextValidator
-                        className="mb-4 w-full"
-                        label=" Total Amount"
-                        onChange={this.handleChange}
-                        readOnly
-                        type="number"
-                        name="total"
-                        value={invest_data.total}
-                        validators={[
-                          "required"
-                        ]}
-                        errorMessages={["this field is required"]}
-                      />
-                      <TextField
-                      className="mb-4 w-full"
-                        select
-                        label="Select Payment Method"
-                        name="payment_method"
-                        value={invest_data.payment_method}
-                        onChange={this.handleChange}
-                        helperText="Please select Payment Method"
-                      >
-                          <MenuItem value={""}>Select payment Method</MenuItem>
-                          <MenuItem value={"Bank Account"}> Bank Account</MenuItem>
-                          <MenuItem value={"Wallet"}> Wallet </MenuItem>
-                      </TextField>
-                      {this.props.savings &&
-                      <img img alt=""  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                      }
-                      {invest_data.payment_method == "Wallet" && 
-                      <Button className="uppercase"
-                        color="secondary"
-                        type="submit"
-                        size="large"
-                        variant="contained"
-                        style={{ color:"#fff"}}>
-                          Apply Loan
-                      </Button>}
-                      {invest_data.payment_method == "Bank Account" && <PayOption amount={invest_data.total} callback={this.callback}/>}
-                    </Grid>
-                  </Grid>
-                </Card>
-            </ValidatorForm>
-          </Dialog>
+            <Card className="px-6 pt-2 pb-4">
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  {isLoading ?
+                  <Typography>Loading...</Typography>:
+                  <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                    <SingleInvestmentcard news={singleNews} investment={singleInvestment} />
+                  </div>
+                  }
+                </Grid>
+            </Grid>
+            </Card>
+        </Dialog>
         {/* Invest dialog end */}
       </div>
     );

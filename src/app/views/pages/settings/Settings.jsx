@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Grid, Card, Button,Typography, IconButton, Toolbar, AppBar, Dialog, Hidden, Icon, Fab, MenuItem, TextField} from '@material-ui/core';
+import { Grid, Card, Button,Typography, IconButton, CircularProgress, Toolbar, AppBar, Dialog, Hidden, Icon, Fab, MenuItem, TextField} from '@material-ui/core';
 import CloseIcon from "@material-ui/icons/Close";
 import { Breadcrumb } from "matx";
 import AccountProfile from './components/AccountProfile';
@@ -57,7 +57,9 @@ constructor(props){
     bank_code:'',
     completeness:25,
     loading:true,
-    isFetching:true
+    isFetching:true,
+    isChecking:false,
+    data_checker:false
   }
   this.handleSubmit = this.handleSubmit.bind(this);
   this.handleSubmitPassword = this.handleSubmitPassword.bind(this);
@@ -99,7 +101,7 @@ componentDidMount(){
                 const error = (dat && dat.message) || res.statusText;
                 return Promise.reject(error);
               }
-              if(dat.success == false || dat.length == 0){
+              if(dat.length == false || dat.length == 0){
                 this.setState({isFetching:false, bank_data: []})
               }else{
                 this.setState({isFetching:false, bank_data: dat[0], completeness: this.state.completeness+50})
@@ -117,6 +119,7 @@ componentDidMount(){
               const error = (dat && dat.message) || res.statusText;
               return Promise.reject(error);
             }
+            console.log(dat)
             if(dat.success == false || dat.length == 0){
               this.setState({isFetching:false, bank_data: []})
             }else{
@@ -167,10 +170,10 @@ fetchBankDetails=()=>{
         const error = (dat && dat.message) || res.statusText;
         return Promise.reject(error);
       }
-      if(dat.success == false){
-        this.setState({bank_data: [], loading: false})
+      if(dat.success == false || dat.length == 0){
+        this.setState({bank_data: [], loading: false, data_checker:false})
       }else{
-        this.setState({bank_data: dat[0], loading: false})
+        this.setState({bank_data: dat[0], loading: false, data_checker:true})
       }
     }).catch(err=>{
         if (err === "Unauthorized") {
@@ -182,8 +185,7 @@ fetchBankDetails=()=>{
 check = (e)=>{
   const {name, value} = e.target
   const { bank_data, bank_code } = this.state;
-  this.setState({ bank_data:{ ...bank_data, [name]:value }, isChecking:true
-  })
+  this.setState({ bank_data:{ ...bank_data, [name]:value }, isChecking:true })
   if(e.target.value.length == 10){
     const requestOptions = {
       method: 'GET',
@@ -203,14 +205,12 @@ check = (e)=>{
           account_no:res.data.account_number, 
           account_name:res.data.account_name, 
           bank_code: bank_code},
-        isChecking:false,
-        message: "Account number is valid",
-        err: ""
+        isChecking:false
       })
     })
     .catch(error => {
       console.log(error)
-      this.setState({isChecking:false, err: "invalid account number"})
+      this.setState({isChecking:false})
       swal(
         `${"Invalid account, please check the account details and try again"}`
       );
@@ -230,11 +230,10 @@ handleSubmit=()=> {
 }
 handleSubmitBankDetails(event) {
   event.preventDefault();
-  const { bank_data, err } = this.state;
-  if (bank_data.length != 0 && err != "invalid account number" ) {
+  const { bank_data, data_checker } = this.state;
+  if (data_checker) {
       this.props.updateBank(bank_data);
-  }
-  if(bank_data.length != 0 && err != "invalid account number"){
+  }else{
       this.props.saveBank(bank_data);
   }
 }
@@ -272,6 +271,8 @@ handleChangeBankDetails(event) {
       bank_data: {
         ...bank_data,
         [name]: banks[value].name,
+        account_no:"",
+        account_name:""
       },
       bank_code: banks[value].code,
       disabled:false
@@ -300,7 +301,7 @@ closeWithdraw=()=>{
 
 render(){
     const {theme} = this.props
-    const {profile, editPassword, editBankDetails, withdrawFund, completeness, isFetching, withdraw_data, password_data, bank_data, banks, loading} = this.state
+    const {profile, editPassword, isChecking, editBankDetails, withdrawFund, completeness, isFetching, withdraw_data, password_data, bank_data, banks, loading} = this.state
     return (
       <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -398,7 +399,7 @@ render(){
         <Dialog
           open={editPassword}
           onClose={this.closeEditPassword}>
-          <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+          <AppBar color="secondary" style={{position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -450,8 +451,9 @@ render(){
                   <Button className="uppercase"
                     type="submit"
                     size="large"
+                    color="secondary"
                     variant="contained"
-                    style={{backgroundColor:"#e74398", color:"#fff"}}>
+                    style={{ color:"#fff"}}>
                     Change Password
                   </Button>
                 </Grid>
@@ -465,7 +467,7 @@ render(){
         <Dialog
           open={editBankDetails}
           onClose={this.closeEditBankDetails}>
-          <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
+          <AppBar color="secondary" style={{position: "relative"}}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -493,11 +495,9 @@ render(){
                     className="mb-4 w-full"
                     select
                     label="Select Frequency"
-                    value={bank_data.bank_name}
                     name="bank_name"
                     onChange={this.handleChangeBankDetails}
                     helperText="Please select Bank Name">
-                    <MenuItem value={""}></MenuItem>
                     {banks.map((bank, index)=>(
                       <MenuItem key={index} value={index}>{bank.name}</MenuItem>
                     ))}
@@ -514,6 +514,10 @@ render(){
                     ]}
                     errorMessages={["this field is required"]}
                   />
+                  {isChecking && (
+                    <CircularProgress
+                      size={24}
+                    />)}
                   <TextValidator
                     className="mb-4 w-full"
                     label="Account Name"
@@ -532,7 +536,8 @@ render(){
                     type="submit"
                     size="large"
                     variant="contained"
-                    style={{backgroundColor:"#e74398", color:"#fff"}}>
+                    color="secondary"
+                    style={{color:"#fff"}}>
                     Save 
                   </Button>
                 </Grid>
@@ -549,97 +554,96 @@ render(){
 
         {/* withdraw Dialog start */}
         <Dialog
-                open={withdrawFund}
-                onClose={this.closeWithdraw}
+          open={withdrawFund}
+          onClose={this.closeWithdraw}>
+          <AppBar color="secondary" style={{position: "relative"}}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={this.closeWithdraw}
+                aria-label="Close"
               >
-                <AppBar color="secondary" style={{position: "relative"}}>
-                  <Toolbar>
-                    <IconButton
-                      edge="start"
-                      color="inherit"
-                      onClick={this.closeWithdraw}
-                      aria-label="Close"
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
-                      Withdraw To Bank Account
-                    </Typography>
-                  </Toolbar>
-                </AppBar>
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1, color:"#fff"}}>
+                Withdraw To Bank Account
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Card className="px-6 pt-2 pb-4">
+          <ValidatorForm
+            ref="form"
+            onSubmit={this.handleSubmit}
+            onError={errors => null}
+          >
+            <Grid container spacing={6}>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
+                <TextValidator
+                  className="mb-4 w-full"
+                  label="Enter Amount"
+                  onChange={this.handleChange}
+                  type="number"
+                  name="amount"
+                  value={withdraw_data.amount}
+                  validators={[
+                    "required"
+                  ]}
+                  errorMessages={["this field is required"]}
+                />
+              </Grid>
+              <Grid item lg={6} md={6} sm={12} xs={12}>
                 <Card className="px-6 pt-2 pb-4">
-                <ValidatorForm
-                  ref="form"
-                  onSubmit={this.handleSubmit}
-                  onError={errors => null}
-                >
-                  <Grid container spacing={6}>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextValidator
-                        className="mb-4 w-full"
-                        label="Enter Amount"
-                        onChange={this.handleChange}
-                        type="number"
-                        name="amount"
-                        value={withdraw_data.amount}
-                        validators={[
-                          "required"
-                        ]}
-                        errorMessages={["this field is required"]}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <Card className="px-6 pt-2 pb-4">
-                        <Typography variant="h6" gutterBottom>
-                          {numberFormat(withdraw_data.amount)}
-                        </Typography>
-                      </Card>
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={2}>
-                      {bank_data.length == 0 ?
-                      <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                          Please Go to settings to add Bank details
-                        </Typography>
-                      </Grid>:
-                      <>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                        Bank Name:
-                        </Typography>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                          {bank_data.bank_name}
-                        </Typography>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                        Account Name:
-                        </Typography>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                          {bank_data.account_name}
-                        </Typography>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                        Account Number:
-                        </Typography>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <Typography variant="subtitle1">
-                          {bank_data.account_no}
-                        </Typography>
-                      </Grid>
-                      </>}
-                  </Grid>
-                  
-                </ValidatorForm>
+                  <Typography variant="h6" gutterBottom>
+                    {numberFormat(withdraw_data.amount)}
+                  </Typography>
                 </Card>
-              </Dialog>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                {bank_data.length == 0 ?
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                    Please Go to settings to add Bank details
+                  </Typography>
+                </Grid>:
+                <>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                  Bank Name:
+                  </Typography>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                    {bank_data.bank_name}
+                  </Typography>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                  Account Name:
+                  </Typography>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                    {bank_data.account_name}
+                  </Typography>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                  Account Number:
+                  </Typography>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <Typography variant="subtitle1">
+                    {bank_data.account_no}
+                  </Typography>
+                </Grid>
+                </>}
+            </Grid>
+            
+          </ValidatorForm>
+          </Card>
+        </Dialog>
         {/* withdraw dialog end */}
       </div>
     );

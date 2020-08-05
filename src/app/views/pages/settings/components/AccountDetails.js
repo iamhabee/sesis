@@ -51,6 +51,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter First name"
                 name="first_name"
                 onChange={props.handleChange}
                 required
@@ -66,6 +67,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Last name"
                 name="last_name"
                 onChange={props.handleChange}
                 required
@@ -81,6 +83,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Email"
                 name="email"
                 onChange={props.handleChange}
                 required
@@ -96,6 +99,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Phone number"
                 name="phone_no"
                 onChange={props.handleChange}
                 type="number"
@@ -111,6 +115,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Occupation"
                 name="occupation"
                 onChange={props.handleChange}
                 type="text"
@@ -126,6 +131,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Address"
                 name="address"
                 onChange={props.handleChange}
                 type="text"
@@ -150,6 +156,7 @@ const AccountDetails = props => {
             >
               <TextValidator
                 fullWidth
+                label="Enter Kin Last name"
                 margin="dense"
                 name="kin_last_name"
                 onChange={props.handleChange}
@@ -166,6 +173,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Kin First name"
                 name="kin_first_name"
                 onChange={props.handleChange}
                 type="text"
@@ -178,6 +186,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Kin Phone number"
                 name="kin_phone_no"
                 onChange={props.handleChange}
                 type="number"
@@ -190,6 +199,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Kin Email"
                 name="kin_email"
                 onChange={props.handleChange}
                 type="email"
@@ -201,6 +211,7 @@ const AccountDetails = props => {
               <TextValidator
                 fullWidth
                 margin="dense"
+                label="Enter Kin Relationship"
                 name="relationship"
                 onChange={props.handleChange}
                 type="text"

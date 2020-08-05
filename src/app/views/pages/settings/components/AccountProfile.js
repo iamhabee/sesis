@@ -43,7 +43,7 @@ class AccountProfile extends Component{
     this.uploadedImage = React.createRef();
     this.imageUploader = React.createRef();
     this.state ={
-      avatar: '/assets/images/avatars/avatar_11.png',
+      avatar: '/assets/images/dummy.jpg',
       profile_pic:null,
     }
     this.handleProfileImage = this.handleProfileImage.bind(this)
@@ -110,9 +110,10 @@ render(){
           </div>  
           <img
             style={{marginLeft: 'auto', height: 110, width: 100, flexShrink: 0, flexGrow: 0, borderRadius:50}}
-            src={'/assets/images/dummy.jpg'}
+            src={this.props.data.profile_pic ? this.props.data.profile_pic:avatar}
             ref={this.uploadedImage}
             onClick={this.handleClick}
+            
           />
           <input className="sea" 
               name="profile_pic" 
