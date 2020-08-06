@@ -33,19 +33,13 @@ class Landing extends Component {
         }}>
           <AppAppBar login={this.handleShowLogin} />
           <Grid container spacing={2}>
-            <Grid item l={9} md={9} sm={12} xs={12}>
+            <Grid item lg={9} md={9} sm={12} xs={12}>
               <SignUp />
             </Grid>
-            <Grid item l={3} md={3} sm={12} xs={12}>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomSlider />
             </Grid>
           </Grid>
-        {/* <ProductValues /> */}
-        {/* <ProductCategories />
-        <ProductHowItWorks />
-        <ProductCTA />
-        <ProductSmokingHero /> */}
-        {/* <AppFooter /> */}
       </div>
     );
   }  

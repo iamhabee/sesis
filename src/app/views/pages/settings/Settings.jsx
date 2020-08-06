@@ -494,7 +494,7 @@ render(){
                   <TextField
                     className="mb-4 w-full"
                     select
-                    label="Select Frequency"
+                    label="Select Bank Name"
                     name="bank_name"
                     onChange={this.handleChangeBankDetails}
                     helperText="Please select Bank Name">

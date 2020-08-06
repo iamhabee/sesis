@@ -542,7 +542,7 @@ function addProfile(data) {
 // update profile
 function updateProfile(data) {
   const requestOptions = {
-    method: "PUT",
+    method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };

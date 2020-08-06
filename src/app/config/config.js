@@ -85,6 +85,7 @@ const serverVars = {
   replaceMember:"loanReplaceMembers/",
   removeMember:"loan/replace_member?token=",
   loanBalance:"loanBalance/",
+  completedLoan:"getCompletedLoans?token=",
 
   showTransaction: "transactions/details?token=",
   saveWallet: "save_wallet/store?token=",
@@ -292,6 +293,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.removeMember + user.token;
     case "loanBalance":
       return serverVars.baseUrl + serverVars.loanBalance;
+    case "completedLoan":
+      return serverVars.baseUrl + serverVars.completedLoan + user.token;
 
     case "addProfile":
       return serverVars.baseUrl + serverVars.addProfile + user.token;

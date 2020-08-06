@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 
 import dashboardRoutes from "./views/dashboard/DashboardRoutes";
 import landingRoutes from "./views/landing/LandingRoutes";
-import utilitiesRoutes from "./views/utilities/UtilitiesRoutes";
+// import utilitiesRoutes from "./views/utilities/UtilitiesRoutes";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 
 import materialRoutes from "./views/material-kit/MaterialRoutes";
@@ -17,7 +17,7 @@ const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/signin" />
+    component: () => <Redirect to="/landing" />
   }
 ];
 
@@ -33,7 +33,7 @@ const routes = [
   ...pageRoutes,
   ...landingRoutes,
   ...materialRoutes,
-  ...utilitiesRoutes,
+  // ...utilitiesRoutes,
   ...dragAndDropRoute,
   ...formsRoutes,
   ...mapRoutes,
