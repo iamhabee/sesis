@@ -11,8 +11,12 @@ export default function LoanGroupCard(props) {
     <div className="mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
       <Grid container spacing={2}>
         <Grid className="pt-5" item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="subtitle" className="font-bold text-green"> {props.data.group_name} </Typography>
+           <Typography variant="h6" className="font-bold"> {props.data.group_name} </Typography>
         </Grid>
+        <Grid className="pt-5" item lg={6} md={6} sm={12} xs={12}>
+          <Typography variant="subtitle" className="font-bold text-green"> {props.data.group_status ==0? "Pending": "Active"} </Typography>
+        </Grid>
+        
         <div className="py-4" />
         
         <Grid item lg={12} md={12} sm={12} xs={12}>

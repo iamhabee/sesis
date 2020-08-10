@@ -775,6 +775,7 @@ function replaceMember(user) {
         dispatch(
           alertActions.success(user.message)
         );
+        window.location.reload()
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -804,6 +805,7 @@ function removeMember(user) {
         dispatch(
           alertActions.success(user.message)
         );
+        window.location.reload()
       },
       (error) => {
         dispatch(failure(error.toString()));

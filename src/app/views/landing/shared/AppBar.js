@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -35,7 +36,7 @@ export default function AppAppBar() {
           <Typography variant="h6" className="text-white" style={{color:"#fff", flexGrow: 1, marginLeft: 25,}}>
             News
           </Typography>
-          <Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button>
+          <Link to="/signin"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button></Link>
         </Toolbar>
       </AppBar>
     </div>

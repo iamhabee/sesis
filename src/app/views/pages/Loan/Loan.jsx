@@ -799,7 +799,7 @@ render(){
                 borderTopLeftRadius:20}}>
             {isFetching? <Typography variant="h6">Loading...</Typography>:
             loan_group.length == 0?
-            <Typography variant="h6">You currently do not belong to any group</Typography>:
+            <Typography variant="p" className="font-bold">You currently do not belong to any group</Typography>:
             loan_group.map((data, index) => (
               <LoanGroupCard key={index} data={data} details={()=>this.handleCreateDetails(data.group_id)} 
               manage={()=>this.handleCreateManage(data.group_id)}
@@ -843,19 +843,19 @@ render(){
               {tab == 0?
               isFetching? <Typography variant="h6">Loading...</Typography>:
               loan_details.length == 0?
-                <Typography variant="h6">You currently do not have any ongoing loan</Typography>:
+                <Typography variant="p" className="font-bold">You currently do not have any ongoing loan</Typography>:
               loan_details.map((data, index) => (
                 <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
               )):tab == 1?
               isFetching? <Typography variant="h6">Loading...</Typography>:
               Completed.length == 0?
-                <Typography variant="h6">You currently do not have any Completed loan</Typography>:
+                <Typography variant="p" className="font-bold">You currently do not have any Completed loan</Typography>:
               Completed.map((data, index) => (
                 <LoanCards key={index} data={data} status={false} view={()=>this.handleCreateManageLoan(data.id)}/>
               )):
               isFetching? <Typography variant="h6">Loading...</Typography>:
               loan_activities.length == 0?
-                <Typography variant="h6">You currently do not have any loan that require your approval</Typography>:
+                <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
               loan_activities.map((data, index) =>(
                 <LoanApprovalCard key={index} data={data}
                 accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
