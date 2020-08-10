@@ -464,7 +464,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                 </Typography>
               </Card>
               {data.payment_method == "Bank Account" && 
-              <PayOption callback={()=>this.callback} amount={data.amount}/>}
+              <PayOption callback={this.callback} amount={data.amount}/>}
             </Grid>
           </Grid>
           {this.props.savings &&

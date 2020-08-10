@@ -401,7 +401,8 @@ tabbed = (id) => {
                           style={{ color:"#fff"}}>
                             Buy Slot
                         </Button>}
-                        {invest_data.payment_method == "Bank Account" && <PayOption amount={invest_data.total} callback={this.callback}/>}
+                        {invest_data.payment_method == "Bank Account" && 
+                        <PayOption amount={invest_data.total} callback={this.callback}/>}
                       </Grid>
                     </Grid>
                   </Card>

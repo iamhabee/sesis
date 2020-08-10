@@ -20,14 +20,26 @@ export default function LoanCards(props) {
       <Grid container spacing={2}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="h6"> Group Name </Typography>
-          <Typography variant="subtitle" color="text-secondary font-bold"> Loan Amount</Typography>
-          <Typography variant="subtitle" color="text-secondary font-bold"> Amount Repaid </Typography>
-          <Typography variant="subtitle" color="text-secondary font-bold"> Loan Status </Typography>
         </Grid>
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="h6"> {data.group_name} </Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Typography variant="subtitle" color="text-secondary font-bold"> Loan Amount</Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="subtitle" color="text-secondary font-medium"> {numberFormat(data.loan_amount)} </Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Typography variant="subtitle" color="text-secondary font-bold"> Amount Repaid </Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="subtitle" color="text-secondary font-medium"> {numberFormat(data.repaid)} </Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Typography variant="subtitle" color="text-secondary font-bold"> Loan Status </Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="subtitle" color="text-secondary font-medium">{data.loan_status == 0? "Pending":data.loan_status == 1?"Processing":data.loan_status == 2?"Approved": "Completed"}</Typography>
         </Grid>
         <div className="py-4" />

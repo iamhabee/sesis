@@ -413,7 +413,7 @@ handleClose() {
                   </Typography>
                 </Card>
                 {fund_data.payment_method == "Bank Account" && 
-                <PayOption callback={()=>this.callback} amount={fund_data.amount}/>}
+                <PayOption callback={this.callback} amount={fund_data.amount}/>}
               </Grid>
             </Grid>
           </ValidatorForm>
