@@ -589,7 +589,7 @@ function logout() {
   localStorage.removeItem("user");
   localStorage.removeItem("name");
   localStorage.removeItem("email");
-  // localStorage.setItem("lasturl", "");
+  localStorage.removeItem("lasturl");
 }
 
 function relogin(email) {

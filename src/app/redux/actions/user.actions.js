@@ -84,8 +84,6 @@ function login(username, password) {
         dispatch(failure(error.toString()));
         if(error.toString() == "Invalid Email or Password"){
           dispatch(alertActions.error( "Invalid Email or Password"));
-        }else{
-          dispatch(alertActions.error("Internet Error, Please check your internet and try again"));
         }
       }
     );
