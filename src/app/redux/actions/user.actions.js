@@ -153,6 +153,7 @@ function createRegularSavings(user) {
         dispatch(success());
         history.push("/savings-tab/regular");
         dispatch(alertActions.success(user.message));
+        window.location.reload()
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1453,7 +1454,7 @@ function resetpassword(user) {
         dispatch(success());
         history.push("/settings");
         dispatch(alertActions.success(user.message));
-        window.location.reload()
+        // window.location.reload()
       },
       (error) => {
         dispatch(failure(error.toString()));

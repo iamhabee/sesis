@@ -23,6 +23,7 @@ export default function SingleInvestmentcard(props) {
           <Typography variant="subtitle">Current Value: {numberFormat(investment.current_values)} </Typography><br/>
           <Typography variant="subtitle" color="text-secondary" className="font-medium">Expected Ret. {numberFormat(investment.expected_returns)} </Typography><br/>
           <Typography variant="subtitle" color="text-secondary" className="font-medium">Start Date: {investment.start_date} </Typography><br/>
+          <Typography variant="subtitle" color="text-secondary" className="font-medium">Application Date: {investment.application_date} </Typography><br/>
           <Typography variant="subtitle" color="text-secondary" className="font-medium">Maturity Date: {investment.maturity_date} </Typography><br/>
         </Grid>
       </Grid>

@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import SimpleTable from "./SimpleTable";
 import PaginationTable from "./PaginationTable";
 import { Breadcrumb, SimpleCard } from "matx";
-import {getConfig, checkToken} from '../../../config/config'
+import {getConfig} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { withRouter } from "react-router-dom";
@@ -16,7 +16,6 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 class Transaction extends Component {
   constructor(props) {
     super(props);
-    // checkToken()
     this.state = {
       transactions: [],
       loading: true,

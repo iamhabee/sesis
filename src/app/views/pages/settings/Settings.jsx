@@ -6,7 +6,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Breadcrumb } from "matx";
 import AccountProfile from './components/AccountProfile';
 import AccountDetails from './components/AccountDetails';
-import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {getConfig, numberFormat, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -42,7 +42,7 @@ constructor(props){
       profile_pic:""
     },
     password_data:{
-      email:email,
+      old_password:"",
       new_password:"",
       password_confirmation:""
     },
@@ -241,7 +241,7 @@ handleSubmitPassword(event) {
   event.preventDefault();
   const { password_data } = this.state;
   console.log(password_data)
-  if (password_data.email && password_data.new_password && password_data.password_confirmation) {
+  if (password_data.old_password && password_data.new_password && password_data.password_confirmation) {
     if(password_data.new_password == password_data.password_confirmation){
       this.props.resetpassword(password_data);
     }else{
@@ -421,6 +421,16 @@ render(){
               onError={errors => null}>
               <Grid container spacing={6}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextValidator
+                      className="mb-4 w-full"
+                      label="Enter Old Password"
+                      onChange={this.handleChangePassword}
+                      type="password"
+                      name="old_password"
+                      value={password_data.old_password}
+                      validators={[ "required" ]}
+                      errorMessages={["this field is required"]}
+                    />
                   <TextValidator
                     className="mb-4 w-full"
                     label="Enter New Password"

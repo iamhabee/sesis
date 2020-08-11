@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import SimpleForm from "../forms/SimpleForm";
 import {LoanFormStep1, LoanFormStep2, SummaryForm} from './CustomForm'
-import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {getConfig, numberFormat, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";

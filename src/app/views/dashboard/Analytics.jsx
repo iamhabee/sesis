@@ -8,7 +8,7 @@ import RowCards from "./shared/RowCards";
 import { withRouter } from "react-router-dom";
 import UpgradeCard from "./shared/UpgradeCard";
 import { withStyles } from "@material-ui/styles";
-import { checkToken, payID, getConfig, numberFormat } from '../../config/config'
+import { payID, getConfig, numberFormat } from '../../config/config'
 import swal from 'sweetalert'
 import { userActions } from "../../redux/actions/user.actions";
 import { connect } from "react-redux";
@@ -39,7 +39,6 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 class Dashboard1 extends Component {
   constructor(props){
     super(props)
-    checkToken()
     let email =  localStorage.getItem('email');
     var currentDate = new Date();
     let month = currentDate.getMonth() + 1;

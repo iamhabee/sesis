@@ -122,10 +122,14 @@ export const getReference = () => {
   return text;
 }
 
-export const checkToken = ()=>{
+export const setLastUrl = () =>{
   var lasturl = window.location.href;
   var pathname = new URL(lasturl).pathname;
   localStorage.setItem("lasturl", pathname);
+}
+
+export const checkToken = ()=>{
+  let pathname = localStorage.getItem("lasturl");
   let token =  JSON.parse(localStorage.getItem('user'));
     if (token == null) {
       history.push({
@@ -133,7 +137,7 @@ export const checkToken = ()=>{
       });
       }else{
         history.push({
-          pathname: "/dashboard"
+          pathname: pathname
         });
       }
 }

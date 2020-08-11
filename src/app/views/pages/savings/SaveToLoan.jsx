@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
-import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {getConfig, numberFormat, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";

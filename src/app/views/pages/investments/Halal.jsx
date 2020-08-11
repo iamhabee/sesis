@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from 'react';
-import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {getConfig, numberFormat, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import SingleInvestmentcard from './components/SingleInvestmentCard';
 import PayOption from 'app/views/dashboard/shared/PayOption';

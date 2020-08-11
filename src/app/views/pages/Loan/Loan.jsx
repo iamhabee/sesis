@@ -7,7 +7,7 @@ import {Typography, Grid, AppBar, Dialog, IconButton, Toolbar, Card, Avatar, Lis
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import DoneAll from '@material-ui/icons/DoneAll';
 import CloseIcon from "@material-ui/icons/Close";
-import {getConfig} from '../../../config/config'
+import {getConfig, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -29,6 +29,7 @@ import LoanApprovalCard from "./components/LoanApprovalCard";
 class Loan extends Component {
   constructor(props){
     super(props)
+    setLastUrl()
     let user = JSON.parse(localStorage.getItem('user'));
     var currentDate = new Date();
     let month = currentDate.getMonth() + 1;
@@ -139,10 +140,10 @@ class Loan extends Component {
   }
 
 callback = (response) => {
-  const { data, key } = this.state;
-  if (data.trans_date && data.repayment_amount) {
-    this.setState({data:{...data, paystack_id: response.reference }}, () => {
-        this.props.addLoanRepayment(data);
+  const { repay_data, key } = this.state;
+  if (repay_data.trans_date && repay_data.repayment_amount) {
+    this.setState({repay_data:{...repay_data, paystack_id: response.reference }}, () => {
+        this.props.addLoanRepayment(repay_data);
     })
   }
 }

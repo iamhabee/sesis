@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
-import {getConfig, numberFormat, payID, checkToken} from '../../../config/config'
+import {getConfig, numberFormat, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import CustomCarousel from "./components/CustomCarousel";
 import Loading from "matx/components/MatxLoading/MatxLoading";
@@ -108,12 +108,12 @@ render(){
           <Grid container spacing={3} >
             <Grid item lg={4} md={4} >
               <Link to="/investment/market">
-                <CustomCard icon={"money"} borderColor={"#0a1f67"} colors={"#e686d6"} textcolor={"#000"} amount={numberFormat(market)} title={"Market Investments"} subtitle={"Save regularly on Daily, Weekly or Monthly timeframe."} />
+                <CustomCard icon={"store"} borderColor={"#0a1f67"} colors={"#e686d6"} textcolor={"#000"} amount={numberFormat(market)} title={"Market Investments"} subtitle={"Save regularly on Daily, Weekly or Monthly timeframe."} />
               </Link>
             </Grid>
             <Grid item lg={4} md={4} >
               <Link to="/investment/halal">
-              <CustomCard icon={"track_changes"} borderColor={"#0a1f67"} colors={"#b7c75e"} textcolor={"#000"} amount={numberFormat(halal)} title={"Halal Investments"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
+              <CustomCard icon={"trending_up"} borderColor={"#0a1f67"} colors={"#b7c75e"} textcolor={"#000"} amount={numberFormat(halal)} title={"Halal Investments"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
               </Link>
             </Grid>
             <Grid item lg={4} md={4} >

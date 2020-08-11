@@ -18,22 +18,9 @@ export default function LoanApprovalCard(props) {
     <div className="pt-7 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
       <Grid container spacing={2}>
         <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="h6">Group Name</Typography>
-        </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="h6"> {props.data.group_name} </Typography>
-        </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="subtitle" color="text-secondary font-bold">Loan Amount</Typography>
-        </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="subtitle" color="text-secondary font-medium"> {numberFormat(props.data.loan_amount)}</Typography>
-        </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="subtitle" color="text-secondary font-bold">Repayment Amount</Typography>
-        </Grid>
-        <Grid item lg={6} md={6} sm={12} xs={12}>
-          <Typography variant="subtitle" color="text-secondary font-medium"> {numberFormat(props.data.repayment_amount)}</Typography>
+          <Typography variant="h6">{props.data.group_name}</Typography><br/>
+          <Typography variant="subtitle" color="text-secondary font-bold">Loan Amount: {numberFormat(props.data.loan_amount)}</Typography><br/>
+          <Typography variant="subtitle" color="text-secondary font-bold">Repayment Amount {numberFormat(props.data.repayment_amount)}</Typography><br/>
         </Grid>
         <div className="py-4" />
         
