@@ -427,6 +427,7 @@ tabbed = (id) => {
         
         {/* Invest Dialog start */}
         <Dialog
+          scroll="body"
           open={showInvest}
           onClose={this.handleCloseInvest}>
             <AppBar color="secondary" style={{position: "relative"}}>

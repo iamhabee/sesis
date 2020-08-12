@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Typography, Grid, Box, ButtonGroup, Button, Switch} from '@material-ui/core';
+import { Typography, Grid, Box, ButtonGroup, Button, Switch, Divider} from '@material-ui/core';
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -23,23 +23,27 @@ export default function TargetTransactionCard(props) {
   return (
     <div className="pt-7 mb-4 px-2 bg-default" style={{flexGrow: 1, border:1, borderStyle:"solid", borderColor:"#e74398", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
       <Grid container spacing={2}>
-        <Grid item lg={12} md={12} sm={12} xs={12}>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="h6"> {props.title} </Typography>
         </Grid>
+        <Grid item lg={6} md={6} sm={12} xs={12}>
+        <Switch
+            checked={props.auto_status? true:false}
+            onChange={props.autoSave}
+            value="checked"
+            color="secondary"
+          />
+          <Typography variant="h6">
+            {props.auto_status? "Turn OFF Auto save": "Turn ON Auto save"}
+          </Typography>
+        </Grid>
+        <Divider variant="middle"/>
         <div className="py-4" />
         <Grid item lg={6} md={6} sm={12} xs={12}>
           <Typography variant="h6"> {props.amount} </Typography>
           <Typography variant="caption" color="text-secondary">{`${Math.round(
                 props.value,
               )}% Complete`}</Typography>
-        </Grid>
-        <Grid>
-          <Switch
-            checked={props.auto_status? true:false}
-            onChange={props.handleAutoSave}
-            value="checked"
-            color="secondary"
-          />
         </Grid>
         <div className="py-4" />
         <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -61,6 +65,7 @@ export default function TargetTransactionCard(props) {
           <Button onClick={props.view}>View</Button>
         </ButtonGroup>
         }
+        
         </Grid>
       </Grid>
     </div>

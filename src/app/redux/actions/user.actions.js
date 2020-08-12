@@ -19,6 +19,8 @@ export const userActions = {
   addFundTargetSavings,
   editTargetSavings,
   exitTargetSavings,
+  activateTargetAutosave,
+  deactivateTargetAutosave,
 
   createSaveToLoanSavings,
   withdrawSaveToLoanSavings,
@@ -946,6 +948,64 @@ function exitTargetSavings(user) {
     dispatch(request(user));
 
     userService.exitTargetSavings(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/savings-tab/target");
+        dispatch(alertActions.success(user.message));
+        
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function activateTargetAutosave(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.activateTargetAutosave(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/savings-tab/target");
+        dispatch(alertActions.success(user.message));
+        
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.SAVINGS_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.SAVINGS_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.SAVINGS_FAILURE, error };
+  }
+}
+
+function deactivateTargetAutosave(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.deactivateTargetAutosave(user).then(
       (user) => {
         dispatch(success());
         history.push("/savings-tab/target");

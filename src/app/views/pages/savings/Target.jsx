@@ -74,7 +74,7 @@ class Target extends Component{
         balance: 0.00,
         tdetails: [],
         completed: [],
-        loading: true,  
+        loading: true,
         autoSave: false,
         pagination:[],
         err:"",
@@ -96,6 +96,7 @@ class Target extends Component{
         this.handleChangeEdit = this.handleChangeEdit.bind(this);
         this.handleChangeFund = this.handleChangeFund.bind(this);
         this.handleAutoSave = this.handleAutoSave.bind(this);
+        this.handleTargetAutoSave = this.handleTargetAutoSave.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleStopPlan = this.handleStopPlan.bind(this);
         this.handleView = this.handleView.bind(this);
@@ -120,7 +121,7 @@ componentDidMount(){
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      }
+      }console.log(data)
       if(data.success == false){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
@@ -209,15 +210,61 @@ close = () => {
 console.log("Payment closed");
 }
 handleAutoSave = event => {
-  if(event.target.checked == false){
-    this.setState({autoSave: event.target.checked});
-    this.props.deactivateAutoSave()
-  }else{
     this.setState({show:true });
-  }
 }
 handleQuickSave = event => {
     this.setState({showSave: true});
+}
+
+
+handleTargetAutoSave = (id, e) => {
+  if(e.target.checked == false){
+    swal("Are you sure you want to Deactivate auto save?", {
+      buttons: {
+        cancel: "Cancel",
+        
+        confirm: {
+          text: "Confirm",
+          value: "catch"}
+      },
+    })
+    .then((value) => {
+      switch (value) {
+        case "catch":
+        this.props.deactivateTargetAutosave(id)
+          swal("Loading...", {
+            buttons: false
+          });
+          break;
+     
+        default:
+          swal("cancelled!");
+      }
+    });
+  }else{
+    swal("Are you sure you want to Activate auto save?", {
+      buttons: {
+        cancel: "Cancel",
+        
+        confirm: {
+          text: "Confirm",
+          value: "catch"}
+      },
+    })
+    .then((value) => {
+      switch (value) {
+        case "catch":
+        this.props.activateTargetAutosave(id)
+          swal("Loading...", {
+            buttons: false
+          });
+          break;
+     
+        default:
+          swal("cancelled!");
+      }
+    });
+  }
 }
 
 handleStopPlan = (id) => {
@@ -232,7 +279,6 @@ handleStopPlan = (id) => {
   })
   .then((value) => {
     switch (value) {
- 
       case "catch":
         this.props.exitTargetSavings(id);
         swal("Loading...", {
@@ -409,8 +455,11 @@ completeTab(){
               borderTopLeftRadius:20}}>
                 {tdetails.length != 0?
                 tdetails.map((data, index)=>(
-                  <TargetTransactionCard key={index} status={false} withdrawStatus={data.withdraw_status} amount={numberFormat(data.targeted_amount)} 
-                  value={(100 * data.target_balance)/data.targeted_amount} 
+                  <TargetTransactionCard key={index} status={false} 
+                  withdrawStatus={data.withdraw_status} amount={numberFormat(data.targeted_amount)} 
+                  value={(100 * data.target_balance)/data.targeted_amount}
+                  autoSave={(e)=>this.handleTargetAutoSave(data.id, e)}
+                  auto_status={data.auto_status}
                   title={data.target_name}  
                   stop={()=>this.handleStopPlan(data.id)}
                   view={()=>this.handleView(data.id)}
@@ -928,7 +977,9 @@ const actionCreators = {
   addFundTargetSavings:userActions.addFundTargetSavings,
   withdrawTargetSavings: userActions.withdrawTargetSavings,
   editTargetSavings: userActions.editTargetSavings,
-  exitTargetSavings: userActions.exitTargetSavings
+  exitTargetSavings: userActions.exitTargetSavings,
+  activateTargetAutosave: userActions.activateTargetAutosave,
+  deactivateTargetAutosave: userActions.deactivateTargetAutosave,
 };
 
 function mapState(state) {

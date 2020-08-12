@@ -23,6 +23,8 @@ export const userService = {
   addFundTargetSavings,
   editTargetSavings,
   exitTargetSavings,
+  deactivateTargetAutosave,
+  activateTargetAutosave,
   // target savings
   createSaveToLoanSavings,
   withdrawSaveToLoanSavings,
@@ -375,6 +377,26 @@ function exitTargetSavings(id) {
     // body: JSON.stringify(data),
   };
   return fetch( getConfig("exitTargetSavings") + id + "?token=" + user.token, requestOptions ).then(handleResponse);
+}
+
+function activateTargetAutosave(id) {
+  let user = JSON.parse(localStorage.getItem("user"));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(data),
+  };
+  return fetch( getConfig("activateTargetAutosave") + id + "?token=" + user.token, requestOptions ).then(handleResponse);
+}
+
+function deactivateTargetAutosave(id) {
+  let user = JSON.parse(localStorage.getItem("user"));
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    // body: JSON.stringify(data),
+  };
+  return fetch( getConfig("deactivateTargetAutosave") + id + "?token=" + user.token, requestOptions ).then(handleResponse);
 }
 
 function withdrawTargetSavings(data) {

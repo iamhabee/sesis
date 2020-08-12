@@ -10,7 +10,6 @@ export const alertActions = {
 function success(message) {
     swal({
         text: `${message}`,
-        timer: 8000,
     }).then(()=>{
         window.location.reload()
     })

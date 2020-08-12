@@ -292,37 +292,37 @@ confirmAlert=(task, id, group_id, loan_id)=>{
               case "exit":
                   this.props.exitGroup(id);
                   if(this.props.savings){
-                    swal("Loading...")
+                    swal("Loading...", {buttons: false})
                   }
                   break;
               case "join":
                   this.props.joinGroup(user.email, id)
                   if(this.props.savings){
-                    swal("Loading...")
+                    swal("Loading...", {buttons: false})
                   }
                   break
               case "reject":
                   this.props.rejectGroup(id)
                   if(this.props.savings){
-                    swal("Loading...")
+                    swal("Loading...", {buttons: false})
                   }
                   break
               case "accept":
                   this.props.acceptLoan(group_id, loan_id)
                   if(this.props.savings){
-                    swal("Loading...")
+                    swal("Loading...", {buttons: false})
                   }
                   break
               case "decline":
                   this.props.declineLoan(group_id, loan_id);
                   if(this.props.savings){
-                    swal("Loading...")
+                    swal("Loading...", {buttons: false})
                   }
                   break
               case "Resend Notification":
                 this.props.resendGroupNotification(id);
                 if(this.props.savings){
-                  swal("Loading...")
+                  swal("Loading...", {buttons: false})
                 }
                 break
                 // case "Resend Loan Notification":

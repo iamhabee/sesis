@@ -32,8 +32,10 @@ const serverVars = {
   editTargetSavings: "targets/",
   addFundTargetSavings: "targets/add_funds/",
   withdrawTargetSavings: "targets/add_withdrawal/",
-  targetDetails:"targets/details/", 
-  // save to loan savings   
+  targetDetails:"targets/details/",
+  activateTargetAutosave: "targetsActivateAutoSave/",
+  deactivateTargetAutosave: "targetsDeactivateAutoSave/",
+  // save to loan savings
   saveSaveToLoanSavings: "save_loan/store?token=",
   getSaveToLoanSavings: "save_loan?token=",
   editSaveToLoanSavings: "save_loan/modify/",
@@ -208,6 +210,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.withdrawTargetSavings;
     case "targetDetails":
       return serverVars.baseUrl + serverVars.targetDetails;
+    case "activateTargetAutosave":
+      return serverVars.baseUrl + serverVars.activateTargetAutosave;
+    case "deactivateTargetAutosave":
+      return serverVars.baseUrl + serverVars.deactivateTargetAutosave;
     // save to loan savings api
     case "editSaveToLoanSavings":
       return serverVars.baseUrl + serverVars.editSaveToLoanSavings;
