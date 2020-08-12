@@ -221,7 +221,29 @@ handleQuickSave = event => {
 }
 
 handleStopPlan = (id) => {
-  this.props.exitTargetSavings(id);
+  swal("Are you sure you want to stop this plan?", {
+    buttons: {
+      cancel: "Cancel",
+      
+      confirm: {
+        text: "Confirm",
+        value: "catch"}
+    },
+  })
+  .then((value) => {
+    switch (value) {
+ 
+      case "catch":
+        this.props.exitTargetSavings(id);
+        swal("Loading...", {
+          buttons: false
+        });
+        break;
+   
+      default:
+        swal("cancelled!");
+    }
+  });
 }
 handleView = (id) => {
   this.setState({isLoading:true})

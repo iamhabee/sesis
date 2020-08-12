@@ -30,8 +30,11 @@ const CustomCard = (props) => {
         <Typography variant="subtitle">{props.subtitle}</Typography>
         </Grid>
         <div className="py-8" />
-        <Grid item>
+        <Grid item lg={6} md={6} sm={12}>
         <Typography variant="h6">{props.amount}</Typography>
+        </Grid>
+        <Grid item lg={6} md={6} sm={12}>
+        <Typography variant="h6">{props.investment_amount}</Typography>
         </Grid>
       </Grid>
     </div>

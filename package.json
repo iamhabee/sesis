@@ -17,6 +17,7 @@
     "cross-fetch": "^3.0.4",
     "css-vars-ponyfill": "^2.1.2",
     "date-fns": "^2.0.0-alpha.34",
+    "dateformat": "^3.0.3",
     "downshift": "^3.2.10",
     "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",

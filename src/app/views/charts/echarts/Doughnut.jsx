@@ -2,7 +2,8 @@ import React from "react";
 import ReactEcharts from "echarts-for-react";
 import { withStyles } from "@material-ui/styles";
 
-const DoughnutChart = ({ height, color = [], theme }, props) => {
+const DoughnutChart = ({ height, color = [], theme, regular_value, target_value, loan_value, name1, name2, name3 }) => {
+  let total = regular_value + target_value + loan_value
   const option = {
     legend: {
       show: true,
@@ -78,15 +79,15 @@ const DoughnutChart = ({ height, color = [], theme }, props) => {
         },
         data: [
           {
-            value: 25,
-            name: "Target"
+            value: (target_value/total)*100,
+            name: name2
           },
           {
-            value: 15,
-            name: "Regular"
+            value: (regular_value/total)*100,
+            name: name1
           },
-          { value: 45, 
-            name: "Save To Loan" 
+          { value: (loan_value/total)*100, 
+            name: name3 
           }
         ],
         itemStyle: {

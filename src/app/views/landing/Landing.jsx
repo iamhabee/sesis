@@ -24,17 +24,25 @@ class Landing extends Component {
   render(){
     return (
       <div style={{
-        backgroundImage: `url(${"/assets/images/monbg.png"})`,
+        backgroundImage: `url(${"/assets/images/new-bg.jpeg"})`,
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
-        height: "100%"
+        minHeight: "100%"
         }}>
           <AppAppBar login={this.handleShowLogin} />
           <Grid container spacing={2}>
             <Grid item lg={9} md={9} sm={12} xs={12}>
               <SignUp />
+            </Grid>
+            <Grid item lg={3} md={3} sm={12} xs={12}>
+              <CustomSlider />
+            </Grid>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item lg={9} md={9} sm={12} xs={12}>
+              
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <CustomSlider />

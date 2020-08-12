@@ -124,15 +124,8 @@ render(){
               ref={this.imageUploader}
               style={{display:"none"}}/>
         </div>
-        <div style={{marginTop: 20}}>
-          <Typography variant="body1">Profile Completeness: {this.props.completeness}%</Typography>
-          <LinearProgress
-            value={this.props.completeness}
-            variant="determinate"
-          />
-        </div>
+          <Typography variaant="subtitle">click image to upload</Typography>
       </CardContent>
-      <Divider />
       <CardActions>
         <Button
           type="submit"
@@ -147,6 +140,14 @@ render(){
           size={24}
         />)}
       </CardActions>
+      <div style={{marginTop: 20, marginBottom:20}}>
+        <Typography variant="body1">Profile Completeness: {this.props.completeness}%</Typography>
+        <LinearProgress
+          value={this.props.completeness}
+          variant="determinate"
+        />
+      </div>
+      <Divider />
     </form>
     </Card>
   );

@@ -56,7 +56,7 @@ class StatCards extends Component {
             </div>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Card className="play-card p-sm-24" style={{backgroundColor:"#8af280"}} elevation={6}>
             <div className="flex items-center">
               <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>trending_up</Icon>
@@ -67,7 +67,7 @@ class StatCards extends Component {
             </div>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Card className="play-card p-sm-24" style={{backgroundColor:"#7446f2"}} elevation={6}>
             <div className="flex items-center">
               <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>store</Icon>
@@ -78,7 +78,18 @@ class StatCards extends Component {
             </div>
           </Card>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
+          <Card className="play-card p-sm-24" style={{backgroundColor:"#22591d"}} elevation={6}>
+            <div className="flex items-center">
+              <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>money</Icon>
+              <div className="ml-3">
+                <Typography className="text-white" variant="text-16">Loan Investment</Typography>
+                <h6 className="m-0 mt-1 text-white text-22">{this.props.loan_investment}</h6>
+              </div>
+            </div>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={3}>
           <Card className="play-card p-sm-24" elevation={6}>
             <div className="flex items-center">
               {/* <Icon style={{fontSize: "44px", opacity: 0.6, color: "#fff"}}>shopping_cart</Icon> */}

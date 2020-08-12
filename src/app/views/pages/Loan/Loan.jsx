@@ -92,6 +92,7 @@ class Loan extends Component {
       showReplace:false,
       showLoan:false,
       showAction:false,
+      showLoanApproval:false,
       showGroup:false,
       showApproval:false,
       showManage:false,
@@ -108,6 +109,7 @@ class Loan extends Component {
     this.approvalTab = this.approvalTab.bind(this);
     this.fetchLoanGroupDetails = this.fetchLoanGroupDetails.bind(this);
     this.fetchLoanDetails = this.fetchLoanDetails.bind(this);
+    this.fetchLoanApprovals = this.fetchLoanApprovals.bind(this);
     this.fetchAllLoanApi = this.fetchAllLoanApi.bind(this);
     this.confirmAlert = this.confirmAlert.bind(this)
     this.handleSubmitReplace = this.handleSubmitReplace.bind(this);
@@ -118,6 +120,7 @@ class Loan extends Component {
     this.handleChangeGroup = this.handleChangeGroup.bind(this);
     this.handleSubmitRepay = this.handleSubmitRepay.bind(this);
     this.handleChangeRepay = this.handleChangeRepay.bind(this);
+    this.handleShowApproval = this.handleShowApproval.bind(this);
     this.handleShowAction = this.handleShowAction.bind(this);
     this.handleCreateReplace = this.handleCreateReplace.bind(this);
     this.handleCreateLoan = this.handleCreateLoan.bind(this);
@@ -126,6 +129,7 @@ class Loan extends Component {
     this.handleCreateDetails = this.handleCreateDetails.bind(this);
     this.handleCreateRepayment = this.handleCreateRepayment.bind(this);
     this.handleCreateManageLoan = this.handleCreateManageLoan.bind(this);
+    this.handleCloseApproval = this.handleCloseApproval.bind(this);
     this.handleCloseAction = this.handleCloseAction.bind(this);
     this.handleCloseReplace = this.handleCloseReplace.bind(this);
     this.handleCloseLoan = this.handleCloseLoan.bind(this);
@@ -335,6 +339,33 @@ confirmAlert=(task, id, group_id, loan_id)=>{
         console.log("close")
       }
     });
+}
+
+fetchLoanApprovals= (id)=>{
+  let requestOptions = this.getRequestOpt
+  const {user} = this.state
+  fetch(getConfig("getLoanGroupActivities") + id +`?token=`+user.token, requestOptions)
+  .then(async response => {
+  const data = await response.json();
+  if (!response.ok) {
+      const error = (data && data.message) || response.statusText;
+      this.setState({loading:false})
+      return Promise.reject(error);
+  }console.log(data)
+  if(data.success == false){
+      this.setState({loan_activities: [], loading:false})
+  }else{
+      this.setState({loan_activities: data, loading:false})
+  }
+  
+})
+.catch(error => {
+  if (error === "Unauthorized") {
+      this.props.logout()
+    }else{
+      this.setState({loading:false});
+  }
+})
 }
 
 fetchAllLoanApi=(requestOptions)=>{
@@ -706,8 +737,15 @@ handleCreateManageLoan = (id) => {
   this.fetchLoanDetails(id)
   this.setState({showManageLoan: true});
 }
-
+handleShowApproval=(group_id)=>{
+  this.setState({loading:true})
+  this.fetchLoanApprovals(group_id)
+  this.setState({showLoanApproval: true});
+}
 // modal close handler
+handleCloseApproval() {
+  this.setState({showLoanApproval:false});
+}
 handleCloseReplace() {
   this.setState({showReplace:false});
 }
@@ -744,7 +782,7 @@ approvalTab(){
 }
 
 render(){
-  const {repayment_details, loan_approval, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
+  const {repayment_details, loan_approval, loan_activities, Completed, replace_data, isFetching, tab, showLoan, showReplace, showApproval, showLoanApproval, showManage, showGroup, group_table, group_id, request_id, code, group_request_status, group_member_status, showAction, group_name, loan_group, manage_details, loan_details, data, group_data, showDetails, showrepayment, showManageLoan, group_members, group_details, loading, repay_data} = this.state
   return (
     <div className="m-sm-30">
        <div className="mb-sm-30">
@@ -804,7 +842,12 @@ render(){
             loan_group.map((data, index) => (
               <LoanGroupCard key={index} data={data} details={()=>this.handleCreateDetails(data.group_id)} 
               manage={()=>this.handleCreateManage(data.group_id)}
-              actions={()=>this.handleShowAction(data.group_id, data.request_id, data.code, data.member_status, data.request_status)}/>
+              reject={()=>this.confirmAlert("reject", data.request_id, 0, 0)}
+              exit={()=>this.confirmAlert("exit", data.group_id, 0, 0)}
+              join={()=>this.confirmAlert("join", data.code, 0, 0)}
+              approval={()=>this.handleShowApproval(data.group_id)}
+              // actions={()=>this.handleShowAction(data.group_id, data.request_id, data.code, data.member_status, data.request_status)}
+              />
             ))}
             </div>
             </Grid>
@@ -826,12 +869,12 @@ render(){
                     style={{backgroundColor: tab == 0 ? "#04956a":tab == 1 ?"":"", color:tab == 0 ? "#fff":tab == 1 ?"":"#000"}}
                     onClick={this.ongoingTab}
                     >Ongoing</Button>
-                <Button 
+                {/* <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"outlined": "contained"}
                     style={{backgroundColor: tab == 0 ? "":tab == 1 ?"":"#04956a", color:tab == 0 ? "#000":tab == 1 ?"#000":"#fff"}}
                     onClick={this.approvalTab}
-                    >Approvals</Button>
+                    >Approvals</Button> */}
                 <Button 
                     size="small"
                     variant={tab == 0 ? "outlined" : tab == 1 ?"contained": "outlined"}
@@ -847,21 +890,21 @@ render(){
                 <Typography variant="p" className="font-bold">You currently do not have any ongoing loan</Typography>:
               loan_details.map((data, index) => (
                 <LoanCards key={index} data={data} status={true} repayment={()=>this.handleCreateRepayment(data.loan_id)} view={()=>this.handleCreateManageLoan(data.loan_id)}/>
-              )):tab == 1?
+              )):
               isFetching? <Typography variant="h6">Loading...</Typography>:
               Completed.length == 0?
                 <Typography variant="p" className="font-bold">You currently do not have any Completed loan</Typography>:
               Completed.map((data, index) => (
                 <LoanCards key={index} data={data} status={false} view={()=>this.handleCreateManageLoan(data.id)}/>
-              )):
-              isFetching? <Typography variant="h6">Loading...</Typography>:
-              loan_activities.length == 0?
-                <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
-              loan_activities.map((data, index) =>(
-                <LoanApprovalCard key={index} data={data}
-                accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
-                decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
               ))
+              // isFetching? <Typography variant="h6">Loading...</Typography>:
+              // loan_activities.length == 0?
+              //   <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
+              // loan_activities.map((data, index) =>(
+              //   <LoanApprovalCard key={index} data={data}
+              //   accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
+              //   decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
+              // ))
               }
             </div>
           </Grid>
@@ -1478,6 +1521,46 @@ render(){
       </List>
     </Dialog>
     {/* Show Group Action Dialog End */}
+
+    {/* Loan Approval Dialog Start */}
+    <Dialog
+      open={showLoanApproval}
+      onClose={this.handleCloseApproval}
+      scroll="body">
+      <AppBar style={{position: "relative", backgroundColor:"#04956a"}}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={this.handleCloseApproval}
+            aria-label="Close">
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" className="text-white" style={{ flex: 1, color:"#fff"}}>
+            Loan Approvals
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Card className="px-6 pt-2 pb-4">
+        <Grid container spacing={2}>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            {loading ?
+            <Typography>Loading...</Typography>:
+            <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+               { loan_activities.length == 0?
+                 <Typography variant="p" className="font-bold">You currently do not have any loan that require your approval</Typography>:
+                loan_activities.map((data, index) =>(
+                 <LoanApprovalCard key={index} data={data}
+                 accept={()=>this.confirmAlert("accept", 0, data.loan_group, data.loan_id)} 
+                 decline={()=>this.confirmAlert("decline", 0, data.loan_group, data.loan_id)}/>
+               ))}
+            </div>
+            }
+          </Grid>
+        </Grid>
+      </Card>
+    </Dialog>
+    {/* Loan Approval Dialog End */}
     </div>
   );
 }

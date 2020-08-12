@@ -24,6 +24,7 @@ class Savings extends Component {
       target:0.00,
       regular:0.00,
       loan:0.00,
+      loan_investment:0.00,
       loading:true
     }
     this.fetchBalances = this.fetchBalances.bind(this);
@@ -37,6 +38,24 @@ class Savings extends Component {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
   };
+    fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
+    .then(async response => {
+        const loan_data = await response.json();
+        if (!response.ok) {
+            const error = (loan_data && loan_data.message) || response.statusText;
+            return Promise.reject(error);
+        }
+        if(loan_data.success == false){
+          this.setState({loan_investment: 0, loan:0})  
+        }else{
+          this.setState({loan_investment: loan_data[0], loan:loan_data[1]})  
+        }
+    })
+    .catch((error) => {
+        if (error === "Unauthorized") {
+          this.props.logout()
+        }
+    });
     fetch(getConfig('fetchAllBalances'), requestOptions)
       .then(async response => {
       const dat = await response.json();
@@ -47,7 +66,7 @@ class Savings extends Component {
       if(dat.success == false || dat == 0){
         this.setState({total: 0, regular: 0, target: 0, loan: 0, loading:false})
       }else{
-        this.setState({total: dat[0], regular: dat[1], target: dat[2], loan: dat[3], loading:false})
+        this.setState({total: dat[0], regular: dat[1], target: dat[2], loading:false})
       }
      })
       .catch(error => {
@@ -59,7 +78,7 @@ class Savings extends Component {
   }
 
 render(){
- const {total, target, regular, loan, loading} = this.state
+ const {total, target, regular, loan, loan_investment, loading} = this.state
   return (
     <div className="m-sm-30">
         <div className="mb-sm-30">
@@ -101,7 +120,7 @@ render(){
             </Grid>
             <Grid item lg={4} md={4} >
               <Link to="/savings-tab/savetoloan">
-                <CustomCard icon={"money"} colors={"#e7f6ff"} borderColor={"#2b80e8"} textcolor={"#2295f2"} amount={numberFormat(loan)} title={"Save To Loan Saving"} subtitle={"Flexible savings to get our free interest loan"}/>
+                <CustomCard icon={"money"} colors={"#e7f6ff"} borderColor={"#2b80e8"} textcolor={"#2295f2"} amount={numberFormat(loan)} investment_amount={numberFormat(loan_investment)} title={"Save To Loan"} subtitle={"Flexible savings to get our free interest loan"}/>
               </Link>
             </Grid>
           </Grid>

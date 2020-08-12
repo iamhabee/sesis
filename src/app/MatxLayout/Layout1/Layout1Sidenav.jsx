@@ -9,7 +9,7 @@ import {
   setDefaultSettings
 } from "app/redux/actions/LayoutActions";
 import { logoutUser } from "app/redux/actions/UserActions";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { MatxMenu } from "matx";
 import Sidenav from "../SharedCompoents/Sidenav";
 import Brand from "../SharedCompoents/Brand";
@@ -121,33 +121,40 @@ class Layout1Sidenav extends Component {
             {name}
           </span>
           <div className="user__menu">
-            <MatxMenu
-              menuButton={
+            {/* <MatxMenu
+              menuButton={ */}
                 <Tooltip title="Settings">
-                  <IconButtonWhite
-                    aria-label="Delete"
-                    className=""
-                    size="small"
-                  >
-                    <IconSmall> settings </IconSmall>
-                  </IconButtonWhite>
+                  <Link to="/settings" >
+                    <IconButtonWhite
+                      aria-label="Delete"
+                      className=""
+                      size="small" >
+                      <IconSmall> settings </IconSmall>
+                    </IconButtonWhite>
+                  </Link>
                 </Tooltip>
-              }
-            >
-              <MenuItem className="flex items-center">
+               {/* }
+            > */}
+              {/* <MenuItem className="flex items-center">
+                <Link to="/dashboard" >
                 <Icon> home </Icon>
                 <span className="pl-4"> Home </span>
+                </Link>
               </MenuItem>
               <MenuItem className="flex items-center">
+                <Link to="/settings" >
                 <Icon> settings </Icon>
                 <span className="pl-4"> Account Setting </span>
+                </Link>
               </MenuItem>
-            </MatxMenu>
+            </MatxMenu> */}
 
-            <Tooltip title="Profile">
-              <IconButtonWhite aria-label="Delete" className="" size="small">
-                <IconSmall>person</IconSmall>
-              </IconButtonWhite>
+            <Tooltip title="Home">
+              <Link to="/dashboard" >
+                <IconButtonWhite aria-label="Delete" className="" size="small">
+                  <IconSmall>home</IconSmall>
+                </IconButtonWhite>
+              </Link>
             </Tooltip>
             <Tooltip title="Sign out">
               <IconButtonWhite

@@ -13,6 +13,7 @@ import { Component } from 'react';
 import {getConfig, numberFormat, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import SingleInvestmentcard from './components/SingleInvestmentCard';
+import SingleInvestmentcardDetails from './components/SingleInvestmentCardDetails';
 import PayOption from 'app/views/dashboard/shared/PayOption';
 import Loading from "matx/components/MatxLoading/MatxLoading";
 
@@ -150,7 +151,6 @@ componentDidMount() {
         this.setState({loading: false });
         return Promise.reject(error);
     }
-    console.log(data)
     if(data.success == false){
       this.setState({news: [], category: []})
     }else{
@@ -171,7 +171,6 @@ fetch(getConfig("getHalaiCat"), requestOptions)
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
-    console.log(data)
     if(data.success == false){
       this.setState({ categories: []});
     }else{
@@ -190,7 +189,6 @@ fetch(getConfig("getHalaiCat"), requestOptions)
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
-    console.log(authHeader())
     if(data.success == false){
       this.setState({ loading: false, investment: [], pagination:[]});
     }else{
@@ -298,7 +296,8 @@ tabbed = (id) => {
           {investment.map((ne) => (
             <Grid item lg={6} md={6} sm={12} xs={12}>
               <MarketCard2
-              data={ne}/>
+              data={ne}
+              view={()=>this.handleShowInvest(ne.halai_investments_id)} />
             </Grid>
           ))} 
         </Grid>
@@ -327,6 +326,13 @@ tabbed = (id) => {
               {isLoading ?
               <Typography>Loading...</Typography>:
               <>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                    <SingleInvestmentcardDetails investment={singleInvestment} />
+                  </div>
+                </Grid>
+              </Grid>
               <Grid container>
                 <Grid item lg={8} md={8} sm={12} xs={12}>
                   <Button size="small"
@@ -346,8 +352,8 @@ tabbed = (id) => {
               {mTab?
               <Grid container spacing={2}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
-                    <SingleInvestmentcard news={singleNews} investment={singleInvestment} />
+                  <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid", borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                    <SingleInvestmentcard news={singleNews} />
                   </div>
                 </Grid>
               </Grid>:
@@ -444,6 +450,7 @@ tabbed = (id) => {
                   {isLoading ?
                   <Typography>Loading...</Typography>:
                   <div className="pb-5 pt-5 px-2 bg-default" style={{border:1, borderStyle:"solid",     borderColor:"#04956a", borderBottomRightRadius:20, borderTopLeftRadius:20}}>
+                    <SingleInvestmentcardDetails investment={singleInvestment} />
                     <SingleInvestmentcard news={singleNews} investment={singleInvestment} />
                   </div>
                   }

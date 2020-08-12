@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { Component } from "react";
 import { numberFormat } from '../../../config/config'
+import dateFormat from "dateformat"
 
 class TableCard extends Component{
   constructor(props){
@@ -67,7 +68,7 @@ class TableCard extends Component{
                   <TableCell className="px-0" colSpan={4}>
                   AMOUNT
                   </TableCell>
-                  <TableCell className="px-0" colSpan={2}>
+                  <TableCell className="px-0" colSpan={4}>
                   DATE
                   </TableCell>
                 </TableRow>
@@ -90,14 +91,14 @@ class TableCard extends Component{
                     <TableCell className="px-0 capitalize" align="left" colSpan={4}>
                       {numberFormat(product.amount)}
                     </TableCell>
-                    <TableCell className="px-0" colSpan={2}>
-                      {product.entry_date}
+                    <TableCell className="px-0" colSpan={4}>
+                      {dateFormat(product.entry_date, "mmmm dS, yyyy")}
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-            <Button href="/transactions" color="primary">See All </Button>
+            <Button href="/transactions" variant="contained" size="small" color="secondary">See All </Button>
           </div>
         </Card>
       );

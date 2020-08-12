@@ -8,16 +8,20 @@ export const alertActions = {
 };
 
 function success(message) {
-    swal(
-        `${message}`
-      )
+    swal({
+        text: `${message}`,
+        timer: 8000,
+    }).then(()=>{
+        window.location.reload()
+    })
     return { type: alertConstants.SUCCESS, message };
 }
 
 function error(message) {
-    swal(
-        `${message}`
-      );
+    swal({
+        text: `${message}`,
+        timer: 8000,
+    })
     return { type: alertConstants.ERROR, message };
 }
 

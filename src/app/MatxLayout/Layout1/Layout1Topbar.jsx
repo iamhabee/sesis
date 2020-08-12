@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { Icon, IconButton, MenuItem } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import { MatxMenu, MatxSearchBox } from "matx";
 import { isMdScreen, classList } from "utils";
 import NotificationBar from "../SharedCompoents/NotificationBar";
-import { Link } from "react-router-dom";
 import ShoppingCart from "../SharedCompoents/ShoppingCart";
 
 const styles = theme => ({
@@ -105,7 +104,7 @@ class Layout1Topbar extends Component {
             {user ? <div className="flex items-center">
               {/* <MatxSearchBox color="secondary"/> */}
 
-              <NotificationBar />
+              {/* <NotificationBar /> */}
 
               {/* <ShoppingCart></ShoppingCart> */}
 
@@ -119,19 +118,19 @@ class Layout1Topbar extends Component {
                 }
               >
                 <MenuItem>
-                  <Link className={classes.menuItem} to="/">
+                  <Link className={classes.menuItem} to="/dashboard">
                     <Icon> home </Icon>
                     <span className="pl-4"> Home </span>
                   </Link>
                 </MenuItem>
                 <MenuItem>
-                  {/* <Link
+                  <Link
                     className={classes.menuItem}
-                    to="/page-layouts/user-profile"
-                  > */}
+                    to="/settings"
+                  >
                   <Icon> person </Icon>
                   <span className="pl-4"> Profile </span>
-                  {/* </Link> */}
+                  </Link>
                 </MenuItem>
                 {/* <MenuItem className={classes.menuItem}>
                   <Icon> settings </Icon>

@@ -9,7 +9,8 @@ import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem,
   Typography,
   Toolbar,
   AppBar,
-  Dialog,} from "@material-ui/core";
+  Dialog,
+  CircularProgress} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
@@ -17,14 +18,10 @@ import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
 import TableCard from "./components/TableCard";
 import CloseIcon from "@material-ui/icons/Close";
-import Lottie from 'react-lottie';
-import cube from "../../../../lottiefiles/26519-cube-spinning";
 import swal from 'sweetalert'
-import DateFnsUtils from '@date-io/date-fns';
-import PaystackButton from 'react-paystack';
-import color from "@material-ui/core/colors/amber";
 import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
+import dateFormat from "dateformat"
 
 class Regular extends Component{
   constructor(props){
@@ -338,6 +335,10 @@ handleClose() {
                         onChange={this.handleAutoSave}
                         value="checked"
                       />
+                      {this.props.savings && (
+                        <CircularProgress
+                          size={24}
+                      />)}
                     </Grid>
                     {savings.auto_status?
                     <>
@@ -368,7 +369,7 @@ handleClose() {
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                       <Typography variant="subtitle1">
-                        {savings.start_date}
+                        {dateFormat(savings.start_date, "mmmm dS, yyyy")}
                       </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>

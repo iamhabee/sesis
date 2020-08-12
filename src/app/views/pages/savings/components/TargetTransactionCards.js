@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Typography, Grid, Box, ButtonGroup, Button} from '@material-ui/core';
+import { Typography, Grid, Box, ButtonGroup, Button, Switch} from '@material-ui/core';
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -32,6 +32,14 @@ export default function TargetTransactionCard(props) {
           <Typography variant="caption" color="text-secondary">{`${Math.round(
                 props.value,
               )}% Complete`}</Typography>
+        </Grid>
+        <Grid>
+          <Switch
+            checked={props.auto_status? true:false}
+            onChange={props.handleAutoSave}
+            value="checked"
+            color="secondary"
+          />
         </Grid>
         <div className="py-4" />
         <Grid item lg={12} md={12} sm={12} xs={12}>

@@ -72,7 +72,7 @@ const serverVars = {
   getLoanDetails:"loanDetails/",
   getLoanActivities:"loanGroupDetailsActivities/",
   getLoanGroupMembers:"loanGroupMembers/",
-  getLoanGroupActivities:"loanGroupApproval?token=",
+  getLoanGroupActivities:"loanGroupApproval/",
   addLoanRepayment:"loanRepaymentsAdd/",
   loanRepaymentsDetails:"loanRepaymentsDetails/",
   getLoanGroupName:"loanGroupName?token=",
@@ -276,7 +276,7 @@ export function getConfig(apiName) {
     case "getLoanGroupApproval":
       return serverVars.baseUrl + serverVars.getLoanGroupApproval;
     case "getLoanGroupActivities":
-      return serverVars.baseUrl + serverVars.getLoanGroupActivities + user.token;
+      return serverVars.baseUrl + serverVars.getLoanGroupActivities;
     case "getLoanActivities":
       return serverVars.baseUrl + serverVars.getLoanActivities;
     case "getLoanGroupMembers":

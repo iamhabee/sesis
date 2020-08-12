@@ -9,7 +9,8 @@ import { Grid, Card, Button, Switch, IconButton, TextField, MenuItem,
   Typography,
   Toolbar,
   AppBar,
-  Dialog,} from "@material-ui/core";
+  Dialog,
+  CircularProgress} from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
@@ -24,6 +25,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import PaystackButton from 'react-paystack';
 import PayOption from "app/views/dashboard/shared/PayOption";
 import Loading from "matx/components/MatxLoading/MatxLoading";
+import dateFormat from "dateformat"
 
 class SaveToLoan extends Component{
   constructor(props){
@@ -236,7 +238,7 @@ handleClose() {
              borderTopLeftRadius:20}}>
           <Grid container spacing={8}>
               <Grid item lg={9} md={9} sm={12} xs={12}>
-                <StatCards2 title={"Save To Loan Balance"} color={"#2295f2"} icon={"account_balance_wallet"} amount={numberFormat(balance)}/>
+                <StatCards2 other_title={"Loan Investment Balance"} title={"Save To Loan Balance"} color={"#2295f2"} icon={"account_balance_wallet"} amount={numberFormat(balance)} investment_amount={numberFormat(other_balance)}/>
               </Grid>
               <Grid item lg={3} md={3} sm={12} xs={12}>
                 <Button className="uppercase"
@@ -282,6 +284,10 @@ handleClose() {
                         value="checked"
                         color="secondary"
                       />
+                      {this.props.savings && (
+                        <CircularProgress
+                          size={24}
+                      />)}
                     </Grid>
                     {savings.auto_status?
                     <>
@@ -312,7 +318,7 @@ handleClose() {
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                       <Typography variant="subtitle1">
-                        {savings.start_date}
+                        {dateFormat(savings.start_date, "mmmm dS, yyyy")}
                       </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>

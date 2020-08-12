@@ -57,12 +57,15 @@ class Dashboard1 extends Component {
                 key: payID(),
                 opened :false, 
                 back:false, 
-                loading: true, 
+                loading: true,
+                profile:[],
+                bank:[],
                 wallet_balance:0 ,
                 regular_balance:0,
                 market_balance: 0,
                 halal_balance: 0,
                 loan_balance:0,
+                loan_investment:0,
                 target_balance:0,
                 transactions:[],
                 error: "",
@@ -154,6 +157,37 @@ const requestOptions = {
     method: 'GET',
     headers: { ...authHeader(), 'Content-Type': 'application/json' },
 };
+fetch(getConfig("showProfile"), requestOptions)
+.then(async response => {
+    const profile = await response.json();
+    if (!response.ok) {
+        const error = (profile && profile.message) || response.statusText;
+        this.setState({loading:false})
+        return Promise.reject(error);
+    }
+    this.setState({profile: profile[0]})
+})
+.catch((error) => {
+    if (error === "Unauthorized") {
+      this.props.logout()
+    }
+});
+fetch(getConfig('getBank'), requestOptions).then(async res=>{
+  const dat = await res.json();
+  if (!res.ok) {
+    const error = (dat && dat.message) || res.statusText;
+    return Promise.reject(error);
+  }
+  if(dat.length == false || dat.length == 0){
+    this.setState({bank: []})
+  }else{
+    this.setState({bank: dat[0]})
+  }
+}).catch(err=>{
+  if (err === "Unauthorized") {
+    this.props.logout()
+  }
+})
 fetch(getConfig("showWalletBalance"), requestOptions)
 .then(async response => {
     const wal_data = await response.json();
@@ -196,9 +230,9 @@ fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
         return Promise.reject(error);
     }
     if(loan_data.success == false){
-      this.setState({loan_balance: 0})  
+      this.setState({loan_balance: 0, loan_investment: 0})  
     }else{
-      this.setState({loan_balance: loan_data[1]})  
+      this.setState({loan_balance: loan_data[1], loan_investment: loan_data[0]})  
     }
 })
 .catch((error) => {
@@ -299,25 +333,16 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
 })
 .catch(error => {
     if (error === "Unauthorized") {
-        swal(
-            `${"Authentication Token Expired"}`
-          );
-          this.props.logout()
-      }else if(error === "Sorry, No records found"){
-        this.setState({loading:false});
-      }else{
-        this.setState({loading:false, error:"internet error"});
-        swal(
-            `${"No internet, please check your internet and try again"}`
-        );
+        this.props.logout()
       }
+      this.setState({loading:false});
     
 });
 }
 
   render() {
     let { theme } = this.props;
-    const {error, accounts, show, wallet_balance, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, loan_balance, halal_balance} = this.state
+    const {error, accounts, show, wallet_balance, bank, profile, data, email, loading, transactions, target_balance, continued, regular_balance, market_balance, loan_balance, loan_investment, halal_balance} = this.state
     return (
       <div >
         {loading ?
@@ -337,14 +362,15 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   regular_balance={numberFormat(regular_balance)}
                   target_balance={numberFormat(target_balance)}
                   loan_balance={numberFormat(loan_balance)}
+                  loan_investment={numberFormat(loan_investment)}
                   openModal={this.handleClickOpen}/>
                   {/* <ScrollCards /> */}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              <h4 className="card-title text-muted mb-4">Todo List</h4>
-              <RowCards wallet={wallet_balance}/>
-              <Card className="px-6 py-4 mb-6">
-                <div className="card-title">My Acounts</div>
+              {(wallet_balance == 0 || bank.length == 0  || profile.relationship != "" ) && <h4 className="card-title text-muted mb-4">Todo List</h4>}
+              <RowCards wallet={wallet_balance} bank={bank} profile={profile}/>
+              <Card className="px-6 py-4 pt-4 mb-6">
+                <div className="card-title">My Savings Account </div>
                 {/* <div className="card-subtitle">Last 30 days</div> */}
                 <DoughnutChart
                   height="300px"
@@ -353,9 +379,29 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                     theme.palette.primary.main,
                     theme.palette.primary.light
                   ]}
+                  name1={"Regular Savings"}
+                  name2={"Target Savings"}
+                  name3={"Save To Loan"}
                   regular_value={regular_balance} 
-                  target_value={regular_balance} 
+                  target_value={target_balance} 
                   loan_value={loan_balance}
+                />
+              </Card>
+              <Card className="px-6 py-4 pt-4 mb-6">
+                <div className="card-title">My Investments Account </div>
+                {/* <div className="card-subtitle">Last 30 days</div> */}
+                <DoughnutChart
+                  height="300px"
+                  color={[
+                    theme.palette.primary.dark,
+                    theme.palette.primary.main,
+                    theme.palette.primary.light
+                  ]}
+                  name1={"Halal Investment"}
+                  name2={"Market Investment"}
+                  regular_value={halal_balance} 
+                  target_value={market_balance} 
+                  loan_value={0}
                 />
               </Card>
             </Grid>

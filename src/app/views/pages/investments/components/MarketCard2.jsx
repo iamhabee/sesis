@@ -9,7 +9,7 @@ class MarketCard2 extends Component {
     super(props)
   }
   render(){
-    let { data} = this.props;
+    let { data, view} = this.props;
     return (
                 <Card >
                     <CardActionArea>
@@ -38,6 +38,11 @@ class MarketCard2 extends Component {
                                     Maturity Date: {data.maturity_date}
                                     </Typography>
                                 </CardContent>
+                                <CardActions>
+                                    <Button onClick={view} size="small" variant="outlined" color="secondary">
+                                        See Details
+                                    </Button>
+                                </CardActions>
                             </Grid>
                         </Grid>
                     </CardActionArea>

@@ -26,6 +26,11 @@ class NotFound extends Component {
     return (
       <div className={`${classes.flexCenter} ${classes.wrapper}`}>
         <div className={`${classes.flexCenter} ${classes.inner}`}>
+        <img
+            className="mb-8"
+            src="/assets/images/Group24.png"
+            alt=""
+          />
           <img
             className="mb-8"
             src="/assets/images/illustrations/404.svg"
@@ -34,7 +39,8 @@ class NotFound extends Component {
           <Button
             className="capitalize"
             variant="contained"
-            color="primary"
+            color="secondary"
+            className="text-white"
             onClick={() => this.props.history.push("/dashboard")}
           >
             Back to Dashboard
