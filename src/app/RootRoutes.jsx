@@ -6,11 +6,11 @@ import landingRoutes from "./views/landing/LandingRoutes";
 // import utilitiesRoutes from "./views/utilities/UtilitiesRoutes";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 
-import materialRoutes from "./views/material-kit/MaterialRoutes";
-import dragAndDropRoute from "./views/Drag&Drop/DragAndDropRoute";
+// import materialRoutes from "./views/material-kit/MaterialRoutes";
+// import dragAndDropRoute from "./views/Drag&Drop/DragAndDropRoute";
 
-import formsRoutes from "./views/forms/FormsRoutes";
-import mapRoutes from "./views/map/MapRoutes";
+// import formsRoutes from "./views/forms/FormsRoutes";
+// import mapRoutes from "./views/map/MapRoutes";
 import pageRoutes from "./views/pages/PageRoutes";
 
 const redirectRoute = [
@@ -32,11 +32,11 @@ const routes = [
   ...dashboardRoutes,
   ...pageRoutes,
   ...landingRoutes,
-  ...materialRoutes,
+  // ...materialRoutes,
   // ...utilitiesRoutes,
-  ...dragAndDropRoute,
-  ...formsRoutes,
-  ...mapRoutes,
+  // ...dragAndDropRoute,
+  // ...formsRoutes,
+  // ...mapRoutes,
   ...redirectRoute,
   ...errorRoute,
 ];

@@ -65,6 +65,14 @@ const pageRoutes = [
     path: "/settings",
     component: React.lazy(() => import("./settings/Settings"))
   },
+  {
+    path: "/transactions",
+    component: React.lazy(() => import("./transactions/Transaction"))
+  },
+  {
+    path: "/wallet",
+    component: React.lazy(() => import("./transactions/Wallet"))
+  },
 ];
 
 export default pageRoutes;
