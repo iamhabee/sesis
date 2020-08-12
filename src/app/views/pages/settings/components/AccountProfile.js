@@ -110,7 +110,7 @@ render(){
           </div>  
           <img
             style={{marginLeft: 'auto', height: 110, width: 100, flexShrink: 0, flexGrow: 0, borderRadius:50}}
-            src={this.props.data.profile_pic ? this.props.data.profile_pic:avatar}
+            src={this.props.data.profile_pic != "" ? this.props.data.profile_pic:avatar}
             ref={this.uploadedImage}
             onClick={this.handleClick}
             

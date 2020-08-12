@@ -82,7 +82,6 @@ function login(email, password) {
       localStorage.setItem("email", user.email);
       localStorage.setItem("name", user.name);
       localStorage.setItem("profile_pic", user.profile_pic);
-
       return user;
     });
 }
@@ -576,8 +575,6 @@ function updateProfile(data) {
     }
       localStorage.setItem("name", data.first_name + " "+ data.last_name);
       localStorage.setItem("email", data.email);
-      localStorage.setItem("profile_pic", data.profile_pic);
-    console.log(data)
     return data;
   }).catch(error => {
     if (error === "Unauthorized") {

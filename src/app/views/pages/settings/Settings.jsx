@@ -20,6 +20,7 @@ class Settings extends Component{
 constructor(props){
   super(props)
   let email = localStorage.getItem('email');
+  let image = localStorage.getItem('profile_pic');
   var currentDate = new Date();
   let month = currentDate.getMonth() + 1;
   let day = currentDate.getDate();
@@ -38,8 +39,8 @@ constructor(props){
       kin_first_name:"",
       kin_phone_no:"",
       kin_email:"",
-      relatioship:"",
-      profile_pic:""
+      relationship:"",
+      profile_pic:image
     },
     password_data:{
       old_password:"",
@@ -88,7 +89,6 @@ componentDidMount(){
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
           }
-          console.log(data)
         if(data.success == false){
           this.setState({profile: []})
         }else{

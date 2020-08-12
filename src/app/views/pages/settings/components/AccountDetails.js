@@ -101,6 +101,7 @@ const AccountDetails = props => {
                 margin="dense"
                 label="Enter Phone number"
                 name="phone_no"
+                max="11"
                 onChange={props.handleChange}
                 type="number"
                 value={props.profile.phone_no}
@@ -188,6 +189,7 @@ const AccountDetails = props => {
                 margin="dense"
                 label="Enter Kin Phone number"
                 name="kin_phone_no"
+                max="11"
                 onChange={props.handleChange}
                 type="number"
                 required
