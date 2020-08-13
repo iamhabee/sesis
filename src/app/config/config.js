@@ -139,7 +139,7 @@ export const checkToken = ()=>{
       });
       }else{
         history.push({
-          pathname: pathname
+          pathname: "/dashboard"
         });
       }
 }

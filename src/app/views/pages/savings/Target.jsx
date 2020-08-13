@@ -397,7 +397,7 @@ completeTab(){
     let {theme} = this.props
     const {balance, tdetails, loading, isLoading, tab, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
     return (
-      <div className="m-sm-30">
+      <div className="m-sm-10">
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />
@@ -413,7 +413,7 @@ completeTab(){
                   </Grid>
                   <Grid item lg={3} md={3} sm={6} xs={6}>
                     {tdetails.length != 0 && <Button className="uppercase"
-                      size="large"
+                      size="small"
                       variant="contained"
                       style={{backgroundColor:"#e74398", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10,}}
                       onClick={this.handleQuickSave}>
@@ -422,9 +422,9 @@ completeTab(){
                   </Grid>
               </Grid>
               <Grid container spacing={4}>
-                  <Grid item lg={4} md={4} sm={6} xs={6}>
+                  <Grid item lg={4} md={4} sm={12} xs={12}>
                     <Button className="uppercase"
-                      size="large"
+                      size="small"
                       variant="contained"
                       style={{ backgroundColor:"#e74398", color:"#fff", borderBottomRightRadius:10, borderTopLeftRadius:10}}
                       onClick={this.handleAutoSave}>
