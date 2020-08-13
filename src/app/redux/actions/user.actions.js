@@ -208,9 +208,12 @@ function addFundRegularSavings(user) {
     userService.addFundRegularSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings-tab/regular");
-        dispatch( alertActions.success(user.message));
-        
+        if(user.success){
+          history.push("/savings-tab/regular");
+          dispatch( alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -381,9 +384,12 @@ function addFundSaveToLoanSavings(user) {
     userService.addFundSaveToLoanSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings-tab/savetoloan");
-        dispatch( alertActions.success( user.message));
-        
+        if(user.success){
+          history.push("/savings-tab/savetoloan");
+          dispatch( alertActions.success( user.message));
+        }else{
+          dispatch( alertActions.error( user.message));
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -892,9 +898,12 @@ function addFundTargetSavings(user) {
     userService.addFundTargetSavings(user).then(
       (user) => {
         dispatch(success());
-        history.push("/savings-tab/target");
-        dispatch(alertActions.success(user.message));
-        
+        if(user.success){
+          history.push("/savings-tab/target");
+          dispatch(alertActions.success(user.message));
+        }else{
+          dispatch(alertActions.error(user.message));
+        }
       },
       (error) => {
         dispatch(failure(error.toString()));

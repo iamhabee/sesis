@@ -31,15 +31,15 @@ export const navigations = [
     //   }
     // ]
   },
-  {
-    name: "Free Interest Loan",
-    icon: "money",
-    path: "/loan"
-  },
-  {
-    name: "Invest",
-    icon: "shopping_cart",
-    path: "/investments"
+  // {
+  //   name: "Free Interest Loan",
+  //   icon: "money",
+  //   path: "/loan"
+  // },
+  // {
+  //   name: "Invest",
+  //   icon: "shopping_cart",
+  //   path: "/investments"
     // children: [
     //   {
     //     name: "Target Contributions",
@@ -72,7 +72,7 @@ export const navigations = [
     //     iconText: "E"
     //   }
     // ]
-  },
+  // },
   // {
   //   name: "Transactions",
   //   icon: "receipt",
