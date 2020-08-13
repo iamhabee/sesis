@@ -3,7 +3,7 @@ import { Grid, Card, Typography, Button, CardActionArea, CardActions, CardConten
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
 import {numberFormat} from '../../../../config/config'
-
+import dateFormat from "dateformat"
 class MarketCard2 extends Component {
   constructor(props){
     super(props)
@@ -35,7 +35,7 @@ class MarketCard2 extends Component {
                                     {data.slots + " Slot"}
                                     </span>
                                     <Typography variant="body2" className="font-bold" color="textSecondary" component="p">
-                                    Maturity Date: {data.maturity_date}
+                                    Maturity Date: {dateFormat(data.maturity_date, "mmmm dS, yyyy")}
                                     </Typography>
                                 </CardContent>
                                 <CardActions>

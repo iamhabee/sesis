@@ -6,7 +6,7 @@ export const userService = {
   relogin,
   logout,
   register,
-  lostpassword,
+  recoverpass,
   resetpassword,
   update,
   delete: _delete,
@@ -638,11 +638,11 @@ function register(user) {
   return fetch(getConfig("signup"), requestOptions).then(handleResponse);
 }
 
-function lostpassword(email) {
+function recoverpass(data) {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: email,
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(data),
   };
 
   return fetch(getConfig("recoverpass"), requestOptions).then(handleResponse);

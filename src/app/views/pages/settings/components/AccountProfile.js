@@ -74,7 +74,9 @@ handleProfileImage=(e)=>{
         current.src = e.target.result;
       };
       reader.readAsDataURL(file);
-      this.setState({profile_pic: e.target.files[0]})
+      this.setState({profile_pic: e.target.files[0]}, ()=>{
+        this.handleSubmit(e)
+      })
   }
   
 }
@@ -127,14 +129,14 @@ render(){
           <Typography variaant="subtitle">click image to upload</Typography>
       </CardContent>
       <CardActions>
-        <Button
+        {/* <Button
           type="submit"
           style={{marginRight: 20, color:"#fff"}}
           color="secondary"
           variant="contained"
         >
           Upload picture
-        </Button>
+        </Button> */}
         {this.props.savings && (
         <CircularProgress
           size={24}

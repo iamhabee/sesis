@@ -182,7 +182,7 @@ handleCloseWithdraw() {
               <Button className="uppercase"
                 size="large"
                 variant="contained"
-                style={{backgroundColor:"#222a45", color:"white"}}  onClick={this.handleClickOpen}>Quick Save</Button>
+                style={{backgroundColor:"#222a45", color:"white"}}  onClick={this.handleClickOpen}>Add Fund</Button>
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
               <Button className="uppercase"

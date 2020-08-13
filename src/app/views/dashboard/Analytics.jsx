@@ -371,7 +371,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
               <RowCards wallet={wallet_balance} bank={bank} profile={profile}/>
               <Card className="px-6 py-4 pt-4 mb-6">
                 <div className="card-title">My Savings Account </div>
-                {/* <div className="card-subtitle">Last 30 days</div> */}
+                {(regular_balance+target_balance+loan_balance != 0)?
                 <DoughnutChart
                   height="300px"
                   color={[
@@ -385,11 +385,12 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   regular_value={regular_balance} 
                   target_value={target_balance} 
                   loan_value={loan_balance}
-                />
+                />:
+                <img src="/assets/images/illustrations/empty_pie.png" />}
               </Card>
               <Card className="px-6 py-4 pt-4 mb-6">
                 <div className="card-title">My Investments Account </div>
-                {/* <div className="card-subtitle">Last 30 days</div> */}
+                {halal_balance + market_balance != 0?
                 <DoughnutChart
                   height="300px"
                   color={[
@@ -402,7 +403,9 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   regular_value={halal_balance} 
                   target_value={market_balance} 
                   loan_value={0}
-                />
+                />:
+                <img src="/assets/images/illustrations/empty_pie.png" />
+              }
               </Card>
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>

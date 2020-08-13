@@ -1,84 +1,138 @@
 import React, { Component } from "react";
-import { Card, Grid, Button } from "@material-ui/core";
+import { Card, Grid, Button, CircularProgress, Typography } from "@material-ui/core";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import swal from 'sweetalert'
+import { userActions } from "../../redux/actions/user.actions";
+import { checkToken } from '../../config/config'
 
-import { resetPassword } from "../../redux/actions/LoginActions";
+const styles = theme => ({
+  wrapper: {
+    position: "relative"
+  },
+
+  buttonProgress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12
+  }
+});
 
 class ForgotPassword extends Component {
   state = {
-    email: "watson@example.com"
+    data: {email:""}
   };
   handleChange = event => {
     event.persist();
-    this.setState({
-      [event.target.name]: event.target.value
+    this.setState({data:
+      {[event.target.name]: event.target.value}
     });
   };
   handleFormSubmit = () => {
-    this.props.resetPassword({ ...this.state });
+    const {data} = this.state
+    if (data.email) {
+      this.props.recoverpass(data);
+  }else{
+    swal(data.email);
+}
+    
   };
   render() {
-    let { email } = this.state;
+    let { data } = this.state;
+    let { classes } = this.props;
 
     return (
-      <div className="signup flex justify-center w-full h-full-screen">
-        <div className="p-8">
-          <Card className="signup-card position-relative y-center">
-            <Grid container>
-              <Grid item lg={5} md={5} sm={5} xs={12}>
-                <div className="p-8 flex justify-center items-center h-full">
-                  <img src="/assets/images/illustrations/dreamer.svg" alt="" />
-                </div>
+      <div className="signup flex justify-center w-full h-full-screen" style={{
+        backgroundImage: `url(${"/assets/images/bg.png"})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+        }}>
+        <div className="block mt-10">
+          <div className="p-8">
+            <Grid container className="p-2 " justify="center" alignItems="center">
+              <Grid lg={6} md={6} sm={6} xs={6}>
+                <img src="/assets/images/Group24.png"/>
               </Grid>
-              <Grid item lg={7} md={7} sm={7} xs={12}>
-                <div className="p-9 h-full bg-light-gray position-relative">
-                  <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
-                    <TextValidator
-                      className="mb-6 w-full"
-                      variant="outlined"
-                      label="Email"
-                      onChange={this.handleChange}
-                      type="email"
-                      name="email"
-                      value={email}
-                      validators={["required", "isEmail"]}
-                      errorMessages={[
-                        "this field is required",
-                        "email is not valid"
-                      ]}
-                    />
-                    <div className="flex items-center">
-                      <Button variant="contained" color="primary" type="submit">
-                        Reset Password
-                      </Button>
-                      <span className="ml-4 mr-2">or</span>
+            </Grid>
+          </div>
+        <div className="p-4" style={{width:500}}>
+          <Card className="signup-card" style={{width:"100%"}}>
+            <Grid container className="p-2 bg-light-gray" justify="center" alignItems="center">
+              <Grid lg={12} md={12} sm={12} xs={12}>
+                <Typography variant="h6" className="text-center text-gray">Recover Password</Typography>
+              </Grid>
+            </Grid>
+            <Grid container className="bg-light-gray" >
+              <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="p-9 h-full position-relative">
+                      <TextValidator
+                        className="mb-6 w-full"
+                        variant="outlined"
+                        label="Email"
+                        onChange={this.handleChange}
+                        type="email"
+                        name="email"
+                        value={data.email}
+                        validators={["required", "isEmail"]}
+                        errorMessages={[
+                          "this field is required",
+                          "email is not valid"
+                        ]}/>
+                  </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12} className="mb-4">
+                    <Button
+                      variant="contained"
+                      color="warning"
+                      disabled={this.props.loggingIn}
+                      type="submit"
+                      className="capitalize font-medium"
+                      style={{background:'#04956b', color:"#fff", width:"84%", padding:10, marginLeft:36, marginRight:36}}
+                    >
+                      Reset
+                    </Button>
+                    {this.props.loggingIn && (
+                      <CircularProgress
+                        size={24}
+                        className={classes.buttonProgress}
+                      />)}
+                  </Grid>
+                  
+                  <Grid item lg={12} md={12} sm={12} xs={12} className="mb-1" style={{textAlign:"center"}}>
+                      <span className="mr-2 ml-5">Already have an account?</span>
                       <Button
-                        className="capitalize"
+                        className="capitalize font-medium"
                         onClick={() =>
-                          this.props.history.push("/session/signin")
-                        }
-                      >
+                        this.props.history.push("/signin")
+                        }>
                         Sign in
                       </Button>
-                    </div>
-                  </ValidatorForm>
-                </div>
-              </Grid>
+                  </Grid>
+                </Grid>
+              </ValidatorForm>
             </Grid>
           </Card>
         </div>
       </div>
+      </div>
     );
   }
 }
+const actionCreators = {
+  recoverpass: userActions.recoverpass,
+};
 
-const mapStateToProps = state => ({
-  resetPassword: PropTypes.func.isRequired,
-  login: state.login
-});
-export default withRouter(
-  connect(mapStateToProps, { resetPassword })(ForgotPassword)
+const mapStateToProps = state => {
+  const { loggingIn } = state.authentication;
+  return { loggingIn };
+};
+export default withStyles(styles, { withTheme: true })(
+  withRouter(connect(mapStateToProps,  actionCreators)(ForgotPassword))
 );

@@ -7,7 +7,7 @@ export const userActions = {
   login,
   logout,
   register,
-  lostpassword,
+  recoverpass,
   resetpassword,
   createRegularSavings,
   withdrawRegularSavings,
@@ -1460,7 +1460,6 @@ function updatePicture(user) {
 
     userService.updatePicture(user).then(
       (user) => {
-        console.log("result:"+user)
         dispatch(success());
         history.push("/settings");
         dispatch(alertActions.success(user.message));
@@ -1484,14 +1483,14 @@ function updatePicture(user) {
   }
 }
 
-function lostpassword(user) {
+function recoverpass(user) {
   return (dispatch) => {
     dispatch(request(user));
 
-    userService.lostpassword(user).then(
+    userService.recoverpass(user).then(
       (user) => {
         dispatch(success());
-        history.push("/recoverysuccess");
+        // history.push("/forgot-password");
         dispatch(alertActions.success(user.message));
       },
       (error) => {
@@ -1502,13 +1501,13 @@ function lostpassword(user) {
   };
 
   function request(user) {
-    return { type: userConstants.REGISTER_REQUEST, user };
+    return { type: userConstants.LOGIN_REQUEST, user };
   }
   function success(user) {
-    return { type: userConstants.REGISTER_SUCCESS, user };
+    return { type: userConstants.LOGIN_SUCCESS, user };
   }
   function failure(error) {
-    return { type: userConstants.REGISTER_FAILURE, error };
+    return { type: userConstants.LOGIN_FAILURE, error };
   }
 }
 

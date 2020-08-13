@@ -737,7 +737,7 @@ handleClose() {
                 helperText="Please select Payment Method"
               >
                   <MenuItem value={""}></MenuItem>
-                  <MenuItem value={"Wallet"}> Wallet</MenuItem>
+                  {/* <MenuItem value={"Wallet"}> Wallet</MenuItem> */}
                   <MenuItem value={"Bank Account"}> Bank Account </MenuItem>
               </TextField>
               {this.props.savings &&
