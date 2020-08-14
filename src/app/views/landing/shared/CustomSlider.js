@@ -7,15 +7,15 @@ export default function CustomSlider(props)
     var items = [
         {
             name: "Random Name #1",
-            img: "/assets/images/phone1.png"
+            img: props.image1
         },
         {
             name: "Random Name #2",
-            img: "/assets/images/phone1.png"
+            img: props.image2
         },
         {
             name: "Random Name #3",
-            img: "/assets/images/phone1.png"
+            img: props.image3
         }
     ]
  

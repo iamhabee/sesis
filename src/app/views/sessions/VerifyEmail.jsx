@@ -70,7 +70,7 @@ class VerifyEmail extends Component {
               <Typography variant="subtitle" className="text-center text-gray mt-5 mb-5">Click the button below to complete your registration.</Typography>
             </Grid>
               <Grid lg={12} md={12} sm={12} xs={12} >
-                <Button onClick={this.handleFormSubmit} variant="contained" style={{background:'#04956b'}} className="mt-5 text-white" size="large">Coomplete Registration</Button>
+                <Button onClick={this.handleFormSubmit} variant="contained" style={{background:'#04956b'}} className="mt-5 text-white" size="large">Complete Registration</Button>
                 {this.props.loggingIn && (
                   <CircularProgress
                     size={24}

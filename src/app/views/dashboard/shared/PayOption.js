@@ -6,9 +6,10 @@ class PayOption extends Component {
     constructor(props){
         super(props)
         let email =  localStorage.getItem('email');
+        let paystack_id =  localStorage.getItem('paystack_id');
         this.state = {
             email: email,
-            key: payID(),
+            key: paystack_id[1],
         }
         this.close = this.close.bind(this);
     }

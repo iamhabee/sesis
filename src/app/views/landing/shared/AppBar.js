@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AppAppBar() {
+export default function AppAppBar(props) {
   const classes = useStyles();
 
   return (
@@ -36,7 +36,10 @@ export default function AppAppBar() {
           <Typography variant="h6" className="text-white" style={{color:"#fff", flexGrow: 1, marginLeft: 25,}}>
             
           </Typography>
-          <Link to="/signin"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button></Link>
+          {props.user ?
+            <Link to="/dashboard"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Dashboard</Button></Link>:
+            <Link to="/signin"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button></Link>
+            }
         </Toolbar>
       </AppBar>
     </div>

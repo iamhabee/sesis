@@ -1,15 +1,20 @@
 import React,{Component} from 'react';
 
 import AppAppBar from './shared/AppBar'
-import {Grid} from "@material-ui/core"
-import CustomSlider from './shared/CustomSlider';
-import SignUp from './shared/SignUp';
+import {Grid, Typography} from "@material-ui/core"
+import Section1 from './shared/Section1';
+import Section2 from './shared/Section2';
+import Section3 from './shared/Section3';
+import Section4 from './shared/Section4';
+import Footer from './shared/Footer';
 
 class Landing extends Component {
   constructor(props){
     super(props)
+    let user = JSON.parse(localStorage.getItem("user"));
     this.state ={
       showLogin:false,
+      user:user
     }
 
   }
@@ -24,26 +29,35 @@ class Landing extends Component {
         backgroundAttachment: "fixed",
         minHeight: "100%"
         }}>
-          <AppAppBar login={this.handleShowLogin} />
-          <Grid container spacing={2}>
-            <Grid item lg={7} md={7} sm={12} xs={12}>
-              <SignUp />
-            </Grid>
-            <Grid item lg={3} md={3} sm={12} xs={12}>
-              <img src="/assets/images/mobile1.jpeg" alt="company-logo" />
-            </Grid>
-            <Grid item lg={2} md={2} sm={12} xs={12}>
-              <CustomSlider />
+          <AppAppBar user={this.state.user} />
+          <div className="py-4" />
+          <Grid container >
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Section1 />
             </Grid>
           </Grid>
+          <div className="py-6" />
           <Grid container spacing={2}>
-            <Grid item lg={9} md={9} sm={12} xs={12}>
-              
-            </Grid>
-            <Grid item lg={3} md={3} sm={12} xs={12}>
-              
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Section3 />
             </Grid>
           </Grid>
+          <div className="py-4" />
+          <Grid container spacing={2}>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Section2 />
+            </Grid>
+          </Grid>
+          <div className="py-4" />
+          <Grid container>
+            <Grid item lg={12} md={12} sm={12} xs={12}>
+              <Typography variant="h4" className="text-white text-center pt-3">
+                  Halal, secure and reliable investment just for you.
+              </Typography>
+            </Grid>
+              <Section4 />
+          </Grid>
+          <Footer/>
       </div>
     );
   }  

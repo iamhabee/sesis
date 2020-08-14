@@ -61,97 +61,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LANGUAGES = [
-  {
-    code: 'en-US',
-    name: 'English',
-  },
-  {
-    code: 'fr-FR',
-    name: 'Français',
-  },
-];
-
 export default function Footer() {
   const classes = useStyles();
 
   return (
     <Typography component="footer" className={classes.root}>
       <Container className={classes.container}>
-        <Grid container spacing={5}>
-          <Grid item xs={6} sm={4} md={3}>
+        <Grid container justify="space-between" spacing={5}>
+          <Grid item xs={6} sm={4} md={6}>
             <Grid
               container
               direction="column"
-              justify="flex-end"
-              className={classes.iconsWrapper}
-              spacing={2}
-            >
-              <Grid item className={classes.icons}>
-                <a href="https://material-ui.com/" className={classes.icon}>
-                  <img src="/static/themes/onepirate/appFooterFacebook.png" alt="Facebook" />
-                </a>
-                <a href="https://twitter.com/MaterialUI" className={classes.icon}>
-                  <img src="/static/themes/onepirate/appFooterTwitter.png" alt="Twitter" />
-                </a>
-              </Grid>
-              <Grid item>
-                <Copyright />
-              </Grid>
+              justify="flex-start"
+              className="text-white p-10"
+              spacing={2} >
+                Cubevest Cooperative is a Nigerian pioneer Non Interest Fintech company duly registered with the Corporate Affairs Commissions and also a registered Cooperative under the Nigerian Cooperatives Societies with the goal of driving the financial inclusion of individuals who do not have access to financial services, provision of interest free credit facilities to members, promoting savings culture and encouraging ethical investment.
             </Grid>
           </Grid>
-          <Grid item xs={6} sm={4} md={2}>
-            <Typography variant="h6" marked="left" gutterBottom>
-              Legal
+          <Grid item xs={6} sm={4} md={6}>
+          <Grid
+              container
+              direction="column"
+              justify="flex-end"
+              spacing={2} >
+            <Typography variant="h6" className="p-10 text-white" marked="left" gutterBottom>
+            Suite 522, Fifth Floor,
+            The Kings Plaza Opposite NAF Conference Center,
+            Kado, FCT, Abuja
             </Typography>
-            <ul className={classes.list}>
-              <li className={classes.listItem}>
-                <Link href="/premium-themes/onepirate/terms/">Terms</Link>
-              </li>
-              <li className={classes.listItem}>
-                <Link href="/premium-themes/onepirate/privacy/">Privacy</Link>
-              </li>
-            </ul>
+            </Grid>
           </Grid>
-          <Grid item xs={6} sm={8} md={4}>
-            <Typography variant="h6" marked="left" gutterBottom>
-              Language
-            </Typography>
-            <TextField
-              select
-              SelectProps={{
-                native: true,
-              }}
-              className={classes.language}
-            >
-              {LANGUAGES.map((language) => (
-                <option value={language.code} key={language.code}>
-                  {language.name}
-                </option>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Typography variant="caption">
-              {'Icons made by '}
-              <Link href="https://www.freepik.com" rel="sponsored" title="Freepik">
-                Freepik
-              </Link>
-              {' from '}
-              <Link href="https://www.flaticon.com" rel="sponsored" title="Flaticon">
-                www.flaticon.com
-              </Link>
-              {' is licensed by '}
-              <Link
-                href="https://creativecommons.org/licenses/by/3.0/"
-                title="Creative Commons BY 3.0"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CC 3.0 BY
-              </Link>
+              
             </Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Typography>

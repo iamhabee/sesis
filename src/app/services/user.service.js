@@ -80,8 +80,10 @@ function login(email, password) {
   return fetch(getConfig("login"), requestOptions)
     .then(handleResponse)
     .then((user) => {
+      console.log(user)
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("paystack_id", JSON.stringify(user.paystack_id));
       localStorage.setItem("email", user.email);
       localStorage.setItem("name", user.name);
       localStorage.setItem("profile_pic", user.profile_pic);
@@ -581,7 +583,7 @@ function updateProfile(data) {
     return data;
   }).catch(error => {
     if (error === "Unauthorized") {
-      history.push("/login");
+      history.push("/signin");
     }
     console.log(error)
   })
@@ -598,7 +600,7 @@ function updatePicture(data) {
     if (!response.ok) {
       const error = (data && data.message) || response.statusText;
       if (error === "Unauthorized") {
-        history.push("/login");
+        history.push("/signin");
       }
       return Promise.reject(error);
     }
@@ -612,12 +614,14 @@ function logout() {
   localStorage.removeItem("name");
   localStorage.removeItem("email");
   localStorage.removeItem("lasturl");
+  localStorage.removeItem("paystack_id");
 }
 
 function timeOut(){
   localStorage.removeItem("user");
   localStorage.removeItem("name");
   localStorage.removeItem("email");
+  localStorage.removeItem("paystack_id");
 }
 
 function relogin(email) {
