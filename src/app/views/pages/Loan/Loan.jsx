@@ -188,7 +188,7 @@ componentDidMount() {
     })
         .catch(error => {
         if (error === "Unauthorized") {
-            this.props.logout()
+            this.props.timeOut()
            }
     });
 }
@@ -211,7 +211,7 @@ fetchLoanGroupDetails=(id)=>{
   })
   .catch(error => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
       }
   });
   fetch(getConfig('getLoanGroupMembers')+ id +`?token=`+user.token, requestOptions)
@@ -229,7 +229,7 @@ fetchLoanGroupDetails=(id)=>{
   })
   .catch(error => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
       }
     this.setState({loading:false});
   });
@@ -253,7 +253,7 @@ fetchLoanDetails=(id)=>{
     })
     .catch(error => {
        if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
        }
     });
     fetch(getConfig('getLoanGroupApproval')+ id +`?token=`+user.token, requestOptions)
@@ -271,7 +271,7 @@ fetchLoanDetails=(id)=>{
     })
     .catch(error => {
        if (error === "Unauthorized") {
-        this.props.logout();
+        this.props.timeOut();
        }
        this.setState({loading:false})
     });
@@ -361,7 +361,7 @@ fetchLoanApprovals= (id)=>{
 })
 .catch(error => {
   if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }else{
       this.setState({loading:false});
   }
@@ -386,7 +386,7 @@ fetchAllLoanApi=(requestOptions)=>{
 })
 .catch(error => {
   if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
     console.log(error)
 });
@@ -407,7 +407,7 @@ fetch(getConfig("getLoan"), requestOptions)
 })
 .catch(error => {
   if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig("getLoanGroupActivities"), requestOptions)
@@ -427,7 +427,7 @@ fetch(getConfig("getLoanGroupActivities"), requestOptions)
 })
 .catch(error => {
   if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }else{
       this.setState({loading:false});
   }
@@ -450,7 +450,7 @@ fetch(getConfig("completedLoan"), requestOptions)
 })
 .catch(error => {
   if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }else{
       this.setState({loading:false});
   }
@@ -702,7 +702,7 @@ handleCreateManage = (id) => {
   })
   .catch(error => {
     if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
       }
   });
   this.setState({showManage: true});
@@ -726,7 +726,7 @@ handleCreateRepayment = (id) => {
   })
   .catch(error => {
     if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
           console.log(error)
       }
   });
@@ -1567,7 +1567,7 @@ render(){
 }
 // export default Regular;
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   createLoanGroup: userActions.createLoanGroup,
   createLoan: userActions.createLoan,
   acceptLoan: userActions.acceptLoan,

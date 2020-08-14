@@ -2,6 +2,8 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import NotFound from "./NotFound";
 import ForgotPassword from "./ForgotPassword";
+import VerifyEmail from "./VerifyEmail";
+import VerifyPassword from "./VerifyPassword";
 
 const settings = {
   activeLayout: "layout1",
@@ -37,8 +39,18 @@ const sessionRoutes = [
     settings
   },
   {
+    path: "/verify-email/:id",
+    component: VerifyEmail,
+    settings
+  },
+  {
     path: "/forgot-password",
     component: ForgotPassword,
+    settings
+  },
+  {
+    path: "/verify-password/:id",
+    component: VerifyPassword,
     settings
   },
   {

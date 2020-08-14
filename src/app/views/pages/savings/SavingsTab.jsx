@@ -19,7 +19,7 @@ export default function SavingsTab(props) {
   const classes = useStyles();
 
   return (
-    <div className="m-sm-30">
+    <div className="m-sm-10">
         <CustomTab />
     </div>
   );

@@ -8,7 +8,7 @@ import RowCards from "./shared/RowCards";
 import { withRouter } from "react-router-dom";
 import UpgradeCard from "./shared/UpgradeCard";
 import { withStyles } from "@material-ui/styles";
-import { payID, getConfig, numberFormat } from '../../config/config'
+import { payID, getConfig, setLastUrl, numberFormat } from '../../config/config'
 import swal from 'sweetalert'
 import { userActions } from "../../redux/actions/user.actions";
 import { connect } from "react-redux";
@@ -38,6 +38,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 
 class Dashboard1 extends Component {
   constructor(props){
+    setLastUrl();
     super(props)
     let email =  localStorage.getItem('email');
     var currentDate = new Date();
@@ -169,7 +170,7 @@ fetch(getConfig("showProfile"), requestOptions)
 })
 .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig('getBank'), requestOptions).then(async res=>{
@@ -185,7 +186,7 @@ fetch(getConfig('getBank'), requestOptions).then(async res=>{
   }
 }).catch(err=>{
   if (err === "Unauthorized") {
-    this.props.logout()
+    this.props.timeOut()
   }
 })
 fetch(getConfig("showWalletBalance"), requestOptions)
@@ -200,7 +201,7 @@ fetch(getConfig("showWalletBalance"), requestOptions)
 })
 .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig('fetchAllTarget'), requestOptions)
@@ -218,7 +219,7 @@ fetch(getConfig('fetchAllTarget'), requestOptions)
     })
     .catch(error => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
           }
     });
 fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
@@ -237,7 +238,7 @@ fetch(getConfig("totalFundSaveToLoanSavings"), requestOptions)
 })
 .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig("totalTargetFund"), requestOptions)
@@ -256,7 +257,7 @@ fetch(getConfig("totalTargetFund"), requestOptions)
 })
 .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig("getTotalMarketFund"), requestOptions)
@@ -276,7 +277,7 @@ fetch(getConfig("getTotalMarketFund"), requestOptions)
 })
 .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig("getTotalHalalFund"), requestOptions)
@@ -295,7 +296,7 @@ fetch(getConfig("getTotalHalalFund"), requestOptions)
 })
 .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
 });
 fetch(getConfig("showTransaction"), requestOptions)
@@ -314,7 +315,7 @@ fetch(getConfig("showTransaction"), requestOptions)
 })
 .catch((error) => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
         }
 });
 fetch(getConfig("totalFundRegularSavings"), requestOptions)
@@ -333,7 +334,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
 })
 .catch(error => {
     if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
       }
       this.setState({loading:false});
     
@@ -543,7 +544,7 @@ const actionCreators = {
   addFundRegularSavings: userActions.addFundRegularSavings,
   addFundTargetSavings: userActions.addFundTargetSavings,
   addFundSaveToLoanSavings: userActions.addFundSaveToLoanSavings,
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
 };
 
 export default withStyles({}, { withTheme: true })(

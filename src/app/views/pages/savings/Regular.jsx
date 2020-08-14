@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig, numberFormat, setLastUrl, payID} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -26,6 +26,7 @@ import dateFormat from "dateformat"
 class Regular extends Component{
   constructor(props){
     super(props)
+    setLastUrl()
         let email =  localStorage.getItem('email');
         var currentDate = new Date();
         let month = currentDate.getMonth() + 1
@@ -116,7 +117,7 @@ class Regular extends Component{
     })
     .catch(error => {
       if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
         }
     });
     fetch(getConfig('totalFundRegularSavings'), requestOptions)
@@ -134,7 +135,7 @@ class Regular extends Component{
      })
       .catch(error => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
         }
       });
     fetch(getConfig('getRegularSavingsDetails'), requestOptions)
@@ -152,7 +153,7 @@ class Regular extends Component{
       })
       .catch(error => {
       if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
       }
       this.setState({loading:false});
     });
@@ -826,7 +827,7 @@ handleClose() {
 
 // export default Regular;
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   deactivateAutoSave: userActions.deactivateAutoSave,
   createRegularSavings: userActions.createRegularSavings,
   addFundRegularSavings:userActions.addFundRegularSavings,

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from "react";
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig, numberFormat, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import CustomCarousel from "./components/CustomCarousel";
 import Loading from "matx/components/MatxLoading/MatxLoading";
@@ -18,6 +18,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 class Investments extends Component {
   constructor(props){
     super(props)
+    setLastUrl()
     this.state = {
       total: 0.00,
       market:0.00,
@@ -51,7 +52,7 @@ class Investments extends Component {
     })
     .catch(error => {
       if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
       }
       this.setState({loading:false});
     });
@@ -70,7 +71,7 @@ class Investments extends Component {
     })
     .catch(error => {
       if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
       }
       this.setState({loading:false});
     });
@@ -129,7 +130,7 @@ render(){
 }
 
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
 };
 
 function mapState(state) {

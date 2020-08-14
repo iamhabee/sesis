@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import SimpleTable from "./SimpleTable";
 import PaginationTable from "./PaginationTable";
 import { Breadcrumb, SimpleCard } from "matx";
-import {getConfig} from '../../../config/config'
+import {getConfig, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { withRouter } from "react-router-dom";
@@ -16,6 +16,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 class Transaction extends Component {
   constructor(props) {
     super(props);
+    setLastUrl()
     this.state = {
       transactions: [],
       loading: true,
@@ -42,7 +43,7 @@ class Transaction extends Component {
       })
       .catch((error) => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
         }
         if(error == "Sorry, No Record found!"){
           this.setState({loading:false, err : ""});
@@ -78,7 +79,7 @@ class Transaction extends Component {
   };
 }
 const actionCreators = {
-  logout: userActions.logout
+  timeOut: userActions.timeOut
 };
 
 function mapState(state) {

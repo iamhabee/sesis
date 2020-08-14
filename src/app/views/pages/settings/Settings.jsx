@@ -6,7 +6,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Breadcrumb } from "matx";
 import AccountProfile from './components/AccountProfile';
 import AccountDetails from './components/AccountDetails';
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig, numberFormat, payID, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -19,6 +19,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 class Settings extends Component{
 constructor(props){
   super(props)
+  setLastUrl()
   let email = localStorage.getItem('email');
   let image = localStorage.getItem('profile_pic');
   var currentDate = new Date();
@@ -108,7 +109,7 @@ componentDidMount(){
               }
             }).catch(err=>{
                 if (err === "Unauthorized") {
-                  this.props.logout()
+                  this.props.timeOut()
                 }
             })
           )
@@ -127,7 +128,7 @@ componentDidMount(){
             }
           }).catch(err=>{
               if (err === "Unauthorized") {
-                this.props.logout()
+                this.props.timeOut()
               }
           })
         }
@@ -135,7 +136,7 @@ componentDidMount(){
     })
     .catch(error => {
        if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
        }
     });
 }
@@ -157,7 +158,7 @@ fetchBankDetails=()=>{
   })
   .catch(error => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
   });
   const requestOpt={
@@ -177,7 +178,7 @@ fetchBankDetails=()=>{
       }
     }).catch(err=>{
         if (err === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
         }
       })
 }
@@ -661,7 +662,7 @@ render(){
   
   }
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   updatePicture: userActions.updatePicture,
   updateProfile: userActions.updateProfile,
   resetpassword: userActions.resetpassword,

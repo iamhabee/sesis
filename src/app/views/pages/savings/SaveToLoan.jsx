@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig, numberFormat, payID, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -30,6 +30,7 @@ import dateFormat from "dateformat"
 class SaveToLoan extends Component{
   constructor(props){
     super(props)
+    setLastUrl()
         let email =  localStorage.getItem('email');
         var currentDate = new Date();
         let month = currentDate.getMonth() + 1
@@ -118,7 +119,7 @@ componentDidMount(){
   })
   .catch(error => {
       if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
         }
     this.setState({loading:false})
   });
@@ -711,7 +712,7 @@ handleClose() {
 
 // export default Regular;
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   deactivateAutoSaveLoan: userActions.deactivateAutoSaveLoan,
   createSaveToLoanSavings: userActions.createSaveToLoanSavings,
   addFundSaveToLoanSavings:userActions.addFundSaveToLoanSavings,

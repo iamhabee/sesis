@@ -62,17 +62,14 @@ class ForgotPassword extends Component {
               </Grid>
             </Grid>
           </div>
-        <div className="p-4" style={{width:500}}>
-          <Card className="signup-card" style={{width:"100%"}}>
-            <Grid container className="p-2 bg-light-gray" justify="center" alignItems="center">
+          <Card className="signup-card" >
+            <Grid container className="p-12 bg-light-gray" direction="column" justify="center" alignItems="center">
               <Grid lg={12} md={12} sm={12} xs={12}>
-                <Typography variant="h6" className="text-center text-gray">Recover Password</Typography>
+                <Typography variant="h6" className="text-center text-gray mb-4">Recover Password</Typography>
               </Grid>
-            </Grid>
-            <Grid container className="bg-light-gray" >
               <ValidatorForm ref="form" onSubmit={this.handleFormSubmit}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <div className="p-9 h-full position-relative">
+                  {/* <div className="p-9 h-full position-relative"> */}
                       <TextValidator
                         className="mb-6 w-full"
                         variant="outlined"
@@ -86,7 +83,8 @@ class ForgotPassword extends Component {
                           "this field is required",
                           "email is not valid"
                         ]}/>
-                  </div>
+                  {/* </div> */}
+                  </Grid>
                   <Grid item lg={12} md={12} sm={12} xs={12} className="mb-4">
                     <Button
                       variant="contained"
@@ -94,7 +92,7 @@ class ForgotPassword extends Component {
                       disabled={this.props.loggingIn}
                       type="submit"
                       className="capitalize font-medium"
-                      style={{background:'#04956b', color:"#fff", width:"84%", padding:10, marginLeft:36, marginRight:36}}
+                      style={{background:'#04956b', color:"#fff", width:"100%"}}
                     >
                       Reset
                     </Button>
@@ -115,11 +113,9 @@ class ForgotPassword extends Component {
                         Sign in
                       </Button>
                   </Grid>
-                </Grid>
               </ValidatorForm>
             </Grid>
           </Card>
-        </div>
       </div>
       </div>
     );

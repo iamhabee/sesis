@@ -34,7 +34,7 @@ export default function AppAppBar() {
           </IconButton> */}
           <img src="/assets/images/cubevest.png" alt="company-logo" />
           <Typography variant="h6" className="text-white" style={{color:"#fff", flexGrow: 1, marginLeft: 25,}}>
-            News
+            
           </Typography>
           <Link to="/signin"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button></Link>
         </Toolbar>

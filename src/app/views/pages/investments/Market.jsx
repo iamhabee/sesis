@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from 'react';
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig,setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import SingleInvestmentcard from './components/SingleInvestmentCard';
 import SingleInvestmentcardDetails from './components/SingleInvestmentCardDetails';
@@ -21,6 +21,7 @@ import MarketCard2 from './components/MarketCard2';
  class Market extends Component {
   constructor(props){
     super(props)
+    setLastUrl()
     var currentDate = new Date();
     let month = currentDate.getMonth() + 1;
     let day = currentDate.getDate();
@@ -101,7 +102,7 @@ fetchSingleMarket(id){
     })
     .catch(error => {
        if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
        }
     });
     fetch(getConfig('getSingleInvestment')+ id +`?token=`+user.token, requestOptions)
@@ -119,7 +120,7 @@ fetchSingleMarket(id){
     })
     .catch(error => {
        if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
        }
     });
 }
@@ -158,7 +159,7 @@ componentDidMount() {
 })
 .catch(error => {
    if (error === "Unauthorized") {
-    this.props.logout()
+    this.props.timeOut()
    }
    this.setState({loading:false});
     console.error('There was an error!', error );
@@ -179,7 +180,7 @@ fetch(getConfig("getInvestmentCat"), requestOptions)
   })
   .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
   });
   fetch(getConfig("showMyMarketInvestment"), requestOptions)
@@ -197,7 +198,7 @@ fetch(getConfig("getInvestmentCat"), requestOptions)
   })
   .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
   });
 }
@@ -462,7 +463,7 @@ tabbed = (id) => {
   }
 
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   addMarketPlace: userActions.addMarketPlace,
 };
 

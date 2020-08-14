@@ -30,31 +30,51 @@ class SingleInvestmentCardDetails extends Component {
                         <Typography variant="p" className="font-bold">Insurance Partner:</Typography> 
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                        <Typography variant="p" className="font-bold">{investment.insurance_partner}</Typography>
+                        <Typography variant="p" className="font-bold">
+                            <span style={{color: '#000', borderWidth:"thin", borderStyle:"solid", borderColor: "green", padding:3, marginTop:20, borderRadius:5}}>
+                                {investment.insurance_partner}
+                            </span>
+                        </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                         <Typography variant="p" className="font-bold">Expected Return</Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                        <Typography variant="p" className="font-bold">{numberFormat(investment.expected_returns)}</Typography>
+                        <Typography variant="p" className="font-bold">
+                            <span style={{color: '#000', borderWidth:"thin", borderStyle:"solid", borderColor: "green", padding:3, marginTop:20, borderRadius:5}}>
+                                {numberFormat(investment.expected_returns)}
+                            </span>
+                        </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                         <Typography variant="p" className="font-bold">Start Date:</Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                        <Typography variant="p" className="font-bold">{dateFormat(investment.start_date, "mmmm dS, yyyy")}</Typography>
+                        <Typography variant="p" className="font-bold">
+                            <span style={{color: '#000', borderWidth:"thin", borderStyle:"solid", borderColor: "green", padding:3, marginTop:20, borderRadius:5}}>
+                                {dateFormat(investment.start_date, "mmmm dS, yyyy")}
+                            </span>
+                        </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                         <Typography variant="p" className="font-bold">Application Date:</Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                        <Typography variant="p" className="font-bold">{dateFormat(investment.application_date, "mmmm dS, yyyy")}</Typography>
+                        <Typography variant="p" className="font-bold">
+                            <span style={{color: '#000', borderWidth:"thin", borderStyle:"solid", borderColor: "green", padding:3, marginTop:20, borderRadius:5}}>
+                                {dateFormat(investment.application_date, "mmmm dS, yyyy")}
+                            </span>
+                        </Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
                         <Typography variant="p" className="font-bold">Investment Period:</Typography>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
-                        <Typography variant="p" className="font-bold">{maturityMonth - applicationMonth} Month </Typography>
+                        <Typography variant="p" className="font-bold">
+                            <span style={{color: '#000', borderWidth:"thin", borderStyle:"solid", borderColor: "green", padding:3, marginTop:20, borderRadius:5}}>
+                                {maturityMonth - applicationMonth} Month
+                            </span>
+                        </Typography>
                     </Grid>
                 </Grid>
             </div>

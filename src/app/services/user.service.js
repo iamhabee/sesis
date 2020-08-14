@@ -5,8 +5,11 @@ export const userService = {
   login,
   relogin,
   logout,
+  timeOut,
   register,
   recoverpass,
+  verifypass,
+  verifyemail,
   resetpassword,
   update,
   delete: _delete,
@@ -611,6 +614,12 @@ function logout() {
   localStorage.removeItem("lasturl");
 }
 
+function timeOut(){
+  localStorage.removeItem("user");
+  localStorage.removeItem("name");
+  localStorage.removeItem("email");
+}
+
 function relogin(email) {
   const requestOptions = {
     method: "POST",
@@ -641,11 +650,31 @@ function register(user) {
 function recoverpass(data) {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    headers: { "Content-Type": "application/json"},
     body: JSON.stringify(data),
   };
 
   return fetch(getConfig("recoverpass"), requestOptions).then(handleResponse);
+}
+
+function verifypass(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  return fetch(getConfig("verifypass"), requestOptions).then(handleResponse);
+}
+
+function verifyemail(code) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    // body: JSON.stringify(data),
+  };
+
+  return fetch(getConfig("verifyemail")+code, requestOptions).then(handleResponse);
 }
 
 function resetpassword(user) {

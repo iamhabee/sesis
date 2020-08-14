@@ -1,13 +1,6 @@
 import React,{Component} from 'react';
 
 import AppAppBar from './shared/AppBar'
-import AppFooter from './shared/Footer'
-import ProductHero from './shared/ProductHero'
-import ProductCategories from './shared/ProductCategory'
-import ProductHowItWorks from './shared/ProductHowItWork'
-import ProductCTA from './shared/Product'
-import ProductSmokingHero from './shared/ProductSmoingHero'
-import ProductValues from './shared/ProductValues'
 import {Grid} from "@material-ui/core"
 import CustomSlider from './shared/CustomSlider';
 import SignUp from './shared/SignUp';
@@ -33,10 +26,13 @@ class Landing extends Component {
         }}>
           <AppAppBar login={this.handleShowLogin} />
           <Grid container spacing={2}>
-            <Grid item lg={9} md={9} sm={12} xs={12}>
+            <Grid item lg={7} md={7} sm={12} xs={12}>
               <SignUp />
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
+              <img src="/assets/images/mobile1.jpeg" alt="company-logo" />
+            </Grid>
+            <Grid item lg={2} md={2} sm={12} xs={12}>
               <CustomSlider />
             </Grid>
           </Grid>
@@ -45,13 +41,13 @@ class Landing extends Component {
               
             </Grid>
             <Grid item lg={3} md={3} sm={12} xs={12}>
-              <CustomSlider />
+              
             </Grid>
           </Grid>
       </div>
     );
   }  
-  }
+}
   
 
 export default Landing;

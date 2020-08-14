@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PaginationTable from "./PaginationTable";
 import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
-import {getConfig, payID, numberFormat} from '../../../config/config'
+import {getConfig, payID, numberFormat, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -28,6 +28,7 @@ import PayOption from "app/views/dashboard/shared/PayOption";
 class Wallet extends Component{
   constructor(props){
     super(props)
+    setLastUrl()
     let email =  localStorage.getItem('email');
     var currentDate = new Date();
     let month = currentDate.getMonth() + 1;
@@ -74,7 +75,7 @@ class Wallet extends Component{
       })
       .catch((error) => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
         }
       });
       fetch(getConfig('getBank'), requestOptions)
@@ -90,7 +91,7 @@ class Wallet extends Component{
           })
           .catch(error => {
           if (error === "Unauthorized") {
-            this.props.logout()
+            this.props.timeOut()
           }
         });
       fetch(getConfig("showWallet"), requestOptions)
@@ -104,7 +105,7 @@ class Wallet extends Component{
       })
       .catch((error) => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
         }
         if(error == "Sorry, No Record found!"){
           this.setState({loading:false});
@@ -356,7 +357,7 @@ handleCloseWithdraw() {
 
 // export default Wallet;
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   saveWallet: userActions.saveWallet
 };
 

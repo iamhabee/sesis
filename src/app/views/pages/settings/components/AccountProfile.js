@@ -163,7 +163,6 @@ AccountProfile.propTypes = {
 
 // export default AccountProfile;
 const actionCreators = {
-  logout: userActions.logout,
   updatePicture: userActions.updatePicture,
 };
 

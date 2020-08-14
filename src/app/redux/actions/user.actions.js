@@ -1,13 +1,17 @@
 import { userConstants } from "../_constants";
 import { userService } from "../../services/user.service";
 import { alertActions } from "../actions/alert.actions";
+import {checkLastUrl} from "../../config/config"
 import history  from "../../../history";
 
 export const userActions = {
   login,
   logout,
+  timeOut,
   register,
   recoverpass,
+  verifypass,
+  verifyemail,
   resetpassword,
   createRegularSavings,
   withdrawRegularSavings,
@@ -74,9 +78,7 @@ function login(username, password) {
       (user) => {
         if(user.status == true){
           dispatch(success(user));
-          history.push({
-            pathname: "/dashboard"
-          });
+          checkLastUrl()
         }else{
           dispatch(alertActions.error(user.message));
           dispatch(failure(user.message))
@@ -110,6 +112,14 @@ function logout() {
   return { type: userConstants.LOGOUT };
 }
 
+function timeOut() {
+  userService.timeOut();
+  history.push({
+    pathname: "/signin"
+  });
+  return { type: userConstants.LOGOUT };
+}
+
 function register(user) {
   return (dispatch) => {
     dispatch(request(user));
@@ -118,7 +128,7 @@ function register(user) {
       (user) => {
         dispatch(success());
         history.push("/signin");
-        dispatch(alertActions.success("Registration successful"));
+        dispatch(alertActions.success(user.message));
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -1491,6 +1501,62 @@ function recoverpass(user) {
       (user) => {
         dispatch(success());
         // history.push("/forgot-password");
+        dispatch(alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.LOGIN_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.LOGIN_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.LOGIN_FAILURE, error };
+  }
+}
+
+function verifypass(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.verifypass(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/signin");
+        dispatch(alertActions.success(user.message));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.LOGIN_REQUEST, user };
+  }
+  function success(user) {
+    return { type: userConstants.LOGIN_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.LOGIN_FAILURE, error };
+  }
+}
+
+function verifyemail(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.verifyemail(user).then(
+      (user) => {
+        dispatch(success());
+        history.push("/signin");
         dispatch(alertActions.success(user.message));
       },
       (error) => {

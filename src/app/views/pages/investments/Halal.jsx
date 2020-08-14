@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import { Component } from 'react';
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import SingleInvestmentcard from './components/SingleInvestmentCard';
 import SingleInvestmentcardDetails from './components/SingleInvestmentCardDetails';
@@ -20,6 +20,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 
  class Halal extends Component {
   constructor(props){
+    setLastUrl()
     super(props)
     var currentDate = new Date();
     let month = currentDate.getMonth() + 1;
@@ -116,7 +117,7 @@ fetchSingleMarket(id){
     })
     .catch(error => {
         if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
         }
     });
     fetch(getConfig('getSingleHalai')+ id +`?token=`+user.token, requestOptions)
@@ -134,7 +135,7 @@ fetchSingleMarket(id){
     })
     .catch(error => {
         if (error === "Unauthorized") {
-        this.props.logout()
+        this.props.timeOut()
         }
     });
 }
@@ -159,7 +160,7 @@ componentDidMount() {
 })
 .catch(error => {
    if (error === "Unauthorized") {
-    this.props.logout()
+    this.props.timeOut()
    }
    this.setState({loading:false});
     console.error('There was an error!', error );
@@ -179,7 +180,7 @@ fetch(getConfig("getHalaiCat"), requestOptions)
   })
   .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
   });
   fetch(getConfig("showMyHalalInvestment"), requestOptions)
@@ -197,7 +198,7 @@ fetch(getConfig("getHalaiCat"), requestOptions)
   })
   .catch((error) => {
     if (error === "Unauthorized") {
-      this.props.logout()
+      this.props.timeOut()
     }
   });
 }
@@ -466,7 +467,7 @@ tabbed = (id) => {
 }
 
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   addHalaiInvestors: userActions.addHalaiInvestors,
 };
 

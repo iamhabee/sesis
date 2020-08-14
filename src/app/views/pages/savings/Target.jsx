@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb, SimpleCard } from "matx";
 import StatCards2 from "../../dashboard/shared/StatCards2";
-import {getConfig, numberFormat, payID} from '../../../config/config'
+import {getConfig, numberFormat, payID, setLastUrl} from '../../../config/config'
 import {authHeader} from '../../../redux/logic'
 import history from '../../../../history'
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -27,6 +27,7 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 class Target extends Component{
   constructor(props){
     super(props)
+    setLastUrl()
         let email =  localStorage.getItem('email');
         var currentDate = new Date();
         let month = currentDate.getMonth() + 1
@@ -130,7 +131,7 @@ componentDidMount(){
     })
     .catch(error => {
         if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
           }
         this.setState({loading:false});
     });
@@ -166,7 +167,7 @@ fetchSingleTargetTransaction=(id)=>{
 })
   .catch(error => {
       if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
       }
       this.setState({isLoading:false})
   });
@@ -194,7 +195,7 @@ fetchSingleTarget=(id)=>{
 })
   .catch(error => {
       if (error === "Unauthorized") {
-          this.props.logout()
+          this.props.timeOut()
       }
       this.setState({isLoading:false})
   });
@@ -972,7 +973,7 @@ completeTab(){
 
 // export default Regular;
 const actionCreators = {
-  logout: userActions.logout,
+  timeOut: userActions.timeOut,
   createTargetSavings: userActions.createTargetSavings,
   addFundTargetSavings:userActions.addFundTargetSavings,
   withdrawTargetSavings: userActions.withdrawTargetSavings,

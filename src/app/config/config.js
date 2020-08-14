@@ -6,7 +6,8 @@ const serverVars = {
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",
-  // lostpwdUrl: `"auth/signup",/
+  verifypass:"auth/reset",
+  verifyemail:"auth/signupVerifyEmail/",
   recoverpass:"auth/recovery",
   // regular savings
   fetchAllBalances: "total_balances_for_all_savings_packages?token=",
@@ -130,16 +131,29 @@ export const setLastUrl = () =>{
   localStorage.setItem("lasturl", pathname);
 }
 
+export const checkLastUrl=()=>{
+  let pathname = localStorage.getItem("lasturl");
+  if (pathname == null || pathname == "") {
+    history.push({
+      pathname: "/dashboard"
+    });
+    }else{
+      history.push({
+        pathname: pathname
+      });
+    }
+}
+
 export const checkToken = ()=>{
   let pathname = localStorage.getItem("lasturl");
   let token =  JSON.parse(localStorage.getItem('user'));
-    if (token == null) {
+    if (token == null || token == "") {
       history.push({
         pathname: "/signin"
       });
       }else{
         history.push({
-          pathname: "/dashboard"
+          pathname: pathname
         });
       }
 }
@@ -149,8 +163,12 @@ export function getConfig(apiName) {
   if ((apiName != 'login') && user == null) {
     if(apiName != "signup"){
       if(apiName != "recoverpass"){
-        history.push('/signin');
-        return
+        if(apiName != "verifypass"){
+          if(apiName != "verifyemail"){
+            history.push('/signin');
+            return
+          }
+        }
       }
     }
     
@@ -160,6 +178,10 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.authUrl;
     case "recoverpass":
       return serverVars.baseUrl + serverVars.recoverpass;
+    case "verifyemail":
+      return serverVars.baseUrl + serverVars.verifyemail;
+    case "verifypass":
+      return serverVars.baseUrl + serverVars.verifypass;
     case "resetPass":
       return serverVars.baseUrl + serverVars.resetPass + user.token;
     case "signup":
