@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import logo from "../../../../assets/cubeVest.png"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +33,7 @@ export default function AppAppBar(props) {
           {/* <IconButton edge="start" className={classes.menuButton} color="secondary" aria-label="menu">
             <MenuIcon />
           </IconButton> */}
-          <img src="/assets/images/cubevest.png" alt="company-logo" />
+          <Link to="/landing"><img src={logo} alt="company-logo" /></Link>
           <Typography variant="h6" className="text-white" style={{color:"#fff", flexGrow: 1, marginLeft: 25,}}>
             
           </Typography>
