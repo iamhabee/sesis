@@ -9,6 +9,7 @@ const serverVars = {
   verifypass:"auth/reset",
   verifyemail:"auth/signupVerifyEmail/",
   recoverpass:"auth/recovery",
+  getPayStackId:"getApiKey?token=",
   // regular savings
   fetchAllBalances: "total_balances_for_all_savings_packages?token=",
   fetchAllTarget: "all_targets_in_one?token=",
@@ -186,6 +187,8 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.resetPass + user.token;
     case "signup":
       return serverVars.baseUrl + serverVars.regUrl;
+    case "getPayStackId":
+      return serverVars.baseUrl + serverVars.getPayStackId + user.token;
     // regular savings api
     case "editRegularSavings":
       return serverVars.baseUrl + serverVars.editRegularSavings;

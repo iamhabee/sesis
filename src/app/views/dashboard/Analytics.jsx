@@ -163,10 +163,13 @@ fetch(getConfig("showProfile"), requestOptions)
     const profile = await response.json();
     if (!response.ok) {
         const error = (profile && profile.message) || response.statusText;
-        this.setState({loading:false})
         return Promise.reject(error);
     }
-    this.setState({profile: profile[0]})
+    if(profile.length == 0){
+      this.setState({profile: []})
+    }else{
+      this.setState({profile: profile[0]})
+    }
 })
 .catch((error) => {
     if (error === "Unauthorized") {
@@ -368,7 +371,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
                   {/* <ScrollCards /> */}
             </Grid>
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              {(wallet_balance == 0 || bank.length == 0  || profile.relationship != "" ) && <h4 className="card-title text-muted mb-4">Todo List</h4>}
+              {(wallet_balance == 0 || bank.length == 0  || profile.relationship == "" || profile.length == 0 ) && <h4 className="card-title text-muted mb-4">Todo List</h4>}
               <RowCards wallet={wallet_balance} bank={bank} profile={profile}/>
               <Card className="px-6 py-4 pt-4 mb-6">
                 <div className="card-title">My Savings Account </div>
@@ -418,6 +421,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
           </Grid>
         </div>
         <Dialog
+        scroll="body"
         open={show}
         onClose={this.handleClose}
       >

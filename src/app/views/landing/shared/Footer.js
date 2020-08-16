@@ -5,6 +5,9 @@ import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import CustomSlider from './CustomSlider';
+import { Divider, ListItem, ListItemText, List, ListSubheader } from '@material-ui/core';
+import logo from "../../../../assets/cubeVest.png"
 
 function Copyright() {
   return (
@@ -24,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#000",
   },
   container: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(8),
     display: 'flex',
+    flexDirection:"column",
+    marginTop:10
   },
   iconsWrapper: {
     height: 120,
@@ -63,41 +66,40 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Footer() {
   const classes = useStyles();
-
+  const date = new Date()
   return (
-    <Typography component="footer" className={classes.root}>
+    <div component="footer" className={classes.root}>
       <Container className={classes.container}>
-        <Grid container justify="space-between" spacing={5}>
-          <Grid item xs={6} sm={4} md={6}>
-            <Grid
-              container
-              direction="column"
-              justify="flex-start"
-              className="text-white p-10"
-              spacing={2} >
-                Cubevest Cooperative is a Nigerian pioneer Non Interest Fintech company duly registered with the Corporate Affairs Commissions and also a registered Cooperative under the Nigerian Cooperatives Societies with the goal of driving the financial inclusion of individuals who do not have access to financial services, provision of interest free credit facilities to members, promoting savings culture and encouraging ethical investment.
-            </Grid>
+        <Grid container justify="space-between" spacing={5} className="mb-10">
+          <Grid item xs={6} sm={6} md={3} lg={3} className="p-5 text-white">
+          <Typography variant="h6" style={{fontStyle:"underline"}}>Links</Typography><br/>
+            <Typography variant="p">Contact</Typography><br/>
+            <Typography variant="p">FAQ</Typography><br/>
+            <Typography variant="p">About Us</Typography>
           </Grid>
-          <Grid item xs={6} sm={4} md={6}>
-          <Grid
-              container
-              direction="column"
-              justify="flex-end"
-              spacing={2} >
-            <Typography variant="h6" className="p-10 text-white" marked="left" gutterBottom>
-            Suite 522, Fifth Floor,
-            The Kings Plaza Opposite NAF Conference Center,
-            Kado, FCT, Abuja
-            </Typography>
-            </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={3}  className="p-5 text-white">
+            <Typography variant="h6">Features</Typography><br/>
+            <Divider variant="inset"  />
+            <Typography variant="p">Savings</Typography><br/>
+            <Typography variant="p">Investment</Typography><br/>
+            <Typography variant="p">Free interest loan</Typography>
           </Grid>
-          {/* <Grid item>
-            <Typography variant="caption">
-              
-            </Typography>
-          </Grid> */}
+          <Grid item xs={6} sm={6} md={3} lg={3}  className="p-5 text-white">
+            <Typography variant="h6">Social Media</Typography><br/>
+            <Typography variant="p">Savings</Typography><br/>
+            <Typography variant="p">Investment</Typography><br/>
+            <Typography variant="p">Free interest loan</Typography>
+          </Grid>
+          <Grid item xs={6} sm={6} md={3} lg={3}  className="p-15 text-white">
+            <img src={logo} alt="company-logo" />
+          </Grid>
+        </Grid>
+        <Divider variant="fullWidth" style={{backgroundColor:"#ffffff"}} />
+        <Grid container className="p-5 text-center" >
+          <Grid item xs={6} sm={6} md={6} lg={6} >Terems & Condition Apply</Grid>
+          <Grid item xs={6} sm={6} md={6} lg={6} >Cubevest {date.getFullYear()} </Grid>
         </Grid>
       </Container>
-    </Typography>
+    </div>
   );
 }

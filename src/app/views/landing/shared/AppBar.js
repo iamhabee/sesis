@@ -38,7 +38,7 @@ export default function AppAppBar(props) {
             
           </Typography>
           {props.user ?
-            <Link to="/dashboard"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Dashboard</Button></Link>:
+            <Link to="/dashboard"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button></Link>:
             <Link to="/signin"><Button variant="outlined" color="secondary" style={{color:"#fff"}}>Login</Button></Link>
             }
         </Toolbar>

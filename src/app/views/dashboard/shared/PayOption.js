@@ -1,18 +1,38 @@
 import React, { Component } from 'react'
-import { payID, getReference } from '../../../config/config'
+import {getReference, getConfig } from '../../../config/config'
 import PaystackButton from 'react-paystack';
+import { authHeader } from "../../../redux/logic";
 
 class PayOption extends Component {
     constructor(props){
         super(props)
         let email =  localStorage.getItem('email');
-        let paystack_id =  localStorage.getItem('paystack_id');
         this.state = {
             email: email,
-            key: paystack_id[1],
+            key: "",
         }
         this.close = this.close.bind(this);
     }
+componentDidMount(){
+    const requestOptions = {
+        method: 'GET',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+    };
+    fetch(getConfig("getPayStackId"), requestOptions)
+    .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+        }
+        this.setState({key: data[0].public_key})
+    })
+    .catch((error) => {
+        if (error === "Unauthorized") {
+          this.props.timeOut()
+        }
+    });
+}
 
 close = () => {
     console.log("Payment closed");

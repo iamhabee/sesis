@@ -80,7 +80,7 @@ class RowCards extends Component {
         </Card>
       </Link>}
       <div className="py-2" />
-      {this.props.profile.relationship == "" &&
+      {(this.props.profile.length == 0 || this.props.profile.relationship == "")&&
       <Link to="/profile">
       <Card className="py-2 px-4 project-card">
         <Grid container alignItems="center">

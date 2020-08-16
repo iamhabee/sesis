@@ -86,7 +86,7 @@ function login(email, password) {
       localStorage.setItem("paystack_id", JSON.stringify(user.paystack_id));
       localStorage.setItem("email", user.email);
       localStorage.setItem("name", user.name);
-      localStorage.setItem("profile_pic", user.profile_pic);
+      // localStorage.setItem("profile_pic", user.profile_pic);
       return user;
     });
 }
@@ -614,14 +614,14 @@ function logout() {
   localStorage.removeItem("name");
   localStorage.removeItem("email");
   localStorage.removeItem("lasturl");
-  localStorage.removeItem("paystack_id");
+  // localStorage.removeItem("paystack_id");
 }
 
 function timeOut(){
   localStorage.removeItem("user");
   localStorage.removeItem("name");
   localStorage.removeItem("email");
-  localStorage.removeItem("paystack_id");
+  // localStorage.removeItem("paystack_id");
 }
 
 function relogin(email) {

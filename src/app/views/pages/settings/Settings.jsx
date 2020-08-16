@@ -90,11 +90,11 @@ componentDidMount(){
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
           }
-        if(data.success == false){
+        if(data.success == false || data.length == 0){
           this.setState({profile: []})
         }else{
           this.setState({profile: data[0]})
-          if(data[0].relationship != ""){
+          if(data.length != 0 || data[0].relationship != ""){
             this.setState({completeness: 50}, 
             ()=>fetch(getConfig('getBank'), requestOptions).then(async res=>{
               const dat = await res.json();
