@@ -12,8 +12,6 @@ import { payID, getConfig, setLastUrl, numberFormat } from '../../config/config'
 import swal from 'sweetalert'
 import { userActions } from "../../redux/actions/user.actions";
 import { connect } from "react-redux";
-import Lottie from 'react-lottie';
-import cube from "../../../lottiefiles/26519-cube-spinning";
 import CloseIcon from "@material-ui/icons/Close";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import {

@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import {getReference, getConfig } from '../../../config/config'
 import PaystackButton from 'react-paystack';
 import { authHeader } from "../../../redux/logic";
+import { withStyles } from "@material-ui/styles";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { userActions } from "../../../redux/actions/user.actions";
 
 class PayOption extends Component {
     constructor(props){
@@ -59,4 +63,15 @@ close = () => {
     }
 }
 
-export default PayOption
+// export default PayOption
+function mapState(state) {
+    const { savings } = state.savings;
+    return { savings };
+  }
+  const actionCreators = {
+    timeOut: userActions.timeOut,
+  };
+  
+  export default withStyles({}, { withTheme: true })(
+    withRouter(connect(mapState,  actionCreators)(PayOption))
+  );
