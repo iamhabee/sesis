@@ -14,7 +14,7 @@ class Section1 extends Component {
         return (
             <Grid container direction="row" justify="space-between" alignItems="center" style={{paddingLeft:60, paddingRight:60}}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <Card style={{backgroundColor:"inherit"}} elevation={0}>
+                    <Card style={{backgroundColor:"inherit"}} elevation={0} className="p-5">
                         <Typography className="text-white mb-3" style={style.typo} variant="h2">
                         Download Cubevest Mobile App
                         </Typography>
