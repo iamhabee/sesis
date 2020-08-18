@@ -51,7 +51,7 @@ class Dashboard1 extends Component {
                   date_time: entry_date,
                   payment_method: "Wallet",
                   target_name:"",
-                  paystack_id: payID()
+                  paystack_id: ""
                 },
                 key: payID(),
                 opened :false, 
@@ -84,7 +84,12 @@ callback = (response) => {
   const { data, key } = this.state;
   
   if (data.acct_type && data.amount) {
-    this.setState({data:{...data, paystack_id: response.reference }}, () => {
+    this.setState({data:{...data, paystack_id: response.reference }})     
+}
+}
+componentDidUpdate(){
+  const { data } = this.state;
+  if (data.paystack_id !== "") {
     if(data.acct_type == "Wallet"){
       this.props.saveWallet(data)
     }else if(data.acct_type == "Regular Savings"){
@@ -94,10 +99,8 @@ callback = (response) => {
     }else{
         this.props.addFundTargetSavings(data);
     }
-  })
-     
+    this.setState({data:{...data, paystack_id:""}})
   }
-console.log(response);  
 }
 getReference = () => {
 let text = "";

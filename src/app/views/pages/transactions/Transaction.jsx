@@ -38,7 +38,6 @@ class Transaction extends Component {
           this.setState({loading: false });
           return Promise.reject(error);
         }
-        console.log(data)
         this.setState({ loading: false, transactions:data.data, pagination: data});
       })
       .catch((error) => {

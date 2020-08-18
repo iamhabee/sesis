@@ -17,7 +17,7 @@ const Breadcrumb = ({ routeSegments }) => {
         separator={<Icon className="text-hint">navigate_next</Icon>}
         className="flex items-center position-relative"
       >
-        <NavLink to="/">
+        <NavLink to="/dashboard">
           <Icon className="align-middle ml-2 mb-1" color="primary">
             home
           </Icon>

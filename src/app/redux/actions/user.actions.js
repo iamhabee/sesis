@@ -755,7 +755,6 @@ function resendGroupNotification(user) {
 
 // resend loan notification 
 function resendLoanNotification(loan_group, user_id) {
-  console.log(loan_group, user_id)
   return (dispatch) => {
     userService.resendLoanNotification(loan_group, user_id).then(
       (user) => {
@@ -1292,7 +1291,6 @@ function saveWallet(user) {
     userService.saveWallet(user).then(
       (user) => {
         dispatch(success());
-        console.log(user)
         dispatch(
           alertActions.success(user.message)
         );

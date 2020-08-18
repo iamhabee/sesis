@@ -66,7 +66,6 @@ class SignUp extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
       const { data, confirm_password } = this.state;
-    console.log(data)
       if (data.first_name && data.last_name && data.email && data.phone_no && data.password) {
         if(data.password == confirm_password){
           this.props.register(data);

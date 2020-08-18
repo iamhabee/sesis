@@ -122,7 +122,7 @@ componentDidMount(){
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      }console.log(data)
+      }
       if(data.success == false){
         this.setState({tdetails: [], balance: 0, completed: [], accounts:[], loading:false })
       }else{
@@ -140,11 +140,15 @@ componentDidMount(){
   callback = (response) => {
   const {fund_data} = this.state
   if (fund_data.amount ) {
-      this.setState({fund_data:{...fund_data, paystack_id: response.reference }}, () => {
-          this.props.addFundTargetSavings(fund_data);
-      })
+      this.setState({fund_data:{...fund_data, paystack_id: response.reference }})
   }
-  
+}
+componentDidUpdate(){
+  const { fund_data } = this.state;
+  if (fund_data.paystack_id !== "") {
+    this.props.addFundTargetSavings(fund_data);
+    this.setState({fund_data:{...fund_data, paystack_id:""}})
+  }
 }
 fetchSingleTargetTransaction=(id)=>{
   let user = JSON.parse(localStorage.getItem('user'));
@@ -186,7 +190,6 @@ fetchSingleTarget=(id)=>{
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
   }
-  console.log(data)
   if(data.success == false || data.total == 0){
     this.setState({edit_data: [], isLoading:false});
   }else{
@@ -496,7 +499,8 @@ completeTab(){
         {/* Quick Save Dialog Start */}
         <Dialog
           open={showSave}
-          onClose={this.handleCloseQuickSave}>
+          onClose={this.handleCloseQuickSave}
+          scroll="body">
           <AppBar style={{position: "relative", backgroundColor:"#e74398"}}>
             <Toolbar>
               <IconButton

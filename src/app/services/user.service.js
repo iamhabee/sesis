@@ -80,7 +80,6 @@ function login(email, password) {
   return fetch(getConfig("login"), requestOptions)
     .then(handleResponse)
     .then((user) => {
-      console.log(user)
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("paystack_id", JSON.stringify(user.paystack_id));
@@ -585,7 +584,6 @@ function updateProfile(data) {
     if (error === "Unauthorized") {
       history.push("/signin");
     }
-    console.log(error)
   })
 }
 // update picture

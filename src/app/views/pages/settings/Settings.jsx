@@ -14,7 +14,7 @@ import { userActions } from "../../../redux/actions/user.actions";
 import { withStyles } from "@material-ui/styles";
 import swal from 'sweetalert'
 import Loading from "matx/components/MatxLoading/MatxLoading";
-
+import {Link} from "react-router-dom"
 
 class Settings extends Component{
 constructor(props){
@@ -91,7 +91,7 @@ componentDidMount(){
             return Promise.reject(error);
           }
         if(data.success == false || data.length == 0){
-          this.setState({profile: []})
+          this.setState({profile: [], isFetching:false})
         }else{
           this.setState({profile: data[0]})
           if(data.length != 0 || data[0].relationship != ""){
@@ -120,7 +120,6 @@ componentDidMount(){
               const error = (dat && dat.message) || res.statusText;
               return Promise.reject(error);
             }
-            console.log(dat)
             if(dat.success == false || dat.length == 0){
               this.setState({isFetching:false, bank_data: []})
             }else{
@@ -199,7 +198,6 @@ check = (e)=>{
           const error = (bank_data && res.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(res)
       this.setState({
         bank_data:{
           ...bank_data, 
@@ -210,7 +208,6 @@ check = (e)=>{
       })
     })
     .catch(error => {
-      console.log(error)
       this.setState({isChecking:false})
       swal(
         `${"Invalid account, please check the account details and try again"}`
@@ -241,7 +238,6 @@ handleSubmitBankDetails(event) {
 handleSubmitPassword(event) {
   event.preventDefault();
   const { password_data } = this.state;
-  console.log(password_data)
   if (password_data.old_password && password_data.new_password && password_data.password_confirmation) {
     if(password_data.new_password == password_data.password_confirmation){
       this.props.resetpassword(password_data);
@@ -323,7 +319,7 @@ render(){
 
               <Card onClick={this.showEditPassword} className="py-2 px-4 project-card">
                 <Grid container alignItems="center">
-                  <Grid item md={6} xs={7}>
+                  <Grid item md={6} lg={6}>
                     <div className="flex items-center">
                       <Hidden smDown>
                           <Fab
@@ -335,7 +331,7 @@ render(){
                       </Hidden>
                     </div>
                   </Grid>
-                  <Grid item md={6} xs={4}>
+                  <Grid item lg={6} sm={12} md={6} xs={12}>
                     <div className="text-muted">
                       Change Password
                     </div>
@@ -345,7 +341,7 @@ render(){
               <div className="py-2" />
               <Card onClick={this.showEditBankDetails} className="py-2 px-4 project-card">
                 <Grid container alignItems="center">
-                  <Grid item md={6} xs={7}>
+                  <Grid item md={6} lg={6}>
                     <div className="flex items-center">
                       <Hidden smDown>
                           <Fab
@@ -357,7 +353,7 @@ render(){
                       </Hidden>
                     </div>
                   </Grid>
-                  <Grid item md={6} xs={4}>
+                  <Grid item lg={6} sm={12} md={6} xs={12}>
                     <div className="text-muted">
                       Add Bank Details
                     </div>
@@ -367,7 +363,7 @@ render(){
               <div className="py-2" />
               <Card onClick={this.showWithdraw} className="py-2 px-4 project-card">
                 <Grid container alignItems="center">
-                  <Grid item md={6} xs={7}>
+                  <Grid item lg={6} md={6} >
                     <div className="flex items-center">
                       <Hidden smDown>
                           <Fab
@@ -379,13 +375,21 @@ render(){
                       </Hidden>
                     </div>
                   </Grid>
-                  <Grid item md={6} xs={4}>
+                  <Grid item lg={6} sm={12} md={6} xs={12}>
                     <div className="text-muted">
                       Withdraw Fund
                     </div>
                   </Grid>
                 </Grid>
               </Card>
+              <div className="py-2" />
+              <Link to="/wallet">
+                <Button
+                color="secondary"
+                variant="contained"
+                style={{color:"#fff"}}
+                type="submit">Go To Wallet</Button>
+              </Link>
             </Grid>
             <Grid  item lg={8} md={6} xl={8} xs={12} >
               <AccountDetails 

@@ -146,12 +146,16 @@ class Loan extends Component {
 callback = (response) => {
   const { repay_data, key } = this.state;
   if (repay_data.trans_date && repay_data.repayment_amount) {
-    this.setState({repay_data:{...repay_data, paystack_id: response.reference }}, () => {
-        this.props.addLoanRepayment(repay_data);
-    })
+    this.setState({repay_data:{...repay_data, paystack_id: response.reference }})
   }
 }
-
+componentDidUpdate(){
+  const { repay_data } = this.state;
+  if (repay_data.paystack_id !== "") {
+    this.props.addLoanRepayment(repay_data);
+    this.setState({repay_data:{...repay_data, paystack_id:""}})
+  }
+}
 getRand = () => {
     //you can put any unique reference implementation code here
     let text = "";
@@ -262,7 +266,7 @@ fetchLoanDetails=(id)=>{
       if (!response.ok) {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
-      }console.log(data)
+      }
       if(data.success == false){
         this.setState({loan_approval: [], loading:false});
       }else{
@@ -325,17 +329,10 @@ confirmAlert=(task, id, group_id, loan_id)=>{
                   swal("Loading...", {buttons: false})
                 }
                 break
-                // case "Resend Loan Notification":
-                //   this.props.resendLoanNotification(group_id, loan_id);
-                //   if(this.props.savings){
-                //     swal("Loading...")
-                //   }
-                //   break
               default:
                   return null
           }
       } else {
-        // swal("Cancel");
         console.log("close")
       }
     });
@@ -351,7 +348,7 @@ fetchLoanApprovals= (id)=>{
       const error = (data && data.message) || response.statusText;
       this.setState({loading:false})
       return Promise.reject(error);
-  }console.log(data)
+  }
   if(data.success == false){
       this.setState({loan_activities: [], loading:false})
   }else{
@@ -377,7 +374,6 @@ fetchAllLoanApi=(requestOptions)=>{
       this.setState({loading:false})
       return Promise.reject(error);
   }
-  console.log(data)
   if(data.length == 0){
       this.setState({loan_group: [], group_table: false})
   }else{
@@ -388,7 +384,6 @@ fetchAllLoanApi=(requestOptions)=>{
   if (error === "Unauthorized") {
       this.props.timeOut()
     }
-    console.log(error)
 });
 
 fetch(getConfig("getLoan"), requestOptions)
@@ -398,7 +393,7 @@ fetch(getConfig("getLoan"), requestOptions)
       const error = (data && data.message) || response.statusText;
       this.setState({loading:false})
       return Promise.reject(error);
-  }console.log(data)
+  }
   if(data.success == false){
       this.setState({loan_details: []})
   }else{
@@ -417,7 +412,7 @@ fetch(getConfig("getLoanGroupActivities"), requestOptions)
       const error = (data && data.message) || response.statusText;
       this.setState({loading:false})
       return Promise.reject(error);
-  }console.log(data)
+  }
   if(data.success == false){
       this.setState({loan_activities: []})
   }else{
@@ -440,7 +435,6 @@ fetch(getConfig("completedLoan"), requestOptions)
       this.setState({loading:false})
       return Promise.reject(error);
   }
-  console.log(data)
   if(data.success == false){
       this.setState({Completed: []})
   }else{
@@ -600,7 +594,6 @@ handleSubmitGroup(event) {
   event.preventDefault();
   const { group_data } = this.state;
   if (group_data.name2 && group_data.email2 && group_data.name3 && group_data.email3 && group_data.name4 && group_data.email4 && group_data.name5 && group_data.email5 &&group_data.group_name && group_data.group_id) {
-      // console.log(data)
       this.props.createLoanGroup(group_data);
   }else{
       swal(
@@ -612,7 +605,6 @@ handleSubmitGroup(event) {
 handleSubmitLoan(event) {
   event.preventDefault();
   const { data } = this.state;
-  console.log(data)
   if (data.loan_amount && data.frequency && data.loan_group && data.start_date && data.end_date && data.payment_method) {       
       this.props.createLoan(data);
   }else{
@@ -693,7 +685,6 @@ handleCreateManage = (id) => {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
       }
-      console.log(data)
       if(data.success == false){
           this.setState({manage_details: [], loading:false})
       }else{
@@ -727,7 +718,6 @@ handleCreateRepayment = (id) => {
   .catch(error => {
     if (error === "Unauthorized") {
         this.props.timeOut()
-          console.log(error)
       }
   });
   this.setState({showrepayment: true, repay_data: {...repay_data, id: id} });

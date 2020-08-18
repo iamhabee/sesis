@@ -63,7 +63,7 @@ class Savings extends Component {
       if (!response.ok) {
           const error = (dat && dat.message) || response.statusText;
           return Promise.reject(error);
-      }console.log(dat)
+      }
       if(dat.success == false || dat == 0){
         this.setState({total: 0, regular: 0, target: 0, loan: 0, loading:false})
       }else{

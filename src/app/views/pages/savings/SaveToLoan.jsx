@@ -106,7 +106,6 @@ componentDidMount(){
         const error = (data && data.message) || response.statusText;
         return Promise.reject(error);
     }
-    console.log(data)
     if(data.success == false){
       this.setState({loading:false, tdetails:[], savings:[], balance:0, other_balance:0})
     }else{
@@ -127,11 +126,15 @@ componentDidMount(){
 callback = (response) => {
   const {fund_data} = this.state
   if (fund_data.amount ) {
-      this.setState({fund_data:{...fund_data, paystack_id: response.reference }}, () => {
-          this.props.addFundSaveToLoanSavings(fund_data);
-      })
+    this.setState({fund_data:{...fund_data, paystack_id: response.reference }})
   }
-  
+}
+componentDidUpdate(){
+  const { fund_data } = this.state;
+  if (fund_data.paystack_id !== "") {
+    this.props.addFundSaveToLoanSavings(fund_data);
+    this.setState({fund_data:{...fund_data, paystack_id:""}})
+  }
 }
 getReference = () => {
 let text = "";

@@ -68,15 +68,19 @@ import MarketCard2 from './components/MarketCard2';
 callback = (response) => {
   const { invest_data } = this.state;
   if (invest_data.total && invest_data.payment_method) {
-    this.setState({invest_data:{...invest_data, paystack_id: response.reference }}, () => {
-      this.props.addMarketPlace(invest_data);
-      })
+    this.setState({invest_data:{...invest_data, paystack_id: response.reference }})
     }
+}
+componentDidUpdate(){
+  const { invest_data } = this.state;
+  if (invest_data.paystack_id !== "") {
+    this.props.addMarketPlace(invest_data);
+    this.setState({invest_data:{...invest_data, paystack_id:""}})
   }
+}
 handleSubmit(event) {
   event.preventDefault();
   const { invest_data } = this.state;
-  console.log(invest_data)
   if (invest_data.total && invest_data.payment_method) {
     this.props.addMarketPlace(invest_data);
   }
@@ -93,7 +97,7 @@ fetchSingleMarket(id){
         if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
-        }console.log(data)
+        }
         if(data.success == false){
           this.setState({singleNews: []});
         }else{
@@ -111,7 +115,7 @@ fetchSingleMarket(id){
         if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
-        }console.log(data)
+        }
         if(data.success == false){
           this.setState({singleInvestment: [], isLoading: false})
         }else{

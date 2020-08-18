@@ -84,7 +84,7 @@ class Layout1Sidenav extends Component {
       }
     } = this.props;
 
-    console.log(mode);
+    // console.log(mode);
 
     this.updateSidebarMode({ mode: mode === "compact" ? "full" : "compact" });
   };

@@ -67,18 +67,21 @@ import Loading from "matx/components/MatxLoading/MatxLoading";
 
 callback = (response) => {
   const { invest_data } = this.state;
-  console.log(invest_data)
   if (invest_data.total && invest_data.payment_method) {
-    this.setState({invest_data:{...invest_data, paystack_id: response.reference }}, () => {
-      this.props.addHalaiInvestors(invest_data);
-      })
+    this.setState({invest_data:{...invest_data, paystack_id: response.reference }})
     }
+}
+componentDidUpdate(){
+  const { invest_data } = this.state;
+  if (invest_data.paystack_id !== "") {
+    this.props.addHalaiInvestors(invest_data);
+    this.setState({invest_data:{...invest_data, paystack_id:""}})
   }
+}
 handleSubmit(event) {
   event.preventDefault();
   this.setState({ submitted: true });
   const { invest_data } = this.state;
-  console.log(invest_data)
   if (invest_data.total && invest_data.payment_method) {
     this.props.addHalaiInvestors(invest_data);
   }
@@ -108,7 +111,7 @@ fetchSingleMarket(id){
         if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
-        }console.log(data)
+        }
         if(data.success == false){
           this.setState({singleNews: []});
         }else{

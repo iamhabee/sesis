@@ -39,7 +39,7 @@ class Wallet extends Component{
         amount: "",
         date_time: entry_date,
         payment_method: "Bank Account",
-        paystack_id: payID()
+        paystack_id: ""
     },
       key: payID(),
       savings: [],
@@ -58,6 +58,7 @@ class Wallet extends Component{
     this.handleClose = this.handleClose.bind(this);
     this.handleCloseWithdraw = this.handleCloseWithdraw.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.saveWallet = this.saveWallet.bind(this);
     const requestOptions = {
       method: "GET",
       headers: { ...authHeader(), "Content-Type": "application/json" },
@@ -86,7 +87,6 @@ class Wallet extends Component{
               const error = (res && res.message) || response.statusText;
               return Promise.reject(error);
             }
-            console.log(res)
               this.setState({bank_details: res[0]})
           })
           .catch(error => {
@@ -116,14 +116,22 @@ class Wallet extends Component{
   }
 
   callback = (response) => {
-    this.setState({ submitted: true });
-    const { data, key } = this.state;
-    
-    if (data.amount) {
-       this.props.saveWallet(data); 
+    const { data } = this.state;
+      if (data.amount ) {
+        this.setState({data:{...data, paystack_id: response.reference }})
     }
-  console.log(response);  
   }
+  componentDidUpdate(){
+    const { data } = this.state;
+    if (data.paystack_id !== "") {
+      this.props.saveWallet(data);
+      this.setState({data:{...data, paystack_id:""}})
+    }
+  }
+  saveWallet = () => {
+    
+  };
+
   getReference = () => {
   let text = "";
   let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
@@ -202,11 +210,10 @@ handleCloseWithdraw() {
           </Grid>
         </Grid>
         
-        <Dialog
+      <Dialog
         open={show}
-        onClose={this.handleClose}
-      >
-        <AppBar style={{position: "relative"}}>
+        onClose={this.handleClose} >
+        <AppBar style={{position: "relative"}} color="secondary">
           <Toolbar>
             <IconButton
               edge="start"
@@ -216,7 +223,7 @@ handleCloseWithdraw() {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
+            <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
               Fund Your Account
             </Typography>
           </Toolbar>
@@ -248,106 +255,105 @@ handleCloseWithdraw() {
                     {numberFormat(data.amount)}
                   </Typography>
                 </Card>
-                <PayOption callback={()=>this.callback} amount={data.amount}/>
+                <PayOption callback={this.callback} amount={data.amount}/>
               </Grid>
             </Grid>
           </ValidatorForm>
         </Card>
       </Dialog>
-        {/* withdraw Dialog start */}
-        <Dialog
-                open={show_withdraw}
-                onClose={this.handleCloseWithdraw}
+      {/* withdraw Dialog start */}
+      <Dialog
+          open={show_withdraw}
+          onClose={this.handleCloseWithdraw}>
+              <AppBar style={{position: "relative"}} color="secondary">
+                <Toolbar>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={this.handleCloseWithdraw}
+                    aria-label="Close"
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                  <Typography variant="h6" className="text-white" style={{marginLeft: theme.spacing(2), flex: 1}}>
+                    Withdraw To Bank Account
+                  </Typography>
+                </Toolbar>
+              </AppBar>
+              <Card className="px-6 pt-2 pb-4">
+              <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmit}
+                onError={errors => null}
               >
-                <AppBar style={{position: "relative"}}>
-                  <Toolbar>
-                    <IconButton
-                      edge="start"
-                      color="inherit"
-                      onClick={this.handleCloseWithdraw}
-                      aria-label="Close"
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography variant="h6" style={{marginLeft: theme.spacing(2), flex: 1}}>
-                      Withdraw To Bank Account
-                    </Typography>
-                  </Toolbar>
-                </AppBar>
-                <Card className="px-6 pt-2 pb-4">
-                <ValidatorForm
-                  ref="form"
-                  onSubmit={this.handleSubmit}
-                  onError={errors => null}
-                >
-                  <Grid container spacing={6}>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextValidator
-                        className="mb-4 w-full"
-                        label="Enter Amount"
-                        onChange={this.handleChange}
-                        type="number"
-                        name="amount"
-                        value={data.amount}
-                        validators={[
-                          "required"
-                        ]}
-                        errorMessages={["this field is required"]}
-                      />
-                        <Grid container lg={6} md={6} sm={12} xs={12}>
-                            {bank_details == null ?
-                            <Grid item lg={12} md={12} sm={12} xs={12}>
-                              <Typography variant="subtitle1">
-                                Please Go to settings to add Bank details
-                              </Typography>
-                            </Grid>:
-                            <>
-                            <Grid item lg={8} md={8} sm={6} xs={6}>
-                              <Typography variant="subtitle1">
-                              Bank Name:
-                              </Typography>
-                            </Grid>
-                            <Grid item lg={4} md={4} sm={6} xs={6}>
-                              <Typography variant="subtitle1">
-                                {bank_details.bank_name}
-                              </Typography>
-                            </Grid>
-                            <Grid item lg={8} md={8} sm={6} xs={6}>
-                              <Typography variant="subtitle1">
-                              Account Name:
-                              </Typography>
-                            </Grid>
-                            <Grid item lg={4} md={4} sm={6} xs={6}>
-                              <Typography variant="subtitle1">
-                                {bank_details.account_name}
-                              </Typography>
-                            </Grid>
-                            <Grid item lg={8} md={8} sm={6} xs={6}>
-                              <Typography variant="subtitle1">
-                              Account Number:
-                              </Typography>
-                            </Grid>
-                            <Grid item lg={4} md={4} sm={6} xs={6}>
-                              <Typography variant="subtitle1">
-                                {bank_details.account_no}
-                              </Typography>
-                            </Grid>
-                            </>}
-                        </Grid>
-                    </Grid>
-
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <Card className="px-6 pt-2 pb-4">
-                        <Typography variant="h6" gutterBottom>
-                          {numberFormat(data.amount)}
-                        </Typography>
-                      </Card>
-                    </Grid>
+                <Grid container spacing={6}>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextValidator
+                      className="mb-4 w-full"
+                      label="Enter Amount"
+                      onChange={this.handleChange}
+                      type="number"
+                      name="amount"
+                      value={data.amount}
+                      validators={[
+                        "required"
+                      ]}
+                      errorMessages={["this field is required"]}
+                    />
+                      <Grid container lg={6} md={6} sm={12} xs={12}>
+                          {bank_details == null ?
+                          <Grid item lg={12} md={12} sm={12} xs={12}>
+                            <Typography variant="subtitle1">
+                              Please Go to settings to add Bank details
+                            </Typography>
+                          </Grid>:
+                          <>
+                          <Grid item lg={8} md={8} sm={6} xs={6}>
+                            <Typography variant="subtitle1">
+                            Bank Name:
+                            </Typography>
+                          </Grid>
+                          <Grid item lg={4} md={4} sm={6} xs={6}>
+                            <Typography variant="subtitle1">
+                              {bank_details.bank_name}
+                            </Typography>
+                          </Grid>
+                          <Grid item lg={8} md={8} sm={6} xs={6}>
+                            <Typography variant="subtitle1">
+                            Account Name:
+                            </Typography>
+                          </Grid>
+                          <Grid item lg={4} md={4} sm={6} xs={6}>
+                            <Typography variant="subtitle1">
+                              {bank_details.account_name}
+                            </Typography>
+                          </Grid>
+                          <Grid item lg={8} md={8} sm={6} xs={6}>
+                            <Typography variant="subtitle1">
+                            Account Number:
+                            </Typography>
+                          </Grid>
+                          <Grid item lg={4} md={4} sm={6} xs={6}>
+                            <Typography variant="subtitle1">
+                              {bank_details.account_no}
+                            </Typography>
+                          </Grid>
+                          </>}
+                      </Grid>
                   </Grid>
-                </ValidatorForm>
-                </Card>
-              </Dialog>
-        {/* withdraw dialog end */}
+
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <Card className="px-6 pt-2 pb-4">
+                      <Typography variant="h6" gutterBottom>
+                        {numberFormat(data.amount)}
+                      </Typography>
+                    </Card>
+                  </Grid>
+                </Grid>
+              </ValidatorForm>
+              </Card>
+            </Dialog>
+      {/* withdraw dialog end */}
         </>
   }
      </div>
