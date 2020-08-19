@@ -13,7 +13,7 @@ class PayOption extends Component {
         let email =  localStorage.getItem('email');
         this.state = {
             email: email,
-            key: payID(),
+            key: "",
         }
         this.close = this.close.bind(this);
     }
@@ -29,7 +29,7 @@ componentDidMount(){
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-        // this.setState({key: data[0].public_key})
+        this.setState({key: data[0].public_key})
     })
     .catch((error) => {
         if (error === "Unauthorized") {
