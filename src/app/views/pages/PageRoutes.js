@@ -46,6 +46,14 @@ const pageRoutes = [
     component: React.lazy(() => import("./Loan/Loan"))
   },
   {
+    path: "/loan-group",
+    component: React.lazy(() => import("./Loans/GroupTab"))
+  },
+  {
+    path: "/loans",
+    component: React.lazy(() => import("./Loans/LoanTab"))
+  },
+  {
     path: "/savings",
     component: React.lazy(() => import("./savings/Savings"))
   },

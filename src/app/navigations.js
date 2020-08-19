@@ -74,9 +74,9 @@ export const navigations = [
     // ]
   },
   {
-    name: "Transactions",
+    name: "Loan Tabs",
     icon: "receipt",
-    path: "/transactions"
+    path: "/loan-group"
   },
   {
     name: "Account",
