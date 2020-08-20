@@ -2,7 +2,7 @@
 import history from '../../history';
 const serverVars = {
   // proxyurl: "https://cors-anywhere.herokuapp.com/",
-  baseUrl: "https://api.cubevest.com/api/",
+  baseUrl: "https://api.cubevest.com/test/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",

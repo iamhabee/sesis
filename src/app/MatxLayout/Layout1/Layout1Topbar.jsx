@@ -14,7 +14,7 @@ import ShoppingCart from "../SharedCompoents/ShoppingCart";
 const styles = theme => ({
   topbar: {
     "& .topbar-hold": {
-      backgroundColor: theme.palette.default,
+      backgroundColor: theme.palette.primary.main,
       height: "80px",
       "&.fixed": {
         boxShadow: theme.shadows[8],
@@ -72,6 +72,20 @@ class Layout1Topbar extends Component {
     this.props.logoutUser();
   };
 
+  handleSidenavToggle = () => {
+    let {
+      settings: {
+        layout1Settings: {
+          leftSidebar: { mode }
+        }
+      }
+    } = this.props;
+
+    // console.log(mode);
+
+    this.updateSidebarMode({ mode: mode === "compact" ? "full" : "compact" });
+  };
+
   render() {
     let { classes, fixed } = this.props;
     const {profile_image, user} = this.state
@@ -86,7 +100,8 @@ class Layout1Topbar extends Component {
               >
                 <Icon style={{ color: "black" }}>menu</Icon>
               </IconButton>
-
+              <Icon className="sidenav__toggle show-on-pc" onClick={this.handleSidenavToggle} style={{ color: "black" }}>menu</Icon>
+            
               {/* <div className="hide-on-mobile">
                 <IconButton >
                   <Icon>mail_outline</Icon>

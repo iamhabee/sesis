@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../../assets/cubeVest.png"
+import logo from "../../../assets/sesis.jpg"
 import {Link} from "react-router-dom";
 
 const Brand = ({ children }) => {
