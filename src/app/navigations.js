@@ -2,17 +2,12 @@ export const navigations = [
   {
     name: "Dashboard",
     path: "/dashboard",
-    icon: "home"
+    icon: "home",
   },
-  // {
-  //   name: "Wallet",
-  //   icon: "account_balance_wallet",
-  //   path: "/wallet"
-  // },
   {
     name: "Save",
     icon: "payments",
-    path: "/savings"
+    path: "/savings",
     // children: [
     //   {
     //     name: "Regular",
@@ -32,14 +27,19 @@ export const navigations = [
     // ]
   },
   {
-    name: "Free Interest Loan",
-    icon: "money",
-    path: "/loan"
+    name: "Shareholdings",
+    path: "/savings-tab/savetoloan",
+    icon: "people",
   },
   {
-    name: "Invest",
+    name: "Loan",
+    icon: "money",
+    path: "/loan",
+  },
+  {
+    name: "Product Financing",
     icon: "shopping_cart",
-    path: "/investments"
+    path: "/investments",
     // children: [
     //   {
     //     name: "Target Contributions",
@@ -74,14 +74,13 @@ export const navigations = [
     // ]
   },
   {
-    name: "Transactions",
+    name: "Business Financing",
     icon: "receipt",
-    path: "/transactions"
+    path: "/transactions",
   },
   {
     name: "Account",
     icon: "settings",
-    path: "/settings"
+    path: "/settings",
   },
- 
 ];

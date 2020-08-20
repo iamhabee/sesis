@@ -1,19 +1,18 @@
-
-import history from '../../history';
+import history from "../../history";
 const serverVars = {
   // proxyurl: "https://cors-anywhere.herokuapp.com/",
   baseUrl: "https://api.cubevest.com/test/api/",
   authUrl: "auth/login",
   regUrl: "auth/signup",
   resetPass: "profilesChangePassword?token=",
-  verifypass:"auth/reset",
-  verifyemail:"auth/signupVerifyEmail/",
-  recoverpass:"auth/recovery",
-  getPayStackId:"getApiKey?token=",
+  verifypass: "auth/reset",
+  verifyemail: "auth/signupVerifyEmail/",
+  recoverpass: "auth/recovery",
+  getPayStackId: "getApiKey?token=",
   // regular savings
   fetchAllBalances: "total_balances_for_all_savings_packages?token=",
   fetchAllTarget: "all_targets_in_one?token=",
-  fetchAllTargetAccount:"all_targets_plan_per_user?token=",
+  fetchAllTargetAccount: "all_targets_plan_per_user?token=",
   fetchAllSaveToLoan: "save_to_loan_all_api?token=",
 
   saveRegularSavings: "saving/store?token=",
@@ -23,18 +22,18 @@ const serverVars = {
   withdrawRegularSavings: "savingsWithdrawal?token=",
   totalFundRegularSavings: "savingsBalance?token=",
   getRegularSavingsDetails: "savingsTransactions?token=",
-  deactivateAutoSave:"deactivateAutoSave?token=",
-  // target savings   
+  deactivateAutoSave: "deactivateAutoSave?token=",
+  // target savings
   saveTargetSavings: "targets/store?token=",
   getTargetSavings: "targets?token=",
-  getTargetTransaction:"targets/transactions/",
-  exitTargetSavings:"targetsExit/",
-  getTotalTargetFund:"targets/total_funds/",
-  totalTargetFund:"all_targets_sum_per_user?token=",
+  getTargetTransaction: "targets/transactions/",
+  exitTargetSavings: "targetsExit/",
+  getTotalTargetFund: "targets/total_funds/",
+  totalTargetFund: "all_targets_sum_per_user?token=",
   editTargetSavings: "targets/",
   addFundTargetSavings: "targets/add_funds/",
   withdrawTargetSavings: "targets/add_withdrawal/",
-  targetDetails:"targets/details/",
+  targetDetails: "targets/details/",
   activateTargetAutosave: "targetsActivateAutoSave/",
   deactivateTargetAutosave: "targetsDeactivateAutoSave/",
   // save to loan savings
@@ -44,9 +43,9 @@ const serverVars = {
   addFundSaveToLoanSavings: "save_loan/add_funds?token=",
   withdrawSaveToLoanSavings: "save_loan/add_withdrawal?token=",
   totalFundSaveToLoanSavings: "all_funds?token=",
-  getSaveToLoanTransaction:"save_loan/transactions/",
-  exitLoanSavings:"saveLoanExit/",
-  deactivateAutoSaveLoan:"deactivateAutoSaveLoan?token=",
+  getSaveToLoanTransaction: "save_loan/transactions/",
+  exitLoanSavings: "saveLoanExit/",
+  deactivateAutoSaveLoan: "deactivateAutoSaveLoan?token=",
   //other transaction
   saveInvestment: "save_investment/store?token=",
   getInvestments: "show_all_investment?token=",
@@ -57,55 +56,54 @@ const serverVars = {
   getHalaiNews: "show_all_halai?token=",
   getSingleHalai: "single_halai/",
   addHalaiInvestors: "halai/add_investment?token=",
-  getTotalMarketFund:"marketTotal?token=",
-  getTotalHalalFund:"halaiTotal?token=",
+  getTotalMarketFund: "marketTotal?token=",
+  getTotalHalalFund: "halaiTotal?token=",
   // addProfile: "profiles/store?token=",
-  showProfile:"show_profile?token=",
-  updatePicture:"profiles/updatePics?token=",
-  updateProfile:"profiles/update?token=",
+  showProfile: "show_profile?token=",
+  updatePicture: "profiles/updatePics?token=",
+  updateProfile: "profiles/update?token=",
 
-
-  // Loan  
-  createLoanGroup:"loan/create_loan_group?token=",
-  createLoan:"loanAdd?token=",
-  joinGroup:"loan/join_group?token=",
-  rejectGroup:"loan/reject_group/",
-  exitGroup:"loan/exit_group/",
-  getLoanGroup:"loan/loan_group?token=",
-  getLoan:"loan/view_loan?token=",
-  getLoanDetails:"loanDetails/",
-  getLoanActivities:"loanGroupDetailsActivities/",
-  getLoanGroupMembers:"loanGroupMembers/",
-  getLoanGroupActivities:"loanGroupApproval/",
-  addLoanRepayment:"loanRepaymentsAdd/",
-  loanRepaymentsDetails:"loanRepaymentsDetails/",
-  getLoanGroupName:"loanGroupName?token=",
-  declineLoan:"loanDeclined/",
+  // Loan
+  createLoanGroup: "loan/create_loan_group?token=",
+  createLoan: "loanAdd?token=",
+  joinGroup: "loan/join_group?token=",
+  rejectGroup: "loan/reject_group/",
+  exitGroup: "loan/exit_group/",
+  getLoanGroup: "loan/loan_group?token=",
+  getLoan: "loan/view_loan?token=",
+  getLoanDetails: "loanDetails/",
+  getLoanActivities: "loanGroupDetailsActivities/",
+  getLoanGroupMembers: "loanGroupMembers/",
+  getLoanGroupActivities: "loanGroupApproval/",
+  addLoanRepayment: "loanRepaymentsAdd/",
+  loanRepaymentsDetails: "loanRepaymentsDetails/",
+  getLoanGroupName: "loanGroupName?token=",
+  declineLoan: "loanDeclined/",
   acceptLoan: "loanAccepted/",
-  getLoanGroupApproval:"loanGroupApprovalDetails/",
-  resendGroupNotification:"loan/resend_join_notification/",
-  resendLoanNotification:"loanResendNotification/",
-  getLoanGroupDetails:"loan/group_request_details/",
-  replaceMember:"loanReplaceMembers/",
-  removeMember:"loan/replace_member?token=",
-  loanBalance:"loanBalance/",
-  completedLoan:"getCompletedLoans?token=",
+  getLoanGroupApproval: "loanGroupApprovalDetails/",
+  resendGroupNotification: "loan/resend_join_notification/",
+  resendLoanNotification: "loanResendNotification/",
+  getLoanGroupDetails: "loan/group_request_details/",
+  replaceMember: "loanReplaceMembers/",
+  removeMember: "loan/replace_member?token=",
+  loanBalance: "loanBalance/",
+  completedLoan: "getCompletedLoans?token=",
 
   showTransaction: "transactions/details?token=",
   saveWallet: "save_wallet/store?token=",
   saveBank: "bank_account/add?token=",
-  getBank:'bank_account/details?token=',
-  updateBank:"bank_accountUpdate?token=",
+  getBank: "bank_account/details?token=",
+  updateBank: "bank_accountUpdate?token=",
   saveWithdrawal: "save_withdrawal/add?token=",
   showWallet: "show_wallet?token=",
   showWithdrawal: "show_withdrawal/",
   showWalletBalance: "show_wallet_balance?token=",
-  showMyMarketInvestment:"user_investments?token=",
-  showMyHalalInvestment:"user_halai?token=",
-  getInvestmentCat:"show_category?token=",
-  getHalaiCat:"show_halai_category?token=",
-  getInvestmentNews:"show_halai/",
-  getMarketNews:"show_investment/"
+  showMyMarketInvestment: "user_investments?token=",
+  showMyHalalInvestment: "user_halai?token=",
+  getInvestmentCat: "show_category?token=",
+  getHalaiCat: "show_halai_category?token=",
+  getInvestmentNews: "show_halai/",
+  getMarketNews: "show_investment/",
 };
 
 export const numberFormat = (value) =>
@@ -120,59 +118,59 @@ export const payID = () => {
 
 export const getReference = () => {
   let text = "";
-  let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
-  for( let i=0; i < 15; i++ )
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  let possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.=";
+  for (let i = 0; i < 15; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
-}
+};
 
-export const setLastUrl = () =>{
+export const setLastUrl = () => {
   var lasturl = window.location.href;
   var pathname = new URL(lasturl).pathname;
   localStorage.setItem("lasturl", pathname);
-}
+};
 
-export const checkLastUrl=()=>{
+export const checkLastUrl = () => {
   let pathname = localStorage.getItem("lasturl");
   if (pathname == null || pathname == "") {
     history.push({
-      pathname: "/dashboard"
+      pathname: "/dashboard",
     });
-    }else{
-      history.push({
-        pathname: pathname
-      });
-    }
-}
+  } else {
+    history.push({
+      pathname: pathname,
+    });
+  }
+};
 
-export const checkToken = ()=>{
+export const checkToken = () => {
   let pathname = localStorage.getItem("lasturl");
-  let token =  JSON.parse(localStorage.getItem('user'));
-    if (token == null || token == "") {
-      history.push({
-        pathname: "/signin"
-      });
-      }else{
-        history.push({
-          pathname: pathname
-        });
-      }
-}
+  let token = JSON.parse(localStorage.getItem("user"));
+  if (token == null || token == "") {
+    history.push({
+      pathname: "/signin",
+    });
+  } else {
+    history.push({
+      pathname: pathname,
+    });
+  }
+};
 
 export function getConfig(apiName) {
   let user = JSON.parse(localStorage.getItem("user"));
-  if ((apiName != 'login') && user == null) {
-    if(apiName != "signup"){
-      if(apiName != "recoverpass"){
-        if(apiName != "verifypass"){
-          if(apiName != "verifyemail"){
-            history.push('/signin');
-            return
+  if (apiName != "login" && user == null) {
+    if (apiName != "signup") {
+      if (apiName != "recoverpass") {
+        if (apiName != "verifypass") {
+          if (apiName != "verifyemail") {
+            history.push("/signin");
+            return;
           }
         }
       }
     }
-    
   }
   switch (apiName) {
     case "login":
@@ -207,13 +205,19 @@ export function getConfig(apiName) {
     case "fetchAllTargetAccount":
       return serverVars.baseUrl + serverVars.fetchAllTargetAccount + user.token;
     case "withdrawRegularSavings":
-      return serverVars.baseUrl + serverVars.withdrawRegularSavings + user.token
+      return (
+        serverVars.baseUrl + serverVars.withdrawRegularSavings + user.token
+      );
     case "totalFundRegularSavings":
-      return serverVars.baseUrl + serverVars.totalFundRegularSavings + user.token
+      return (
+        serverVars.baseUrl + serverVars.totalFundRegularSavings + user.token
+      );
     case "getRegularSavingsDetails":
-      return  serverVars.baseUrl + serverVars.getRegularSavingsDetails + user.token
+      return (
+        serverVars.baseUrl + serverVars.getRegularSavingsDetails + user.token
+      );
     case "deactivateAutoSave":
-      return  serverVars.baseUrl + serverVars.deactivateAutoSave + user.token
+      return serverVars.baseUrl + serverVars.deactivateAutoSave + user.token;
     // target savings api
     case "editTargetSavings":
       return serverVars.baseUrl + serverVars.editTargetSavings;
@@ -243,21 +247,29 @@ export function getConfig(apiName) {
     case "editSaveToLoanSavings":
       return serverVars.baseUrl + serverVars.editSaveToLoanSavings;
     case "addFundSaveToLoanSavings":
-      return serverVars.baseUrl + serverVars.addFundSaveToLoanSavings + user.token
+      return (
+        serverVars.baseUrl + serverVars.addFundSaveToLoanSavings + user.token
+      );
     case "totalFundSaveToLoanSavings":
-      return serverVars.baseUrl + serverVars.totalFundSaveToLoanSavings + user.token
+      return (
+        serverVars.baseUrl + serverVars.totalFundSaveToLoanSavings + user.token
+      );
     case "getSaveToLoanSavings":
       return serverVars.baseUrl + serverVars.getSaveToLoanSavings + user.token;
     case "saveSaveToLoanSavings":
       return serverVars.baseUrl + serverVars.saveSaveToLoanSavings + user.token;
     case "withdrawSaveToLoanSavings":
-      return serverVars.baseUrl + serverVars.withdrawSaveToLoanSavings + user.token
+      return (
+        serverVars.baseUrl + serverVars.withdrawSaveToLoanSavings + user.token
+      );
     case "getSaveToLoanTransaction":
-      return serverVars.baseUrl + serverVars.getSaveToLoanTransaction
+      return serverVars.baseUrl + serverVars.getSaveToLoanTransaction;
     case "exitLoanSavings":
-      return serverVars.baseUrl + serverVars.exitLoanSavings
+      return serverVars.baseUrl + serverVars.exitLoanSavings;
     case "deactivateAutoSaveLoan":
-      return  serverVars.baseUrl + serverVars.deactivateAutoSaveLoan + user.token
+      return (
+        serverVars.baseUrl + serverVars.deactivateAutoSaveLoan + user.token
+      );
     // Other transaction
     case "saveInvestment":
       return serverVars.baseUrl + serverVars.saveInvestment + user.token;
@@ -281,7 +293,7 @@ export function getConfig(apiName) {
       return serverVars.baseUrl + serverVars.getTotalMarketFund + user.token;
     case "getTotalHalalFund":
       return serverVars.baseUrl + serverVars.getTotalHalalFund + user.token;
-    
+
     case "createLoanGroup":
       return serverVars.baseUrl + serverVars.createLoanGroup + user.token;
     case "createLoan":
@@ -352,7 +364,7 @@ export function getConfig(apiName) {
     case "saveWithdrawal":
       return serverVars.baseUrl + serverVars.saveWithdrawal + user.token;
     case "showWallet":
-      return serverVars.baseUrl + serverVars.showWallet  + user.token;
+      return serverVars.baseUrl + serverVars.showWallet + user.token;
     case "showWithdrawal":
       return serverVars.baseUrl + serverVars.showWithdrawal;
     case "showWalletBalance":
