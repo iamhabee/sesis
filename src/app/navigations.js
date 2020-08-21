@@ -78,13 +78,9 @@ export const navigations = [
     path: "/halal",
   },
   {
-    name: "Loan Tabs",
+    name: "Transactions",
     icon: "receipt",
-<<<<<<< HEAD
-    path: "/loan-group"
-=======
     path: "/transactions",
->>>>>>> 122105879a5c4dc401553602f824a3e9d420f833
   },
   {
     name: "Account",
