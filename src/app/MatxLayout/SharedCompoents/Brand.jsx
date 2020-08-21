@@ -6,7 +6,7 @@ const Brand = ({ children }) => {
   return (
     <div className="flex items-center justify-between brand-area">
       <div className="flex items-center brand">
-      <Link to="/landing"><img src={logo} alt="company-logo" /></Link>
+      <Link to="/"><img src={logo} alt="company-logo" /></Link>
       </div>
       {children}
     </div>

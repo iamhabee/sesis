@@ -17,7 +17,7 @@ const redirectRoute = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/landing" />
+    component: () => <Redirect to="/" />
   }
 ];
 

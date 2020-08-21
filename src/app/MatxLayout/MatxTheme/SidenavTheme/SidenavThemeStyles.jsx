@@ -17,7 +17,8 @@ const styles = theme => ({
         },
         "& .nav-item": {
           "&.active, &.active:hover": {
-            background: theme.palette.secondary.main
+            background: theme.palette.secondary.main,
+            color: "#ff4d4d"
           },
           "& .icon-text::after": {
             background: theme.palette.text.primary

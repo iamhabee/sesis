@@ -58,7 +58,7 @@ class ForgotPassword extends Component {
           <div className="p-8">
             <Grid container className="p-2 " justify="center" alignItems="center">
               <Grid lg={6} md={6} sm={6} xs={6}>
-                <img src="/assets/images/Group24.png"/>
+                <img src="/assets/images/sesis.jpg"/>
               </Grid>
             </Grid>
           </div>

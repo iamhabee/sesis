@@ -98,9 +98,9 @@ class Layout1Topbar extends Component {
                 onClick={this.handleSidebarToggle}
                 className="hide-on-pc"
               >
-                <Icon style={{ color: "black" }}>menu</Icon>
+                <Icon style={{ color: "white" }}>menu</Icon>
               </IconButton>
-              <Icon className="sidenav__toggle show-on-pc" onClick={this.handleSidenavToggle} style={{ color: "black" }}>menu</Icon>
+              <Icon className="sidenav__toggle show-on-pc" onClick={this.handleSidenavToggle} style={{ color: "white" }}>menu</Icon>
             
               {/* <div className="hide-on-mobile">
                 <IconButton >

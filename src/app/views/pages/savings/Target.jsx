@@ -401,7 +401,14 @@ completeTab(){
     let {theme} = this.props
     const {balance, tdetails, loading, isLoading, tab, auto_save, edit_data, singleTargetTransaction, showEdit, showView, completed, email, bank_details, fund_data,  autoSave, accounts, showSave,showWithdraw, data, show, savings} = this.state
     return (
-      <div className="m-sm-10">
+      <div className="m-sm-30">
+        <div className="mb-sm-30">
+         <Breadcrumb
+           routeSegments={[
+             { name: "Target" }
+           ]}
+         />
+       </div>
         {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />

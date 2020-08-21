@@ -16,7 +16,7 @@ const themes = createMatxThemes();
 
 export const MatxLayoutSettings = {
   activeLayout: "layout1", // layout1, layout2
-  activeTheme: "blueDark", // View all valid theme colors inside MatxTheme/themeColors.js
+  activeTheme: "purple1", // View all valid theme colors inside MatxTheme/themeColors.js
   perfectScrollbar: true,
 
   themes: themes,
@@ -25,12 +25,12 @@ export const MatxLayoutSettings = {
   secondarySidebar: {
     show: false,
     open: false,
-    theme: "slateDark2" // View all valid theme colors inside MatxTheme/themeColors.js
+    theme: "slateDark1" // View all valid theme colors inside MatxTheme/themeColors.js
   },
   // Footer options
   footer: {
     show: false,
     fixed: false,
-    theme: "slateDark2" // View all valid theme colors inside MatxTheme/themeColors.js
+    theme: "slateDark1" // View all valid theme colors inside MatxTheme/themeColors.js
   }
 };

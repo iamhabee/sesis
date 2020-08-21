@@ -2,9 +2,9 @@ const Layout1Settings = {
   leftSidebar: {
     show: true,
     mode: 'full', // full, close, compact, mobile,
-    theme: 'slateDark2', // View all valid theme colors inside MatxTheme/themeColors.js
+    theme: 'purpleDark2', // View all valid theme colors inside MatxTheme/themeColors.js
     // bgOpacity: .96, // 0 ~ 1
-    bgImgURL: '/assets/images/sidebar/sidebar-bg-dark.jpg'
+    bgImgURL: '/assets/images/sidebar/sidebar-bg.jpg'
   },
   topbar: {
     show: true,

@@ -54,9 +54,7 @@ const Sidenav = props => {
               >
                 {/* <Icon>exit_to_app</Icon> */}
               </IconButton>
-        <Button  startIcon={<PowerSettingsNewIcon />} variant="outlined" size="small" color="secondary" onClick={()=>props.logout()}>
-          
-          Logout</Button>
+        <Button  startIcon={<PowerSettingsNewIcon />} className="text-white" variant="outlined" size="small" color="secondary" onClick={()=>props.logout()}>Logout</Button>
         </div>
       </Scrollbar>
       {renderOverlay()}
