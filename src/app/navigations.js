@@ -2,86 +2,93 @@ export const navigations = [
   {
     name: "Dashboard",
     path: "/dashboard",
-    icon: "home"
+    icon: "home",
   },
-  // {
-  //   name: "Wallet",
-  //   icon: "account_balance_wallet",
-  //   path: "/wallet"
-  // },
+  {
+    name: "Wallet",
+    icon: "account_balance_wallet",
+    path: "/wallet",
+  },
+  {
+    name: "Application",
+    icon: "list_alt",
+      children: [
+            {
+              name: "Target Contributions",
+              path: "/applications/target-contribution",
+              iconText: "B"
+            },
+            {
+              name: "Monthly Contribution",
+              path: "/applications/monthly-contribution",
+              iconText: "B"
+            },
+            {
+              name: "Procurement Repayment",
+              path: "/applications/procurement",
+              iconText: "E"
+            },
+            {
+              name: "Loan Repayment",
+              path: "/applications/loan-repayment",
+              iconText: "E"
+            },
+            {
+              name: "Shares Contribution",
+              path: "/applications/shares-capital",
+              iconText: "E"
+            },
+            {
+              name: "Wallet Contribution",
+              path: "/applications/wallet-contribution",
+              iconText: "E"
+            }
+      ]
+  },
   {
     name: "Save",
     icon: "payments",
-    path: "/savings"
-    // children: [
-    //   {
-    //     name: "Regular",
-    //     path: "/savings/regular",
-    //     iconText: "B"
-    //   },
-    //   {
-    //     name: "Target",
-    //     path: "/savings/target",
-    //     iconText: "E"
-    //   },
-    //   {
-    //     name: "Share Holding",
-    //     path: "/savings/savetoloan",
-    //     iconText: "E"
-    //   }
-    // ]
+    // path: "/savings",
+    children: [
+          {
+            name: "Regular Savings",
+            path: "/regular",
+            iconText: "B"
+          },
+          {
+            name: "Target Savings",
+            path: "/target",
+            iconText: "B"
+          },
+          {
+            name: "ShareHolding",
+            path: "/savetoloan",
+            iconText: "E"
+          }
+    ]
   },
   {
-    name: "Free Interest Loan",
+    name: "Loan",
     icon: "money",
-    path: "/loan"
+    path: "/loan",
   },
   {
-    name: "Invest",
+    name: "Product Financing",
     icon: "shopping_cart",
-    path: "/investments"
-    // children: [
-    //   {
-    //     name: "Target Contributions",
-    //     path: "/applications/target-contribution",
-    //     iconText: "B"
-    //   },
-    //   {
-    //     name: "Monthly Contribution",
-    //     path: "/applications/monthly-contribution",
-    //     iconText: "B"
-    //   },
-    //   {
-    //     name: "Procurement Repayment",
-    //     path: "/applications/procurement",
-    //     iconText: "E"
-    //   },
-    //   {
-    //     name: "Loan Repayment",
-    //     path: "/applications/loan-repayment",
-    //     iconText: "E"
-    //   },
-    //   {
-    //     name: "Shares Contribution",
-    //     path: "/applications/shares-capital",
-    //     iconText: "E"
-    //   },
-    //   {
-    //     name: "Wallet Contribution",
-    //     path: "/applications/wallet-contribution",
-    //     iconText: "E"
-    //   }
-    // ]
+    path: "/halal",
   },
   {
     name: "Loan Tabs",
     icon: "receipt",
+<<<<<<< HEAD
     path: "/loan-group"
+=======
+    path: "/transactions",
+>>>>>>> 122105879a5c4dc401553602f824a3e9d420f833
   },
   {
     name: "Account",
     icon: "settings",
-    path: "/settings"
+    path: "/settings",
   },
- 
 ];

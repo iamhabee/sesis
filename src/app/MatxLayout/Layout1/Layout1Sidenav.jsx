@@ -96,14 +96,15 @@ class Layout1Sidenav extends Component {
   renderLogoSwitch = () => (
     // Open Brand component file to replace logo and text
     <Brand>
-      <Switch
+      {/* <Icon className="sidenav__toggle show-on-pc" onClick={this.handleSidenavToggle} style={{ color: "black" }}>menu</Icon> */}
+      {/* <Switch
         className="sidenav__toggle show-on-pc"
         onChange={this.handleSidenavToggle}
         checked={
           !(this.props.settings.layout1Settings.leftSidebar.mode === "full")
         }
         color="secondary"
-      />
+      /> */}
     </Brand>
   );
 

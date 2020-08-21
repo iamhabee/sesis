@@ -374,6 +374,7 @@ fetch(getConfig("totalFundRegularSavings"), requestOptions)
             <Grid item lg={6} md={6} sm={12} xs={12}>
               {(wallet_balance == 0 || bank.length == 0  || profile.relationship == "" || profile.length == 0 ) && <h4 className="card-title text-muted mb-4">Todo List</h4>}
               <RowCards wallet={wallet_balance} bank={bank} profile={profile}/>
+              <div className="py-2" />
               <Card className="px-6 py-4 pt-4 mb-6">
                 <div className="card-title">My Savings Account </div>
                 {(regular_balance+target_balance+loan_balance != 0)?

@@ -120,11 +120,11 @@ export const themeColors = {
     palette: {
       type: "dark",
       primary: {
-        main: "#6a75c9",
+        main: "#224459",
         contrastText: "#ffffff"
       },
       secondary: {
-        main: "#d8b71e",
+        main: "#ff4d4d",
         contrastText: textLight.primary
       },
       background: {

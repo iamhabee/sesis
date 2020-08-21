@@ -81,6 +81,30 @@ const pageRoutes = [
     path: "/wallet",
     component: React.lazy(() => import("./transactions/Wallet"))
   },
+  {
+    path: "/applications/target-contribution",
+    component: React.lazy(() => import("./Applications/TargetContribution"))
+  },
+  {
+    path: "/applications/monthly-contribution",
+    component: React.lazy(() => import("./Applications/MonthlyContribution"))
+  },
+  {
+    path: "/applications/procurement",
+    component: React.lazy(() => import("./Applications/Procurement"))
+  },
+  {
+    path: "/applications/loan-repayment",
+    component: React.lazy(() => import("./Applications/LoanRepayment"))
+  },
+  {
+    path: "/applications/shares-capital",
+    component: React.lazy(() => import("./Applications/SharesCapital"))
+  },
+  {
+    path: "/applications/wallet-contribution",
+    component: React.lazy(() => import("./Applications/WalletContribution"))
+  },
 ];
 
 export default pageRoutes;

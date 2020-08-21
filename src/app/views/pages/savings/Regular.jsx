@@ -286,6 +286,13 @@ handleClose() {
     const {balance, tdetails, loading, auto_save, email, bank_details, edit_data, showEdit, fund_data, withdraw_data, autoSave, showSave,showWithdraw, data, show, savings} = this.state
     return (
       <div className="m-sm-30">
+        <div className="mb-sm-30">
+         <Breadcrumb
+           routeSegments={[
+             { name: "Regular" }
+           ]}
+         />
+       </div>
        {loading ?
         <div style={{marginTop:150, display:"flex", alignItems:"center", flexDirection:"column", justifyItems:"center"}}>
           <Loading />

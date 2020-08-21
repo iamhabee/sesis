@@ -119,11 +119,6 @@ render(){
               <CustomCard icon={"track_changes"} colors={"#ffeaf5"} borderColor={"#d41be0"} textcolor={"#e74398"} amount={numberFormat(target)} title={"Target Saving"} subtitle={"Save to achieve monetary goals, with flexible timeframe."}/>
               </Link>
             </Grid>
-            <Grid item lg={4} md={4} >
-              <Link to="/savings-tab/savetoloan">
-                <CustomCard icon={"money"} colors={"#e7f6ff"} borderColor={"#2b80e8"} textcolor={"#2295f2"} amount={numberFormat(loan)} investment_amount={numberFormat(loan_investment)} title={"Save To Loan"} subtitle={"Flexible savings to get our free interest loan"}/>
-              </Link>
-            </Grid>
           </Grid>
         </div>}
       </div>

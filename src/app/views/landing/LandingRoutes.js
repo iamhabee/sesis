@@ -25,7 +25,7 @@ const settings = {
 
 const landingRoutes = [
   {
-    path: "/landing",
+    path: "/",
     component: React.lazy(() => import("./Landing")),
     settings
   }
